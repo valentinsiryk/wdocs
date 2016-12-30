@@ -30,10 +30,13 @@ Webhooks::
 Syntax
 ------
 
-:download:`A Detailed Example <conda-cheatsheet.pdf>`
+Insert link to download file::
 
+    :download:`A Detailed Example <conda-cheatsheet.pdf>`
 
-.. include:: ../README.txt
+include::
+
+    .. include:: ../README.txt
 
 
 Some text::
@@ -132,15 +135,18 @@ the source code from PyPI_::
 
     $ pip install --upgrade --user ase
 
-This will install ASE in a local folder where Python can
-automatically find it (``~/.local`` on Unix, see here_ for details).  Some
-:ref:`cli` will be installed in the following location:
 
-=================  ============================
-Unix and Mac OS X  ``~/.local/bin``
-Homebrew           ``~/Library/Python/X.Y/bin``
-Windows            ``%APPDATA%/Python/Scripts``
-=================  ============================
+::
+    
+    This will install ASE in a local folder where Python can
+    automatically find it (``~/.local`` on Unix, see here_ for details).  Some
+    :ref:`cli` will be installed in the following location:
+
+    =================  ============================
+    Unix and Mac OS X  ``~/.local/bin``
+    Homebrew           ``~/Library/Python/X.Y/bin``
+    Windows            ``%APPDATA%/Python/Scripts``
+    =================  ============================
 
 Make sure you have that path in your :envvar:`PATH` environment variable.
 
@@ -168,6 +174,8 @@ As an alternative to ``pip``, you can also get the source from a tar-file or
 from Git.
 
 :Tar-file:
+
+::
 
     You can get the source as a `tar-file <http://xkcd.com/1168/>`__ for the
     latest stable release (ase-3.12.0.tar.gz_) or the latest
@@ -197,15 +205,17 @@ environment variable (if you don't already have that).
 
 Finally, please `run the tests`_.
 
-.. note::
+::
 
-    We also have Git-tags for older stable versions of ASE.
-    See the :ref:`releasenotes` for which tags are available.  Also the
-    dates of older releases can be found there.
+    .. note::
 
-.. _ase-3.12.0.tar.gz: https://pypi.python.org/packages/ab/d4/
-    4fb1a390d6ca8c4b190285eaecbb0349d3989befd5e670dc14751c715575/
-    ase-3.12.0.tar.gz
+        We also have Git-tags for older stable versions of ASE.
+        See the :ref:`releasenotes` for which tags are available.  Also the
+        dates of older releases can be found there.
+
+    .. _ase-3.12.0.tar.gz: https://pypi.python.org/packages/ab/d4/
+        4fb1a390d6ca8c4b190285eaecbb0349d3989befd5e670dc14751c715575/
+        ase-3.12.0.tar.gz
 
 
 Environment variables
