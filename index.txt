@@ -17,10 +17,3 @@ Contents:
    */index
    *
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-
