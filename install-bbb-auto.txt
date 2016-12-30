@@ -2,189 +2,190 @@
 Install BBB auto
 ================
 
+::
 
-#BigBlueButton 0.81 in Debian 7 Wheezy
-##
-aptitude install sudo
-echo "deb http://ubuntu.bigbluebutton.org/lucid_dev_081/ bigbluebutton-lucid main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list
-#
-# Add the BigBlueButton key
-wget http://ubuntu.bigbluebutton.org/bigbluebutton.asc -O- | sudo apt-key add -
-#
-# Add sources
-echo "deb http://security.debian.org/ wheezy/updates main contrib non-free" | sudo tee /etc/apt/sources.list
-echo "deb-src http://security.debian.org/ wheezy/updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://ftp.debian.org/debian stable main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://ftp.debian.org/debian stable main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://ftp.debian.org/debian wheezy main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://ftp.debian.org/debian wheezy main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://ftp.debian.org/debian/ wheezy-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://ftp.debian.org/debian/ wheezy-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://ftp.debian.org/debian wheezy-proposed-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://ftp.debian.org/debian wheezy-proposed-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://ftp.debian.org/debian wheezy-backports main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://ftp.debian.org/debian wheezy-backports main contrib non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list
-echo "deb http://www.deb-multimedia.org wheezy-backports main" | sudo tee -a /etc/apt/sources.list
-echo "deb-src http://www.deb-multimedia.org wheezy-backports main" | sudo tee -a /etc/apt/sources.list
-#
-sudo aptitude update
-sudo aptitude install deb-multimedia-keyring
-#sudo aptitude install mc htop ssh 
-sudo aptitude update
-#
-sudo aptitude  -f install subversion dpkg-dev debhelper dh-make devscripts fakeroot
-sudo aptitude  -f dist-upgrade
-#
-sudo aptitude  -f install build-essential git-core checkinstall yasm texi2html libopencore-amrnb-dev \
-libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev
-#
-sudo aptitude  -f install libfaad-dev faad faac libfaac0 libfaac-dev libmp3lame-dev x264 libx264-dev libxvidcore-dev \
-build-essential checkinstall libffi5 subversion libmpfr4 libmpfr-dev 
-#sudo aptitude  -f install ffmpeg
-sudo aptitude  -f install
+    #BigBlueButton 0.81 in Debian 7 Wheezy
+    ##
+    aptitude install sudo
+    echo "deb http://ubuntu.bigbluebutton.org/lucid_dev_081/ bigbluebutton-lucid main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list
+    #
+    # Add the BigBlueButton key
+    wget http://ubuntu.bigbluebutton.org/bigbluebutton.asc -O- | sudo apt-key add -
+    #
+    # Add sources
+    echo "deb http://security.debian.org/ wheezy/updates main contrib non-free" | sudo tee /etc/apt/sources.list
+    echo "deb-src http://security.debian.org/ wheezy/updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://ftp.debian.org/debian stable main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://ftp.debian.org/debian stable main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://ftp.debian.org/debian wheezy main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://ftp.debian.org/debian wheezy main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://ftp.debian.org/debian/ wheezy-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://ftp.debian.org/debian/ wheezy-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://ftp.debian.org/debian wheezy-proposed-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://ftp.debian.org/debian wheezy-proposed-updates main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://ftp.debian.org/debian wheezy-backports main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://ftp.debian.org/debian wheezy-backports main contrib non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list
+    echo "deb http://www.deb-multimedia.org wheezy-backports main" | sudo tee -a /etc/apt/sources.list
+    echo "deb-src http://www.deb-multimedia.org wheezy-backports main" | sudo tee -a /etc/apt/sources.list
+    #
+    sudo aptitude update
+    sudo aptitude install deb-multimedia-keyring
+    #sudo aptitude install mc htop ssh 
+    sudo aptitude update
+    #
+    sudo aptitude  -f install subversion dpkg-dev debhelper dh-make devscripts fakeroot
+    sudo aptitude  -f dist-upgrade
+    #
+    sudo aptitude  -f install build-essential git-core checkinstall yasm texi2html libopencore-amrnb-dev \
+    libopencore-amrwb-dev libsdl1.2-dev libtheora-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev
+    #
+    sudo aptitude  -f install libfaad-dev faad faac libfaac0 libfaac-dev libmp3lame-dev x264 libx264-dev libxvidcore-dev \
+    build-essential checkinstall libffi5 subversion libmpfr4 libmpfr-dev 
+    #sudo aptitude  -f install ffmpeg
+    sudo aptitude  -f install
 
-# Copy file for fixing depedency
-cd /var/cache/apt/archives
-wget http://ftp.us.debian.org/debian/pool/main/g/gmp/libgmp3c2_4.3.2+dfsg-1_amd64.deb
-wget http://free.nchc.org.tw/ubuntu//pool/main/m/mpfr/libmpfr1ldbl_2.4.2-3ubuntu1_amd64.deb
-wget http://ftp.us.debian.org/debian/pool/main/o/openssl/libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
-#
-cd /var/cache/apt/archives
-sudo dpkg -i libgmp3c2_4.3.2+dfsg-1_amd64.deb libmpfr1ldbl_2.4.2-3ubuntu1_amd64.deb libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
-sudo aptitude -f install
+    # Copy file for fixing depedency
+    cd /var/cache/apt/archives
+    wget http://ftp.us.debian.org/debian/pool/main/g/gmp/libgmp3c2_4.3.2+dfsg-1_amd64.deb
+    wget http://free.nchc.org.tw/ubuntu//pool/main/m/mpfr/libmpfr1ldbl_2.4.2-3ubuntu1_amd64.deb
+    wget http://ftp.us.debian.org/debian/pool/main/o/openssl/libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
+    #
+    cd /var/cache/apt/archives
+    sudo dpkg -i libgmp3c2_4.3.2+dfsg-1_amd64.deb libmpfr1ldbl_2.4.2-3ubuntu1_amd64.deb libssl0.9.8_0.9.8o-4squeeze14_amd64.deb
+    sudo aptitude -f install
 
-#
-# Copy file sun-java6 & depedency
-cd /var/cache/apt/archives
-wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/ia32-sun-java6-bin_6.26-0squeeze1_amd64.deb
-wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/sun-java6-bin_6.26-0squeeze1_amd64.deb
-wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/sun-java6-jdk_6.26-0squeeze1_amd64.deb
-wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/sun-java6-jre_6.26-0squeeze1_all.deb
-#
-#wget http://ftp.us.debian.org/debian/pool/main/i/ia32-libs/ia32-libs-i386_0.4_i386.deb
-#wget http://ftp.us.debian.org/debian/pool/main/i/ia32-libs/ia32-libs_20140131_amd64.deb
-#wget http://ftp.us.debian.org/debian/pool/main/e/eglibc/libc6-i386_2.11.3-4_amd64.deb
-#wget http://ftp.us.debian.org/debian/pool/main/e/eglibc/libc6_2.11.3-4_amd64.deb
-#wget http://ftp.us.debian.org/debian/pool/main/e/eglibc/libc6-i686_2.11.3-4_i386.deb
-#
+    #
+    # Copy file sun-java6 & depedency
+    cd /var/cache/apt/archives
+    wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/ia32-sun-java6-bin_6.26-0squeeze1_amd64.deb
+    wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/sun-java6-bin_6.26-0squeeze1_amd64.deb
+    wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/sun-java6-jdk_6.26-0squeeze1_amd64.deb
+    wget http://ftp.us.debian.org/debian/pool/non-free/s/sun-java6/sun-java6-jre_6.26-0squeeze1_all.deb
+    #
+    #wget http://ftp.us.debian.org/debian/pool/main/i/ia32-libs/ia32-libs-i386_0.4_i386.deb
+    #wget http://ftp.us.debian.org/debian/pool/main/i/ia32-libs/ia32-libs_20140131_amd64.deb
+    #wget http://ftp.us.debian.org/debian/pool/main/e/eglibc/libc6-i386_2.11.3-4_amd64.deb
+    #wget http://ftp.us.debian.org/debian/pool/main/e/eglibc/libc6_2.11.3-4_amd64.deb
+    #wget http://ftp.us.debian.org/debian/pool/main/e/eglibc/libc6-i686_2.11.3-4_i386.deb
+    #
 
-cd /var/cache/apt/archives
-#sudo dpkg -i ia32-libs-i386_0.4_i386.deb libc6-i686_2.11.3-4_i386.deb
-#sudo dpkg -i ia32-libs_20140131_amd64.deb libc6-i386_2.11.3-4_amd64.deb libc6_2.11.3-4_amd64.deb 
-sudo dpkg -i ia32-sun-java6-bin_6.26-0squeeze1_amd64.deb sun-java6-bin_6.26-0squeeze1_amd64.deb
-sudo dpkg -i sun-java6-jdk_6.26-0squeeze1_amd64.deb sun-java6-jre_6.26-0squeeze1_all.deb
+    cd /var/cache/apt/archives
+    #sudo dpkg -i ia32-libs-i386_0.4_i386.deb libc6-i686_2.11.3-4_i386.deb
+    #sudo dpkg -i ia32-libs_20140131_amd64.deb libc6-i386_2.11.3-4_amd64.deb libc6_2.11.3-4_amd64.deb 
+    sudo dpkg -i ia32-sun-java6-bin_6.26-0squeeze1_amd64.deb sun-java6-bin_6.26-0squeeze1_amd64.deb
+    sudo dpkg -i sun-java6-jdk_6.26-0squeeze1_amd64.deb sun-java6-jre_6.26-0squeeze1_all.deb
 
-sudo aptitude -f install openjdk-6-jdk sun-java6-jdk sun-java6-jre && sudo aptitude -y -f install
+    sudo aptitude -f install openjdk-6-jdk sun-java6-jdk sun-java6-jre && sudo aptitude -y -f install
 
-# Install Flash plugin
-sudo aptitude -f install flashplugin-nonfree
+    # Install Flash plugin
+    sudo aptitude -f install flashplugin-nonfree
 
-sudo aptitude update
-sudo aptitude -f dist-upgrade
+    sudo aptitude update
+    sudo aptitude -f dist-upgrade
 
-# Build-dep JAVA & PHP5 & Python & Ruby for ruby1.9.2_1.9.2-p290
-################################################################
-#sudo aptitude -f build-dep php5
-#sudo aptitude -f build-dep python
-################################################################
-sudo aptitude -f build-dep ruby
-sudo aptitude -f build-dep java-package
-#
-sudo service apache2 stop && sudo aptitude -y -f --purge remove apache2
-sudo aptitude -f install nginx nginx-common nginx-full
-sudo service nginx restart
-#
-# Install The Latest Libreoffice via backport
-sudo aptitude -t wheezy-backports install libreoffice libreoffice-common libreoffice-gnome
-sudo aptitude -f dist-upgrade && sudo aptitude -y -f install
-#
-#
-#
-sudo aptitude -f install build-essential libssl-dev libcurl4-openssl-dev libreadline-dev libxslt-dev libxml2-dev libreadline5 libyaml-0-2
-#----------взято с офф сайта------------
-wget https://bigbluebutton.googlecode.com/files/ruby1.9.2_1.9.2-p290-1_amd64.deb
-sudo dpkg -i ruby1.9.2_1.9.2-p290-1_amd64.deb
-sudo aptitude -f install
+    # Build-dep JAVA & PHP5 & Python & Ruby for ruby1.9.2_1.9.2-p290
+    ################################################################
+    #sudo aptitude -f build-dep php5
+    #sudo aptitude -f build-dep python
+    ################################################################
+    sudo aptitude -f build-dep ruby
+    sudo aptitude -f build-dep java-package
+    #
+    sudo service apache2 stop && sudo aptitude -y -f --purge remove apache2
+    sudo aptitude -f install nginx nginx-common nginx-full
+    sudo service nginx restart
+    #
+    # Install The Latest Libreoffice via backport
+    sudo aptitude -t wheezy-backports install libreoffice libreoffice-common libreoffice-gnome
+    sudo aptitude -f dist-upgrade && sudo aptitude -y -f install
+    #
+    #
+    #
+    sudo aptitude -f install build-essential libssl-dev libcurl4-openssl-dev libreadline-dev libxslt-dev libxml2-dev libreadline5 libyaml-0-2
+    #----------взято с офф сайта------------
+    wget https://bigbluebutton.googlecode.com/files/ruby1.9.2_1.9.2-p290-1_amd64.deb
+    sudo dpkg -i ruby1.9.2_1.9.2-p290-1_amd64.deb
+    sudo aptitude -f install
 
-sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.2 500 \
-                         --slave /usr/bin/ri ri /usr/bin/ri1.9.2 \
-                         --slave /usr/bin/irb irb /usr/bin/irb1.9.2 \
-                         --slave /usr/bin/erb erb /usr/bin/erb1.9.2 \
-                         --slave /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.2
+    sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.2 500 \
+                             --slave /usr/bin/ri ri /usr/bin/ri1.9.2 \
+                             --slave /usr/bin/irb irb /usr/bin/irb1.9.2 \
+                             --slave /usr/bin/erb erb /usr/bin/erb1.9.2 \
+                             --slave /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.2
 
-sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem1.9.2 500
-#sudo aptitude clean
+    sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem1.9.2 500
+    #sudo aptitude clean
 
-# Install All Needed Gems
-sudo gem install rubygems-update -v 1.3.7
-sudo gem install builder -v '2.1.2' -- --with-cflags=-w --nodoc
-sudo gem install cucumber -v '0.9.2' -- --with-cflags=-w --nodoc
-sudo gem install json -v '1.4.6' -- --with-cflags=-w --nodoc
-sudo gem install diff-lcs -v '1.1.2' -- --with-cflags=-w --nodoc
-sudo gem install term-ansicolor -v '1.0.5' -- --with-cflags=-w --nodoc
-sudo gem install gherkin -v '2.2.9' -- --with-cflags=-w --nodoc
-sudo gem install god -v '0.13.3' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install addressable -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install fastimage -v '1.6.1' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install curb -v '0.7.15' -- --with-cflags=-w --nodoc
-sudo gem install mime-types -v '1.16' -- --with-cflags=-w --nodoc
-sudo gem install nokogiri -v '1.4.4' -- --with-cflags=-w --nodoc
-sudo gem install open4 -v '1.3' -- --with-cflags=-w --nodoc
-sudo gem install rack -v '1.2.2' -- --with-cflags=-w --nodoc
-sudo gem install redis -v '2.1.1' -- --with-cflags=-w --nodoc
-sudo gem install redis-namespace -v '0.10.0' -- --with-cflags=-w --nodoc
-sudo gem install tilt -v '1.2.2' -- --with-cflags=-w --nodoc
-sudo gem install sinatra -v '1.2.1' -- --with-cflags=-w --nodoc
-sudo gem install vegas -v '0.1.8' -- --with-cflags=-w --nodoc
-sudo gem install resque -v '1.15.0' -- --with-cflags=-w --nodoc
-sudo gem install rspec-core -v '2.0.0' -- --with-cflags=-w
-sudo gem install rspec-expectations -v '2.0.0' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install rspec-mocks -v '2.0.0' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install rspec -v '2.0.0' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install rubyzip -v '0.9.4' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install streamio-ffmpeg -v '0.7.8' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install trollop -v '1.16.2' -- --with-cflags=-w --disable-install-doc --nodoc
+    # Install All Needed Gems
+    sudo gem install rubygems-update -v 1.3.7
+    sudo gem install builder -v '2.1.2' -- --with-cflags=-w --nodoc
+    sudo gem install cucumber -v '0.9.2' -- --with-cflags=-w --nodoc
+    sudo gem install json -v '1.4.6' -- --with-cflags=-w --nodoc
+    sudo gem install diff-lcs -v '1.1.2' -- --with-cflags=-w --nodoc
+    sudo gem install term-ansicolor -v '1.0.5' -- --with-cflags=-w --nodoc
+    sudo gem install gherkin -v '2.2.9' -- --with-cflags=-w --nodoc
+    sudo gem install god -v '0.13.3' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install addressable -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install fastimage -v '1.6.1' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install curb -v '0.7.15' -- --with-cflags=-w --nodoc
+    sudo gem install mime-types -v '1.16' -- --with-cflags=-w --nodoc
+    sudo gem install nokogiri -v '1.4.4' -- --with-cflags=-w --nodoc
+    sudo gem install open4 -v '1.3' -- --with-cflags=-w --nodoc
+    sudo gem install rack -v '1.2.2' -- --with-cflags=-w --nodoc
+    sudo gem install redis -v '2.1.1' -- --with-cflags=-w --nodoc
+    sudo gem install redis-namespace -v '0.10.0' -- --with-cflags=-w --nodoc
+    sudo gem install tilt -v '1.2.2' -- --with-cflags=-w --nodoc
+    sudo gem install sinatra -v '1.2.1' -- --with-cflags=-w --nodoc
+    sudo gem install vegas -v '0.1.8' -- --with-cflags=-w --nodoc
+    sudo gem install resque -v '1.15.0' -- --with-cflags=-w --nodoc
+    sudo gem install rspec-core -v '2.0.0' -- --with-cflags=-w
+    sudo gem install rspec-expectations -v '2.0.0' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install rspec-mocks -v '2.0.0' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install rspec -v '2.0.0' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install rubyzip -v '0.9.4' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install streamio-ffmpeg -v '0.7.8' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install trollop -v '1.16.2' -- --with-cflags=-w --disable-install-doc --nodoc
 
-# Install Optional Gems
-sudo gem install rails -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install bundler -v '1.5.3' -- --with-cflags=-w --disable-install-doc --nodoc
-#sudo gem install mysql -v '2.8.1' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install rake -v '0.8.7' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install activesupport -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install rack -v '1.0.1' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install actionpack -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install actionmailer -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install activerecord -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install activeresource -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install declarative_authorization -v '0.5.1' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install fattr -v '2.2.1' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install i18n -v '0.4.2' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install session -v '3.1.0' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install rush -v '0.6.8' -- --with-cflags=-w --disable-install-doc --nodoc
-sudo gem install test-unit -v 1.2.3
-#
-## Install BigBlueButton 0.81
-## Step 1
-sudo aptitude -f install libjpeg62-dev libbs2b0 liblzo2-2 libmpg123-0 libsox-fmt-alsa libsox-fmt-base libsox2 liblockfile1 \
-libvorbisidec1 libx264-132 mencoder sox vorbis-tools jsvc libcommons-daemon-java
-#
-## Step 2
-sudo aptitude -f install java-package authbind cabextract libcommons-dbcp-java libcommons-pool-java libecj-java \
-libgeronimo-jta-1.1-spec-java libtomcat6-java netcat-openbsd openoffice.org ttf-mscorefonts-installer
-#
-## Step 3
-sudo aptitude -f install bbb-record-core red5 bbb-freeswitch
-#
-## Step 4
-sudo aptitude -f install libjpeg62-dev
-#
-sudo aptitude -f install bbb-config \
-authbind bbb-apps bbb-apps-deskshare bbb-apps-sip bbb-apps-video bbb-client bbb-config bbb-openoffice-headless \
-bbb-playback-presentation bbb-web cabextract libcommons-dbcp-java libcommons-pool-java libecj-java \
-libgeronimo-jta-1.1-spec-java libtomcat6-java netcat-openbsd openoffice.org redis-server-2.2.4 swftools-0.9.1 tomcat6 \
-tomcat6-common bigbluebutton bbb-demo
-#
-sudo aptitude -y -f install
-sudo aptitude clean
+    # Install Optional Gems
+    sudo gem install rails -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install bundler -v '1.5.3' -- --with-cflags=-w --disable-install-doc --nodoc
+    #sudo gem install mysql -v '2.8.1' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install rake -v '0.8.7' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install activesupport -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install rack -v '1.0.1' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install actionpack -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install actionmailer -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install activerecord -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install activeresource -v '2.3.5' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install declarative_authorization -v '0.5.1' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install fattr -v '2.2.1' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install i18n -v '0.4.2' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install session -v '3.1.0' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install rush -v '0.6.8' -- --with-cflags=-w --disable-install-doc --nodoc
+    sudo gem install test-unit -v 1.2.3
+    #
+    ## Install BigBlueButton 0.81
+    ## Step 1
+    sudo aptitude -f install libjpeg62-dev libbs2b0 liblzo2-2 libmpg123-0 libsox-fmt-alsa libsox-fmt-base libsox2 liblockfile1 \
+    libvorbisidec1 libx264-132 mencoder sox vorbis-tools jsvc libcommons-daemon-java
+    #
+    ## Step 2
+    sudo aptitude -f install java-package authbind cabextract libcommons-dbcp-java libcommons-pool-java libecj-java \
+    libgeronimo-jta-1.1-spec-java libtomcat6-java netcat-openbsd openoffice.org ttf-mscorefonts-installer
+    #
+    ## Step 3
+    sudo aptitude -f install bbb-record-core red5 bbb-freeswitch
+    #
+    ## Step 4
+    sudo aptitude -f install libjpeg62-dev
+    #
+    sudo aptitude -f install bbb-config \
+    authbind bbb-apps bbb-apps-deskshare bbb-apps-sip bbb-apps-video bbb-client bbb-config bbb-openoffice-headless \
+    bbb-playback-presentation bbb-web cabextract libcommons-dbcp-java libcommons-pool-java libecj-java \
+    libgeronimo-jta-1.1-spec-java libtomcat6-java netcat-openbsd openoffice.org redis-server-2.2.4 swftools-0.9.1 tomcat6 \
+    tomcat6-common bigbluebutton bbb-demo
+    #
+    sudo aptitude -y -f install
+    sudo aptitude clean
