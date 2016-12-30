@@ -1,0 +1,83 @@
+================
+Ansible playbook
+================
+
+#######################################
+---
+#Message
+- Hosting
+– Cloud
+
+#######################################
+---
+#Message
+site: habr
+blog: infobox
+need_access: no
+use_service: yes
+file_conf: TRUE
+read_value: True
+kill_process: false
+
+#######################################
+---
+#Comment
+{site: habr, blog: infobox}
+
+#######################################
+---
+- hosts: test
+  tasks:
+
+  - name: Install nginx package
+    apt: name=nginx update_cache=yes
+    sudo: yes
+
+  - name: Starting nginx service
+    service: name=nginx state=started
+    sudo: yes
+	
+########################################
+---
+- hosts: test
+  tasks:
+
+  - name: Stopping nginx service
+    service: name=nginx state=stopped
+    #sudo: yes
+	
+########################################
+# web.yml
+---
+- hosts: all
+  user: ubuntu
+
+  tasks:
+    - name: Update apt cache
+      apt: update_cache=yes
+      sudo: yes
+
+    - name: Install required packages
+      apt: name={{ item }}
+      sudo: yes
+      with_items:
+        - nginx
+        - postgresql
+		
+	- name: Add User Pupkin
+	  user: name=’pupkin’
+	  
+	- name: Add User Pupkin
+	  user: name=’pupkin’ shell=’/bin/zsh’ groups=’sudo’
+	  
+	  - name: Add BestAdminsTeam
+		user: name={{ item.user }} shell={{ item.shell }} groups=’sudo’
+		with_items:
+			- { user: ‘pupkin’, shell: ‘/bin/zsh’ }
+			- { user: ‘oldfag’, shell: ‘/bin/sh’ }
+
+
+{{ansible_distribution_release}}	# codename of release
+
+
+

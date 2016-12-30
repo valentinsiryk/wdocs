@@ -1,0 +1,118 @@
+============================
+Drupal + Apache + PostgreSQL
+============================
+
+#
+# instruction!!!
+https://www.howtoforge.com/tutorial/how-to-install-drupal_8-with-apache-and-ssl-on-ubuntu-15-10/
+	
+# UBUNTU XENIAL
+
+#
+# Install prerequirements
+#
+sudo apt-get update
+sudo apt-get install postgresql apache2 php libapache2-mod-php7.0 php7.0-gd php7.0-xml php7.0-pgsql
+
+systemctl restart apache2
+a2enmod rewrite ssl
+systemctl restart apache2
+apache2ctl -M | egrep 'ssl|rewrite'
+
+
+#
+# Download end extract drupal
+#
+cd /var/www/
+wget https://ftp.drupal.org/files/projects/drupal-8.2.2.tar.gz
+tar -xvzf drupal-8.2.2.tar.gz
+mv drupal-8.2.2 drupal
+chown www-data:www-data -R drupal/
+
+
+#
+# Apache config
+# 
+
+# SSL
+cd /etc/apache2/
+mkdir ssl
+cd ssl/
+
+# Generate a self-signed SSL certificate:
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/drupalssl.key -out /etc/apache2/ssl/drupalssl.crt
+chmod 600 *
+
+# vhost config
+cd /etc/apache2/sites-available/
+nano drupal.conf
+		<VirtualHost *:80>
+                ServerName www.mydrupal.co
+                DocumentRoot /var/www/drupal
+
+                # Redirect http to https
+                RedirectMatch 301 (.*) https://www.mydrupal.co$1
+        </VirtualHost>
+
+        <VirtualHost _default_:443>
+
+                # Server Info
+                ServerName www.mydrupal.co
+                ServerAlias mydrupal.co
+                ServerAdmin webmaster@localhost
+
+                # Web root
+                DocumentRoot /var/www/drupal
+
+                # Log configuration
+                ErrorLog ${APACHE_LOG_DIR}/drupal-error.log
+                CustomLog ${APACHE_LOG_DIR}/drupal-access.log combined
+
+                #   Enable/Disable SSL for this virtual host.
+                SSLEngine on
+
+                # Self signed SSL Certificate file
+                SSLCertificateFile      /etc/apache2/ssl/drupalssl.crt
+                SSLCertificateKeyFile /etc/apache2/ssl/drupalssl.key
+
+                <Directory "/var/www/drupal">
+                        Options FollowSymLinks
+                        AllowOverride All
+                        Require all granted
+                </Directory>
+
+                <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                                SSLOptions +StdEnvVars
+                </FilesMatch>
+                <Directory /usr/lib/cgi-bin>
+                                SSLOptions +StdEnvVars
+                </Directory>
+
+                BrowserMatch "MSIE [2-6]" \
+                                nokeepalive ssl-unclean-shutdown \
+                                downgrade-1.0 force-response-1.0
+                # MSIE 7 and newer should be able to use keepalive
+                BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+        </VirtualHost>
+	
+
+apachectl configtest
+a2ensite drupal
+a2dissite 000-default
+
+systemctl restart apache2
+
+
+#
+# DB Postgres for drupal
+#
+su - postgres
+psql
+	CREATE USER drupal WITH password 'PASSWORD';
+	CREATE DATABASE drupal OWNER drupal;
+	GRANT ALL privileges ON DATABASE drupal TO drupal;
+
+psql -h localhost drupal drupal
+	ALTER DATABASE "drupal" SET bytea_output = 'escape';
+

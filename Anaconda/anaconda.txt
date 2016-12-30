@@ -1,0 +1,52 @@
+=====================
+Anaconda instructions
+=====================
+
+http://conda.pydata.org/docs/_downloads/conda-cheatsheet.pdf
+
+`Link text <http://conda.pydata.org/docs/_downloads/conda-cheatsheet.pdf>`
+
+# update
+conda update conda
+conda update anaconda
+
+conda list	# display a list of installed packages and their versions
+
+python	# run the Python shell
+
+ # create a new environment named /envs/snowflakes with the program Biopython
+conda create --name snowflakes biopython
+conda create --name bunnies python=3 astroid babel
+
+	# To activate this environment, use:
+	source activate snowflakes
+
+	# To deactivate this environment, use:
+	source deactivate
+
+conda info --envs	# see a list of environments
+
+
+conda create --name <dest_name> --clone <source_name>	# Make an exact copy of an environment
+
+conda remove --name flowers --all		# remove environment
+							<pkg_name>	# remove pkg from flowers
+
+conda search python	# search packages contain 'python'
+			 --full-name python	# search packages with full name 'python'
+
+conda install <pkg_name>					# install pkg to current env
+			  --name <env_name> <pkg_name>	# install pkg to 'env_name' environment
+			  --channel https://conda.anaconda.org/pandas <pkg_name>	# install a package from Anaconda.org
+
+pip install <pkg_name>	# install via pip
+	uninstall <pkg_name>	# uninstall via pip
+
+
+
+
+
+
+
+
+

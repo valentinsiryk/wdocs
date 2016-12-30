@@ -1,0 +1,38 @@
+========
+Add user
+========
+
+EAP_HOME/bin/add-user.sh
+
+
+configuration/mgmt-users.properties
+configuration/mgmt-groups.properties
+
+
+# Example:
+jboss-eap-7.0/bin/add-user.sh -dc dc/domain/configuration/ -p password1! -u admin
+
+
+#
+# Options
+#
+
+-a			- Create a user in the application realm. If omitted, the default is to create a user in the management realm.
+-dc <value>	- Domain configuration directory that will contain the properties files. Default "EAP_HOME/domain/configuration/".
+-sc <value>	- Alternative standalone server configuration directory that will contain the properties files. Default "EAP_HOME/standalone/configuration/".
+
+-up, --user-properties <>	- Alternative user properties file.
+							  Absolute path or a file name used in conjunction with the -sc or -dc argument that specifies the alternative configuration directory.
+
+-g, --group <value>			- A comma-separated list of groups to assign to this user.
+-gp, --group-properties <>	- This argument specifies the name of the alternative group properties file.
+							  Absolute path or a file name used in conjunction with the -sc or -dc argument that specifies the alternative configuration directory.
+
+-p, --password <value>		- The password of the user.
+-u, --user <value>			- The name of the user. Only alphanumeric characters and the following symbols are valid: ,./=@\.
+-r, --realm <value>			- The name of the realm used to secure the management interfaces. If omitted, the default is ManagementRealm.
+-s, --silent				- Run the add-user script with no output to the console.
+-e, --enable				- Enable the user.
+-d, --disable				- Disable the user.
+-cw, --confirm-warning		- Automatically confirm warning in interactive mode.
+-h, --help					- Display usage information for the add-user script.

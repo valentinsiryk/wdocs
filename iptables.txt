@@ -1,0 +1,9 @@
+========
+iptables
+========
+
+sudo iptables --list-rules -S [chain [rulenum]]			# Print the rules in a chain or all chains
+				--insert  -I chain [rulenum]			# Insert in chain as rulenum (default 1=first)
+				--delete  -D chain						# Delete matching rule from chain
+
+sudo iptables -I INPUT -p tcp --dport 9990 -j ACCEPT	# add rule in start

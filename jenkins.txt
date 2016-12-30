@@ -1,0 +1,63 @@
+==========
+Jenkins CI
+==========
+
+``<host>:8080/systemInfo`` - shows system propeties, env vars, plugins
+
+
+CLI
+---
+
+``<host>:8080/cli`` - Jenkins CLI
+
+::
+
+    java -jar jenkins-cli.jar -s http://localhost:8080/ safe-restart
+
+
+Docker
+------
+
+https://hub.docker.com/_/jenkins/
+
+**docker-compose.yml**::
+
+    version: '2'
+    services:
+      jenkins:
+        image: jenkins
+        container_name: jenkins
+        user: root
+        ports:
+         - "8080:8080"
+         - "50000:50000"
+        volumes:
+         - ./jenkins_home:/var/jenkins_home
+        environment:
+         - TZ=Europe/Kiev
+                
+
+Switch UI language
+------------------
+
+1. Install plugin ``Locale Plugin``
+2. ``Manage Jenkins > Configure System > Locale section``
+3. Here you can enter the ``Default Language``: this should be a language code or locale code like "fr" (for French), or "de_AT" (German, in Austria), or "en_US", etc.
+
+
+Role-based Authorization Strategy
+---------------------------------
+
+1. Install plugin ``Role-based Authorization Strategy``
+2. As **admin** user ``Manage Jenkins > Configure Global Security > Access Control section > Authorization section``
+3. Select ``Role-Based Strategy``
+4. Create and config roles ``Manage Jenkins > Manage and Assign Roles > Manage Roles``
+5. Assign roles with groups/users ``Manage Jenkins > Manage and Assign Roles > Assign Roles``
+
+
+
+
+
+
+
+

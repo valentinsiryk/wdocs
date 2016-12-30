@@ -1,0 +1,35 @@
+======
+RedHat
+======
+
+# RHEL subscription
+sudo subscription-manager register 
+sudo subscription-manager attach
+sudo yum update
+
+yum update				# update packets
+	install <packet>	# install packet
+			-y			# yes for all ansvers
+	search <packet>		# search packet
+	info htop			# show info
+
+
+cat /etc/redhat-release	# show version of redhat	
+
+ip addr					# analog ifconfig'a
+yum install net-tools	# install ifconfig
+
+
+# start/stop firewall
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+sudo systemctl status firewalld
+
+
+# Change timezone
+sudo mv /etc/localtime /etc/localtime.old
+sudo ln -s /usr/share/zoneinfo/Europe/Kiev /etc/localtime
+
+
+# login at another user
+su - <username>

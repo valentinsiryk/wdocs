@@ -1,0 +1,18 @@
+=============
+apt via proxy
+=============
+
+Чтобы получать пакеты из интернет-репозиториев, нужно в файле /etc/apt/apt.conf указать::
+
+	Acquire::http::proxy "http://логин:пароль@ip_прокси:порт_прокси/";
+	Acquire::https::proxy "http://логин:пароль@ip_прокси:порт_прокси/";
+	Acquire::ftp::proxy "http://логин:пароль@ip_прокси:порт_прокси/";
+	Acquire::socks::proxy "http://логин:пароль@ip_прокси:порт_прокси/";
+	Acquire::::Proxy "true";
+
+# for example::
+
+	Acquire::http::proxy "http://192.168.35.10:8080/";
+	Acquire::::Proxy "true";
+
+Если сервер без авторизации, то логин:пароль@ нужно убрать.

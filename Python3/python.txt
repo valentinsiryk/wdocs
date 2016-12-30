@@ -1,0 +1,326 @@
+=======
+Python3
+=======
+
+str(number)	# convert to string 
+test = 10	# init new var
+test = True	# case sensitive
+test = False
+test = None	# analog 'null' (functions returns None if not return any)
+
+print(10 == 10)	# True
+== != <= >= < >
+'Test' > 'Tesa'	# True (position in text, registr, position in alphabet)
+
+del test	# del var
+
+print("text " + str(test) + " some text")
+print('hello ' * 3)	# hello hello hello (num only int)
+print('hello', 3 + 4)	# hello 7
+
+str(test)	# to string
+int(test)	# to int
+float(test)	# to float
+list(test)	# to list
+
+type(object)	# return class
+
+input("input your name: ")	# return string input by keyboard
+
+len(<string | list>)	# return length
+max()	# return max
+min()
+
++ - * /
+**	# 2 ** 3 == 8
+//	# 20 // 6 == 3
+%	# 20 % 6 == 2
+
++= -= *= /= %= **= //=
+
+print('hello \n world')
+print("hello \n world")
+print('''hello 
+world''')
+print("""hello
+world""")
+
+if test == 1 and time >= 12:
+	print(test)	# tab important
+elif test == 2 or (time <= 12 and date == "summer"):
+	print('hah!')
+else:
+	print('hm..')
+
+if not 1 < 2:		# invert
+	print("yeah")	# yeah don't print
+	
+while i <= 5:
+	print('ok')
+	i += 1
+	
+	if i == 3:
+		break
+	
+	if i == 2:
+		continue	# go to next iteration
+
+
+for test in range(15):
+    print(test)
+
+##############################################
+# LISTS
+test = [1, 2, 3, [4, 5, 6]]
+print(test[3][0])	# 4
+print(test[0:2])	# 1, 2
+print(test[:2])		# 1, 2
+print(test[2:])		# 3, [4, 5, 6]
+print(test[::2])	# all with step 2
+test[start:to:step]
+
+test = [1, 2, 3]
+print(test * 2)	# [1, 2, 3, 1, 2, 3]
+
+test = [1, 2, 3, 4, 5, 6]
+print(test[-2])		# 5
+print(test[::-1])	# [6, 5, 4, 3, 2, 1]
+
+
+test = 'HELLO'
+print(test[3])	# L
+
+test = [1, 2, 3]
+if 1 in test:		# find in list
+    print('yeah')
+	
+if 1 not in test:
+    print('yeah')
+
+test.append(object)	# add to list
+test.remove(object)	# find first input and remove
+test.insert(pos, object)
+test.count(object)
+test.reverse()		# reverse list (return none)
+
+test = range(10)
+print(list(test))	# [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+test = range(10, 15)
+print(list(test))	# [10, 11, 12, 13, 14]
+
+test = range(0, 10, 2)
+print(list(test))	# [0, 2, 4, 6, 8]
+
+for element in test:
+    print(element)	# all elements
+
+	
+##############################################
+# TUPLES (Кортежи - менее ресурсоемкостные чем списки)
+names = ("Make", "James")	# elements can't be change	
+names = "Make", "James"		# elements can't be change
+print(names[0])
+
+
+##############################################
+# DICTIONARY
+test = {
+	"key" : "value",	# key == only simple types
+	"key2" : "value2"
+}
+print(test["key"])				# exception if not exist
+print(test.get('key'))			# return None if not exist
+print(test.get('key', 'text'))	# return 'text' if not exist
+	
+if 'key' in test:
+	print('OK')
+	
+if 'key' not in test:
+	print('hm..')
+	
+
+	
+##############################################	
+# FUNCTIONS		
+def sum(a, b):		# DEFINE ONLY BEFORE USE
+	"""On line documentation"""
+    return a + b
+	
+print(sum(1, 5))
+print(sum.__doc__)
+
+my_sum = sum
+print(my_sum(1, 5))
+
+
+def complex(real=0.0, imag=0.0):
+    """Form a complex number.
+
+    Keyword arguments:
+    real -- the real part (default 0.0)
+    imag -- the imaginary part (default 0.0)
+    """
+
+def incr(a):
+    return a + 1
+
+print(sum(incr, 5))  # send fuction in function
+
+def fun(text):
+    assert text != ''
+    print(text)
+fun('')	# AssertionError
+
+def fun(text):
+    assert text != '', "text could be no blank!"
+    print(text)
+fun('')	# AssertionError: text could be no blank!
+
+##############################################
+# MODULES
+# https://pypi.python.org/pypi
+# http://pypi-ranking.info/alltime
+
+import random	# import module
+a = random.randint(0, 10)
+
+from random import randint	# import function from module
+from math import sqrt, pi
+a = randint(0, 10)
+
+from random import *	# import all function from module
+
+from math import sqrt as my_sqrt	# rename import function
+my_sqrt(25)
+
+##############################################
+# EXCEPTIONS
+
+try:
+    print(4 / 0)
+except ZeroDivisionError:
+    print("oh no =(")
+
+try:
+    print(4 / 0)
+except:					# catch all exceptions
+    print("oh no =(")
+	
+try:
+    print(4 / 0)
+except ZeroDivisionError:
+    pass	# pass en go next
+	
+try:
+	print(4 / 0)
+except ZeroDivisionError:
+	print('zero division err')
+except NameError:
+	print('var not defined')
+except SyntaxError:
+	print('syntax err')	# no catch syntax err
+except:
+	print('some err')
+	
+try:
+	eval('<some code>')
+except SyntaxError:
+	print('syntax err!')	# catch syntax err
+
+try:
+	print(4 / 0)
+except (ZeroDivisionError, NameError, ValueError):
+	print("catch some errors")
+	
+try:
+	code
+except:
+	code
+finally:
+	code	# run always (if catch or no catch)
+	
+try:
+    a = 1
+    if a == 1:
+        raise ZeroDivisionError		# own err
+except ZeroDivisionError:
+    print("zero division err")	
+
+a = 1
+if a == 1:
+   raise ZeroDivisionError('some text')		# ZeroDivisionError: some text
+	
+try:
+	code
+except:
+    print("error")	# run some command
+	raise			# show exception
+	
+# own exceptions
+class MyError(Exception):
+    print('hm')
+
+raise MyError('TEST')	
+	
+
+##############################################
+# FILES	
+# r - read
+# w - write (create if not exist, rewrite if exist)
+# a - append
+#
+# b - binary mode (rb wb ab)
+
+file = open('file.txt', 'r')    
+print(file.read())
+file.close()
+
+file.read(1)	# read 1 byte
+
+file = open('file.txt', 'w')
+file.write('hello')
+file.close()
+
+file = open('file.txt', 'a')	# append
+file.write('hello')
+file.close()
+
+file.readlines()	# returns list of lines
+
+with open('file', 'r') as f:	# file descriptor close automatically
+	print(f.read())
+
+##############################################
+# COMMENTS
+# this is a comment
+print('hello')	# this is a comment
+
+'''Multi 
+lines
+comment'''
+
+"""Multi 
+lines
+comment"""
+	
+##############################################
+# RESERVED VARS
+foo
+bar
+
+
+##############################################
+# ERROR in Python
+a++
+a--
+
+
+##############################################
+# CLASSES
+# all classes is an object of class metaclass - 'type'
+
+class MyClass:
+    pass
+
+obj = MyClass()	# new object of class

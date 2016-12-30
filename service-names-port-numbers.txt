@@ -1,0 +1,59 @@
+=========================
+Service name port numbers
+=========================
+
+source "http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"                              
+
+Service Name and Transport Protocol Port Number Registry
+
+   Last Updated
+           2015-12-14
+
+   Expert(s)
+
+ TCP/UDP: Joe Touch; Eliot Lear, Allison Mankin, Markku Kojo, Kumiko Ono, Martin Stiemerling,
+ Lars Eggert, Alexey Melnikov, Wes Eddy, and Alexander Zimmermann
+ SCTP: Allison Mankin and Michael Tuexen
+ DCCP: Eddie Kohler and Yoshifumi Nishida
+
+   Reference
+           [RFC6335]
+
+   Note
+
+ Service names and port numbers are used to distinguish between different
+ services that run over transport protocols such as TCP, UDP, DCCP, and
+ SCTP.
+
+ Service names are assigned on a first-come, first-served process, as
+ documented in [RFC6335].
+
+ Port numbers are assigned in various ways, based on three ranges: System
+ Ports (0-1023), User Ports (1024-49151), and the Dynamic and/or Private
+ Ports (49152-65535); the difference uses of these ranges is described in
+ [RFC6335]. System Ports are assigned by IETF
+ process for standards-track protocols, as per [RFC6335].  User Ports
+ are assigned by IANA using the "IETF Review" process, the "IESG
+ Approval" process, or the "Expert Review" process, as per
+ [RFC6335].  Dynamic Ports are not assigned.
+
+ The registration procedures for service names and port numbers are
+ described in [RFC6335].
+
+ Assigned ports both System and User ports SHOULD NOT be used without
+ or prior to IANA registration.
+
+ ************************************************************************
+ * PLEASE NOTE THE FOLLOWING:                                           *
+ *                                                                      *
+ * ASSIGNMENT OF A PORT NUMBER DOES NOT IN ANY WAY IMPLY AN             *
+ * ENDORSEMENT OF AN APPLICATION OR PRODUCT, AND THE FACT THAT NETWORK  *
+ * TRAFFIC IS FLOWING TO OR FROM A REGISTERED PORT DOES NOT MEAN THAT   *
+ * IT IS "GOOD" TRAFFIC, NOR THAT IT NECESSARILY CORRESPONDS TO THE     *
+ * ASSIGNED SERVICE. FIREWALL AND SYSTEM ADMINISTRATORS SHOULD          *
+ * CHOOSE HOW TO CONFIGURE THEIR SYSTEMS BASED ON THEIR KNOWLEDGE OF    *
+ * THE TRAFFIC IN QUESTION, NOT WHETHER THERE IS A PORT NUMBER          *
+ * REGISTERED OR NOT.                                                   *
+ ************************************************************************
+
+

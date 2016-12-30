@@ -1,0 +1,9 @@
+================
+Hashicorp Consul
+================
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+   
+   *

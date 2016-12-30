@@ -1,0 +1,89 @@
+=====
+MySQL
+=====
+
+
+CREATE TABLE MyGuests (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+email VARCHAR(50),
+reg_date TIMESTAMP
+)
+
+
+CREATE TABLE `users` (
+`id` int(7) NOT NULL auto_increment,
+`full_name` varchar(32) collate utf8_unicode_ci NOT NULL default '',
+`email` varchar(32) collate utf8_unicode_ci NOT NULL default '',
+`type` varchar(12) collate utf8_unicode_ci NOT NULL default '',
+PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+mysqladmin -u root password NEWPASSWORD	# set new password for user (if not set)
+
+mysqlshow -p	# show dbs
+
+mysql -u <user>
+	  -p		# connect with pass
+	  -h <ip>
+
+mysqldump -u USER -pPASSWORD DATABASE > /path/to/file/dump.sql
+
+
+CREATE DATABASE users;
+
+CONNECT mysqldb;	# connect to db
+USE <dbname>;		# change db
+
+SHOW DATABASES;	# show db
+
+SHOW TABLES FROM <db>;
+
+SHOW COLUMNS FROM <table>;
+
+INSERT users VALUES ("1", "vasya", "email@mail.ru", "admin");
+
+SELECT * FROM <table>;
+
+SELECT host, user, password from mysql.user;	# mysql users
+
+
+# Create user and add privileges
+
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'localhost';			# db.table
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'root'@'localhost';
+
+
+
+
+# NEW ROOT PASSWORD (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x86_64) using readline 5.1)
+# not normal
+mysqladmin -p -u root password
+
+
+UPDATE <table> SET <key>='<value>' WHERE <key>='<value>';
+
+# Clear mysql command history
+> ~/.mysql_history
+
+
+# Size of databases
+#
+SELECT table_schema "database_name", sum( data_length + index_length )/1024/1024 "Data Base Size in MB" FROM information_schema.TABLES GROUP BY table_schema;
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,49 @@
+===
+CLI
+===
+
+~/.aws/config
+
+	[default]
+	output = json
+	region = eu-west-1	# important!
+
+	[profile <username>]
+	output = json
+	region = eu-west-1	# important!
+
+~/.aws/credentials
+	
+	[default]
+	aws_access_key_id = <key_id>
+	aws_secret_access_key = <access_key>
+
+	[<username>]
+	aws_access_key_id = <key_id>
+	aws_secret_access_key = <access_key>
+
+########################################
+
+# for run as username:
+	aws --profile <username> <some_aws_command>
+
+
+# controll output
+
+aws iam get-user --query 'User.Arn' --output text
+
+aws iam list-users --query 'Users[0]'	
+
+aws iam list-users --query 'Users[*].{name:UserName, arn:Arn}'
+
+aws iam list-users --query 'Users[*].[UserName, Arn]'					# output without keys
+
+aws iam list-users --query 'Users[?UserName==`den`].[UserName, Arn]'	# output where UserName==den
+	
+aws ec2 describe-volumes --query 'Volumes[*].{ID:VolumeId,InstanceId:Attachments[0].InstanceId,AZ:AvailabilityZone,Size:Size}'	
+
+
+# S3
+
+aws --profile <user> s3 ls s3://<backet> --recursive  --human-readable
+	

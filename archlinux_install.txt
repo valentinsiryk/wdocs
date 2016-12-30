@@ -1,0 +1,40 @@
+==================
+Arch Linux install
+==================
+
+# грузимся с образа
+
+fdisk -l # смотрим диски
+
+cfdisk # размечаем диски
+
+lsblk # смотрим диски и точки монтирования
+
+mkfs.ext4 /dev/partition
+mount /dev/partition /mnt # монтируем корневой раздел в мнт
+
+mkswap /dev/partition
+swapon /dev/partition
+
+swapon -s # смотрим статус свап-раздела
+free -h # смотрим статус свап-раздела
+
+/etc/pacman.d/mirrorlist # редактируем список зеркал
+	## Score: 1.6, Ukraine
+	Server = http://archlinux.bln-ua.net/$repo/os/$arch
+	## Score: 27.1, Ukraine
+	Server = http://mirrors.nix.org.ua/linux/archlinux/$repo/os/$arch
+# После внесения изменений в /etc/pacman.d/mirrorlist (неважно, вручную или с  rankmirrors) выполните синхронизацию базы данных пакетов pacman:
+pacman -Syyu
+
+pacstrap /mnt base # пишем базовые компоненты новой системы
+genfstab -pU /mnt >> /mnt/etc/fstab # генерируем фстаб по UUID для новой системы
+
+arch-chroot /mnt # Перейдите к корневому каталогу новой системы:
+
+echo имя_хоста > /etc/hostname
+
+ln -sf /usr/share/zoneinfo/Europe/Kiev /etc/localtime
+
+
+

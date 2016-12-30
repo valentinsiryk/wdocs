@@ -1,0 +1,293 @@
+=========
+JBOSS EAP
+=========
+
+# https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/7.0/paged/installation-guide/
+#
+# RedHat Enterprise Linux server 7.2
+
+
+sudo yum update
+sudo yum install java-1.8.0-openjdk
+
+java -jar jboss-eap-7.0.0-installer.jar -console
+
+# auto install
+# java -jar jboss-eap-7.0.0-installer.jar auto.xml
+
+sudo yum install nano
+
+nano EAP_HOME/bin/init.d/jboss-eap.conf
+	JBOSS_HOME
+	JBOSS_USER
+	# JBOSS_MODE=domain		# if need start as domain mode
+
+sudo cp EAP_HOME/bin/init.d/jboss-eap.conf /etc/default
+sudo cp EAP_HOME/bin/init.d/jboss-eap-rhel.sh /etc/init.d/
+sudo chmod +x /etc/init.d/jboss-eap-rhel.sh 
+
+sudo chkconfig --add jboss-eap-rhel.sh		# add the new jboss-eap-rhel.sh service to list of automatically started services
+sudo service jboss-eap-rhel start
+sudo service jboss-eap-rhel status
+
+sudo chkconfig jboss-eap-rhel.sh on			# To make the service start automatically when the Red Hat Enterprise Linux server starts
+
+
+ 
+
+
+/home/spider/EAP-7.0.0/standalone/configuration/standalone.xml
+	<interfaces>
+	    <interface name="management">
+	        <inet-address value="${jboss.bind.address.management:0.0.0.0}"/>
+	    </interface>
+	    <interface name="public">
+	        <inet-address value="${jboss.bind.address:0.0.0.0}"/>
+	    </interface>
+	</interfaces>
+
+
+# sudo firewall-cmd --get-active-zones
+sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=9990/tcp --permanent
+
+# sudo firewall-cmd --permanent --zone=public --add-rich-rule='rule family=ipv4 sourceaddress="10.10.0.1/8" port port=81 protocol=tcp accept'
+
+sudo firewall-cmd --reload
+sudo iptables -S
+
+# start/stop firewall
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+sudo systemctl status firewalld
+
+
+
+
+EAP_HOME/standalone/deployments		# dir for deployment
+EAP_HOME/standalone/tmp				# *.war files temp
+EAP_HOME/standalone/tmp/vfs/temp	# unpacked *.war files
+
+
+
+LOG
+---
+
+EAP_HOME/domain/configuration/logging.properties
+	handler.BOOT_FILE.fileName=${org.jboss.boot.log.file:domain.log}
+	# handler.BOOT_FILE.fileName=/var/log/eap/domain.log
+
+
+
+
+Standalone mode
+---------------
+#
+
+./jboss-eap-7.0/bin/standalone.sh -Djboss.server.base.dir=standalone1/standalone --server-config=standalone.xml
+
+
+
+
+
+Domains mode
+------------
+# 
+# http://developers.redhat.com/blog/2016/07/28/jboss-eap-7-domain-deployments-part-1-setup-a-simple-eap-domain/
+
+##
+# host0 (master domain controller)
+##
+
+./jboss-eap-7.0/bin/add-user.sh 	# add user with name of slave host
+
+
+host0/domain/configuration/host-master.xml
+	<host name="host0-master" xmlns="urn:jboss:domain:1.7">
+
+	<domain-controller>
+   		<local/>
+	</domain-controller>
+
+	<inet-address value="${jboss.bind.address.management:127.0.0.1}"/>	# own IP
+
+	<socket interface="management" port="${jboss.management.native.port:9999}"/>	
+	<socket interface="management" port="${jboss.management.http.port:9990}"/>
+
+
+
+host0/domain/configuration/domain.xml
+
+	<server-groups>
+		<server-group name="ha-server-group" profile="ha">
+		    <jvm name="default">
+		        <heap size="1000m" max-size="1000m"/>
+		        <permgen max-size="256m"/>
+		    </jvm>
+		    <socket-binding-group ref="ha-sockets"/>
+		</server-group>
+    </server-groups>
+
+
+./jboss-eap-7.0/bin/domain.sh --host-config=host-master.xml -Djboss.domain.base.dir=host0/domain/ -bmanagement=127.0.0.1
+
+
+default	- logging, security, datasources, infinispan, webservices, ee, ejb3, transactions, etc.
+ha		- 'default' + jgroups and modcluster subsystems for high availability
+full	- 'default' + messaging and iiop subsystems
+full-ha	- 'full' + jgroups and modcluster subsystems for high availability
+
+
+
+
+# host1 (slave )
+##
+
+host1/domain/configuration/host-slave.xml
+	<host xmlns="urn:jboss:domain:4.1" name="host1-slave">	
+
+	<domain-controller>
+		<remote host=" ${jboss.domain.master.address:127.0.0.1}" port="${jboss.domain.master.port:9999}" security-realm="ManagementRealm"/>
+	</domain-controller>
+
+	<socket interface="management" port="${jboss.management.native.port:19999}"/>	# only if start on the same host
+
+	<servers>
+		<server name="Server11" group="primary-server-group" auto-start="true">
+      		<socket-bindings port-offset="100"/>
+ 		</server>
+	</servers>
+
+
+./jboss-eap-7.0/bin/domain.sh --host-config=host-slave.xml -Djboss.domain.base.dir=host1/domain -Djboss.host.name=host1-slave
+
+
+##
+# host2 (slave )
+##
+
+host2/domain/configuration/host-slave.xml
+	<host xmlns="urn:jboss:domain:4.1" name="host2-slave">
+
+	<domain-controller>
+		<remote host="${jboss.domain.master.address:127.0.0.1}" port="${jboss.domain.master.port:9999}" security-realm="ManagementRealm"/>
+	</domain-controller>
+
+	<socket interface="management" port="${jboss.management.native.port:29999}"/>	# only if start on the same host
+
+	<servers>
+        <server name="Server21" group="primary-server-group" auto-start="true">
+            <socket-bindings port-offset="300"/>
+        </server>
+    </servers>
+
+./jboss-eap-7.0/bin/domain.sh --host-config=host-slave.xml -Djboss.domain.base.dir=host2/domain -Djboss.host.name=host2-slave
+
+
+
+
+Multiple domain controller
+--------------------------
+
+<domain-controller>
+  <remote security-realm="ManagementRealm">
+    <discovery-options>
+      <static-discovery name="primary" protocol="${jboss.domain.master.protocol:remote}" host="172.16.81.100" port="${jboss.domain.master.port:9999}"/>
+      <static-discovery name="backup" protocol="${jboss.domain.master.protocol:remote}" host="172.16.81.101" port="${jboss.domain.master.port:9999}"/>
+    </discovery-options>
+  </remote>
+</domain-controller>
+
+
+
+LOAD BALANCER on HTTPD
+----------------------
+##
+# host0 (master domain controller)
+
+sudo yum install httpd
+
+# sudo apt-get install apache2 (Ubuntu)
+
+# download jboss mod_cluster
+# http://downloads.jboss.org/mod_cluster//1.3.1.Final/linux-x86_64/mod_cluster-1.3.1.Final-linux2-x64-so.tar.gz
+
+cp *.so /etc/httpd/modules/
+
+# or /usr/lib/apache2/modules (Ubuntu)
+
+# check rights:
+# chown root:root /etc/httpd/modules/*.so
+
+nano /etc/httpd/conf.modules.d/00-proxy.conf
+	# Add load modules mod_cluster (*.so unpacked)
+
+
+nano /etc/httpd/conf/httpd.conf
+
+
+
+
+
+
+Configure Undertow as a Load Balancer Using mod_cluster
+-------------------------------------------------------
+
+# Built-in mod_cluster front-end load balancer to load balance other JBoss EAP instances.
+
+# Requirements
+
+1) A JBoss EAP server that will act as the load balancer.
+	profile 				= default
+	socket binding group	= standard-sockets
+
+	/server-group=lb-server-group:add(profile=default, socket-binding-group=standard-sockets)
+	/host=<SLAVE/server-config=server-lb:add(auto-start=true, group=lb-server-group, socket-binding-port-offset=0, socket-binding-group=standard-sockets)
+
+
+2) Two JBoss EAP servers, which will act as the back-end servers.
+	profile					= ha 
+	socket binding group	= ha-sockets
+
+
+3) The distributable application to be load balanced deployed to the back-end servers.
+
+
+
+
+##
+# Set the mod_cluster advertise security key allows the load balancer and servers to authenticate during discovery:
+
+	/profile=ha/subsystem=modcluster/mod-cluster-config=configuration:write-attribute(name=advertise-security-key, value=<PASSWORD>)
+	
+
+
+##
+# Add a modcluster socket binding with the appropriate multicast address and port configured:
+
+	/socket-binding-group=standard-sockets/socket-binding=modcluster:add(multicast-port=23364, multicast-address=224.0.1.105)
+
+
+
+##
+# Add the mod_cluster filter to Undertow for the load balancer instance:
+
+	/profile=default/subsystem=undertow/configuration=filter/mod-cluster=modcluster:add(management-socket-binding=http, advertise-socket-binding=modcluster, security-key=<PASSWORD>)
+
+
+
+##
+# Bind the mod_cluster filter to the default host:
+
+	/profile=default/subsystem=undertow/server=default-server/host=default-host/filter-ref=modcluster:add
+
+
+
+
+	
+	
+	
+
+
+
+

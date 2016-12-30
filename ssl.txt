@@ -1,0 +1,12 @@
+===
+SSL
+===
+
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+
+
+You can also add -nodes if you don't want to protect your private key with a passphrase, otherwise it will prompt you for "at least a 4 character" password.
+The days parameter (365) you can replace with any number to affect expiration date.
+It will then prompt you for things like "Country Name" but you can just hit enter and accept defaults.
+
+Self-signed certs are not validated with any third party unless you import them to the browsers previously. If you need more security, you should use a certificate signed by a CA.

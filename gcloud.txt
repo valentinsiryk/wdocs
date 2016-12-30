@@ -1,0 +1,57 @@
+======
+gcloud
+======
+
+
+gcloud init
+
+gcloud auth list	# list accounts whose credentials are stored on the local system
+gcloud config list	# list the properties in your active SDK configuration
+
+gcloud info			# view information your Cloud SDK installation and the active SDK configuration
+gcloud help			# view help
+# e.g. "gcloud help compute instances create"
+
+
+# Google cloud registry
+https://cloud.google.com/container-registry/docs/pushing
+
+gcloud compute ssh <NODE>	# ssh logout
+
+#############################
+# BUILD AND PUSH/PULL IMAGE #
+#############################
+
+docker build -t <user>/<image_name> .						# build
+docker tag <user>/<image> <zone>/<project>/<image>			# copy to new tag
+
+gcloud docker push gcr.io/your-project-id/example-image		# push to registry
+gcloud docker pull gcr.io/your-project-id/example-image		# pull from registry
+
+
+gcloud container clusters get-credentials <cluster_name> --zone <xone> --project <project>
+
+gcloud container clusters delete <cluster_name>
+
+gcloud container clusters list
+gcloud container clusters describe guestbook
+
+##################
+# Create cluster #
+##################
+
+https://cloud.google.com/compute/docs/regions-zones/regions-zones
+
+gcloud config set compute/zone us-central1-a
+gcloud container clusters create <cluster_name>
+gcloud container clusters get-credentials <cluster_name>
+
+
+# Delete IMAGES
+gsutil ls
+You should see:
+gs://artifacts.<$PROJECT_ID>.appspot.com/
+And then to remove the all the images under this path, run:
+gsutil rm -r gs://artifacts.$PROJECT_ID.appspot.com/
+
+

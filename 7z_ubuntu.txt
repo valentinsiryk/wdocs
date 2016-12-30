@@ -1,0 +1,11 @@
+==============
+7-Zip on Linux
+==============
+
+Ubuntu
+======
+
+Install 7-Zip on Ubuntu::
+
+	$ sudo apt-get install p7zip-rar p7zip-full
+

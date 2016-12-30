@@ -1,0 +1,35 @@
+===
+SSH
+===
+
+::
+
+    ssh [options] <user>@<host>
+	    -L                  tunneling
+	    -N                  non entering to bash
+	    -f                  background run
+	    -i	<private_key>   path to private key
+	    -p  <port>
+	    
+
+SSH tunneling
+-------------
+
+::
+
+    ssh -NL <local_port>:<remote_address>:<remote_port> <remote_user>@<remote_host>
+
+	
+SSH aliases
+-----------
+
+Type following in ``~/.ssh/config``::
+
+    Host <name>
+      Hostname      <host>
+      User          <username>
+      IdentityFile  <path_to_private_ssh_key>
+      
+Usage::
+
+    ssh <name>

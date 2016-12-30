@@ -1,0 +1,42 @@
+============
+Java install
+============
+
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update && sudo apt-get install oracle-jdk7-installer
+
+# After the installation you have enable the jdk
+
+update-alternatives --display java
+
+# Check if Ubuntu uses Java JDK 7
+
+java -version
+
+# If all went right the answer should be something like this:
+
+# java version “1.7.0_25″
+# Java(TM) SE Runtime Environment (build 1.7.0_25-b15)
+# Java HotSpot(TM) Server VM (build 23.3-b01, mixed mode)
+# Check what compiler is used
+
+javac -version
+
+# It should show something like this
+
+# javac 1.7.0_25
+# Add JAVA_HOME to environment variable
+
+# Edit /etc/environment and add JAVA_HOME=/usr/lib/jvm/java-7-oracle to the end of the file
+
+sudo nano /etc/environment
+
+# Append to the end of the file
+
+JAVA_HOME=/usr/lib/jvm/java-7-oracle
+
+# Log in and out (or reboot) for the changes to take effect.
+
+# If you want to remove oracle JDK
+
+sudo apt-get remove oracle-jdk7-installer

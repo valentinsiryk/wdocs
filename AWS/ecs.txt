@@ -1,0 +1,102 @@
+===
+ECS
+===
+
+Step 1: Configure repository
+	create repository
+
+Step 2: Build, tag, and push Docker image
+	
+Step 3: Create a task definition
+	Task definition name
+	Container name
+	Image
+	Memory Limits (MB)
+	Port mappings
+
+Step 4: Configure service
+	Service name
+	Desired number of tasks
+	Add ELB
+
+Step 5: Configure cluster
+	Cluster name
+	EC2 instance type
+	Number of instances
+	Key pair
+	Security group
+	Container instance IAM role
+
+###############################################################################
+
+ECS
+ 
+Create cluster: clusterName1
+ECS cluster clusterName1
+
+Create task definition: clusterName1 taskDefName1
+Task definition taskDefName1:1
+
+Create instances for: clusterName1
+ECS instances for clusterName1
+
+Create service: servName1
+Service created. Tasks will start momentarily. View: servName1
+
+
+EC2
+
+CloudFormation stack created
+CloudFormation stack arn:aws:cloudformation:eu-west-1:798327215437:stack/EC2ContainerService-clusterName1/a12e95d0-c1f2-11e6-adc6-503abe701cfd
+
+Internet gateway created
+Internet gateway igw-2b3ef34f
+
+VPC created
+VPC vpc-50024b34
+
+Route table created
+Route table rtb-995c45fd
+
+VPC attached gateway created
+VPC attached gateway EC2Co-Attac-6YYFGR8UODP0
+
+Subnet 1 created
+Subnet 1 subnet-e92243b1
+
+ELB security group created
+ELB security group sg-e1009987
+
+Subnet 2 created
+Subnet 2 subnet-ff3e1a9b
+
+Public routing created
+Public routing EC2Co-Publi-1JR7V606VFBC5
+
+Subnet 1 association created
+Subnet 1 association rtbassoc-46f3be21
+
+ECS security group created
+ECS security group sg-a60099c0
+
+Subnet 2 association created
+Subnet 2 association rtbassoc-45f3be22
+
+Auto Scaling group created
+Auto Scaling group EC2ContainerService-clusterName1-EcsInstanceAsg-RMPBUPVOQ9OC
+
+Launch configuration created
+Launch configuration EC2ContainerService-clusterName1-EcsInstanceLc-953ZPR1US8UH
+
+Elastic load balancer created
+Elastic load balancer EC2Contai-EcsElast-5NIU1WVQN742
+
+
+ECR
+---
+
+aws ecr get-login
+
+aws ecr describe-repositories
+aws ecr list-images --repository-name my-web-app
+

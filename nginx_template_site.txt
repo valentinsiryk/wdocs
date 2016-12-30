@@ -1,0 +1,82 @@
+===================
+NGINX template site
+===================
+
+server {
+	listen   80 default_server;
+	server_name  192.168.35.211;
+	root   /var/www/;
+	access_log  /var/log/nginx/work.access.log;
+
+	location / {
+		index  index.php index.html index.htm;
+		expires 1m;
+	}
+     
+	error_page  404  /404.html;
+	location = /404.html {
+        	root   /var/www/nginx-default;
+        }
+        
+	# Redirect server error pages to the static page /50x.html
+	#
+        error_page   500 502 503 504  /50x.html;
+        location = 50x.html {
+                root   /var/www/nginx-default;
+        }
+		
+	location ~ \.php$ {
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		# NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+		# With php5-cgi alone:
+		#fastcgi_pass 127.0.0.1:9000;
+		#With php5-fpm:
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_index index.php;
+		include fastcgi_params;
+		fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+	}
+
+	# images access loging
+	location ^~ /images/ {
+		access_log /var/log/nginx/work.access.images.log;
+	}
+}
+
+
+#####################
+офф. пример 
+#####################
+server{
+    #имя сервера:
+    server_name mysite.com;
+    
+    #логи
+    access_log /var/log/nginx/mysite.access.log;
+    error_log  /var/log/nginx/mysite.error.log;
+    
+    # корневая директория
+    root /home/www-data/mysite;
+        
+    location ~ \.php$ {
+        try_files $uri = 404;
+        include fastcgi_params;
+        fastcgi_pass  unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    }
+    
+    # порядок индексов    
+    location /
+    {
+        index  index.php index.html index.htm;
+    }
+    
+    #кастомная страница 404
+    location /errors {
+         alias /home/www-data/mysite/errors ;
+    }
+    error_page 404 /errors/404.html;        
+}
+

@@ -1,0 +1,13 @@
+===
+awk
+===
+
+awk - команда контекстного поиска и преобразования текста. Она - фильтр. Ее можно рассматривать как оболочку "awk" в оболочке "shell".
+
+cat /proc/*/stat | awk '{print $1 " " $2}'
+
+http://linuxgeeks.ru/awk.htm
+https://ru.wikipedia.org/wiki/AWK
+https://linuxconfig.org/learning-linux-commands-awk
+https://www.digitalocean.com/community/tutorials/how-to-use-the-awk-language-to-manipulate-text-in-linux
+http://citforum.ck.ua/operating_systems/articles/sed_awk.shtml

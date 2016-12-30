@@ -1,0 +1,34 @@
+======
+Apache
+======
+
+::
+
+	# restart
+	systemctl restart apache2
+
+	# reload
+	service apache2 reload
+
+	# enable modules
+	a2enmod [rewrite] [ssl] ...
+
+	# show modules
+	apache2ctl -M
+
+	# test configuration
+	apachectl configtest
+
+	# enable site 
+	a2ensite <site>
+
+	# disable site
+	a2dissite <site>
+
+
+
+Generate a self-signed SSL certificate::
+
+	mkdir /etc/apache2/ssl
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/site.key -out /etc/apache2/ssl/site.crt
+	chmod 600 /etc/apache2/ssl/*

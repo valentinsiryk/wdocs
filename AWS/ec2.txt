@@ -1,0 +1,11 @@
+===
+EC2
+===
+
+aws ec2 describe-security-groups --group-names 'Default' --query 'SecurityGroups[0].OwnerId' --output text
+		describe-regions	# show available regions
+
+aws ec2 stop-instances --instance-ids <ids>		# stop instances
+aws ec2	start-instances --instance-ids <ids>	# start
+
+

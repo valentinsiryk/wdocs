@@ -1,0 +1,8 @@
+==============
+wget via proxy
+==============
+
+sudo nano /etc/wgetrc
+	http_proxy = http://192.168.35.10:8080/
+	ftp_proxy = http://192.168.35.10.8080/
+	use_proxy = on

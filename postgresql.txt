@@ -1,0 +1,62 @@
+==========
+PostgreSQL
+==========
+
+# Xenial
+sudo apt-get install postgresql
+
+
+su - postgres
+
+# clear history
+# > .psql_history
+
+psql
+
+
+psql -U <user> -W <db>
+
+psql -h localhost test_database test_user
+
+\d	# tables and others
+
+\dt	# only tables
+
+\q	# exit
+
+
+Так делается дамп (или сжатый дамп):
+pg_dump -h 127.0.0.1 -p 5432 -U username -F p database > pg_dump.sql
+pg_dump -h 127.0.0.1 -p 5432 -U username -F p database | gzip > pg_dump.sql.gz
+pg_dump -h 127.0.0.1 -p 5432 -U username -F t database | gzip > pg_dump.sql.tar.gz
+
+Так дамп заливается в базу, база должна быть пустая.
+# psql -U username -W secret -d database < pg_dump.sql
+
+
+CREATE DATABASE dbname OWNER rolename;
+
+CREATE ROLE username LOGIN PASSWORD 'secret' SUPERUSER; 				# суперпользователь
+CREATE ROLE username LOGIN PASSWORD 'secret' NOSUPERUSER INHERIT; 		# не суперпользователь, наследует свойства от групп
+CREATE ROLE username LOGIN PASSWORD 'secret' NOSUPERUSER NOCREATEROLE;	# не суперпользователь, не может создавать пользователей
+
+
+CREATE USER test_user WITH password 'qwerty';
+GRANT ALL privileges ON DATABASE test_database TO test_user;
+
+DROP USER drupal;	# delete user
+
+DROP DATABASE [ IF EXISTS ] name
+
+
+SELECT * FROM <tbl>;
+
+
+# Create db and user
+#
+	CREATE USER user WITH password 'PASSWORD';
+	CREATE DATABASE dbname OWNER user;
+	GRANT ALL privileges ON DATABASE dbname TO user;
+
+
+

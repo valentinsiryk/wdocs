@@ -1,0 +1,88 @@
+=======
+Ansible
+=======
+
+# https://habrahabr.ru/post/195048/
+
+
+# config
+	/etc/ansible/ansible.cfg or ~/.ansible.cfg
+		host_key_checking = False	# if host changed.. known_hosts...
+
+# hosts
+	/etc/ansible/hosts
+
+ssh-keygen
+ssh-copy-id	# to hosts
+
+ssh-agent bash
+ssh-add ~/.ssh/id_rsa
+
+ansible <[group_of_hosts]> -a "/bin/echo Hello, World!"
+
+ansible all -m ping	# ping known hosts
+
+ansible all -m ping -u spider	# ping with user name
+
+ansible all -m ping -u bruce -b	# to root user
+ansible all -m ping -u bruce -b --become-user batman	# to sudo user
+
+ansible all -a "/bin/echo hello"
+
+
+ansible-playbook -i <inventory> <playbook.yml>
+
+
+# play playbook with ask sudo pass or root
+
+ansible-playbook -i inventory playbooks/lemp.yml --ask-become-pass(-K) -u spider
+ansible-playbook -i inventory playbooks/lemp.yml -u root
+
+
+
+
+
+192.168.0.5 ansible_become=true ansible_user=manager # become for all operations
+
+ansible webservers -m service -a "name=nginx state=stopped"
+
+
+{{ ansible_distribution_release }}	# trusty, ...
+{{ ansible_distribution }}			# Debian, ...
+
+
+Inventory file example
+----------------------
+
+Example ``inventory``::
+
+    [WebServersG1]
+    webserver1-g1 ansible_ssh_port=4444 ansible_ssh_host=192.168.1.50 ansible_ssh_user=ubuntu
+    staging.test.com.ua
+
+    [WebServersG2]
+    webserver1-g2:4444		# alternative SSH port
+    webserver2-g2
+
+    [WebServersProxy]
+    webserver-proxy1
+    webserver-proxy2
+
+    [DataBase]
+    db1
+    db2
+
+    [DataBaseSlave]
+    dbs1
+    dbs2
+
+    [SomeServers]
+    someserver1
+    someserver2
+
+
+    [WEB:children]
+    WebServersG1
+    WebServersG2
+    WebServersProxy
+

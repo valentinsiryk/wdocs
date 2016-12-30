@@ -1,0 +1,37 @@
+=======
+Proxmox
+=======
+
+# Инструкция по установке на Debian
+# https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_Jessie
+
+sudo nano /etc/hosts
+	127.0.0.1       localhost.localdomain localhost
+	<local_ip>      prox4m1.proxmox.com prox4m1 pvelocalhost
+
+getent hosts $(hostname)
+getent hosts 192.168.10.10
+
+echo "deb http://download.proxmox.com/debian jessie pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
+wget -O- "http://download.proxmox.com/debian/key.asc" | apt-key add -
+
+apt-get update && apt-get dist-upgrade
+apt-get install proxmox-ve ntp ssh postfix ksm-control-daemon open-iscsi systemd-sysv
+update-grub
+reboot
+
+apt-get remove linux-image-amd64 linux-image-3.16.0-4-amd64 linux-base
+update-grub
+
+# Connect to the admin web interface (https://youripaddress:8006)
+# create a bridge called vmbr0, and add your first network interface to it.
+
+# VM's configs
+# /etc/pve/qemu-server/VMID.conf	# https://pve.proxmox.com/wiki/Manual:_vm.conf
+
+# subscribe message delete
+# /usr/share/pve-manager/ext6/pvemanagerlib.js
+#	if (data.status !== 'Active') {/**/}
+
+# cluster not ready - no quorum? (500) //
+	pvecm e 1

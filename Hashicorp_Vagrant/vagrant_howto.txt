@@ -1,0 +1,48 @@
+=======
+Vagrant
+=======
+
+
+Boxes-hub::
+
+    https://atlas.hashicorp.com/boxes/search
+
+::
+
+    vagrant init [box_name]				# create vagrantfile with 'base' box
+			     hashicorp/precise64	# create vagrantfile with 'hashicorp/precise64' box
+		    up					# start vm, starts and provisions the vagrant environment
+		    reload				# restarts vagrant machine, loads new Vagrantfile configuration
+		    ssh					# connect to machine
+		    ssh-config			# outputs OpenSSH valid configuration to connect to the machine
+		    reload --provision	# enable provision
+		    global-status		# status of all machines
+
+Vagrant destroy // terminate vm (not remove downloaded box)
+
+
+Remove old box versions
+------
+
+https://github.com/swisnl/vagrant-remove-old-box-versions
+
+::
+    
+    vagrant plugin install vagrant-remove-old-box-versions
+
+    vagrant remove-old-versions [options]
+
+    -p, --provider PROVIDER          The specific provider type for the boxes to destroy.
+    -n, --dry-run                    Only print the boxes that would be removed.
+        --name NAME                  The specific box name to destroy.
+    -f, --force                      Destroy without confirmation even when box is in use.
+
+
+Create own box
+--------------
+::
+
+    http://sysadm.pp.ua/linux/sistemy-virtualizacii/vagrant-box-creation.html
+
+
+

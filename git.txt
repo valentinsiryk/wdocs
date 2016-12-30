@@ -1,0 +1,46 @@
+===
+Git
+===
+
+https://git-scm.com/book/ru/v2
+
+git push origin serverfix	// удаленный сервер/ветка
+git push origin serverfix:awesomebranch	// локальная ветка serverfix отправится в ветку awesomebranch удалённого проекта.
+
+git remote	// Чтобы просмотреть, какие удалённые серверы у вас уже настроены, следует выполнить команду 
+	-v	// Чтобы посмотреть, какому URL соответствует сокращённое имя в Git
+	add <name>
+
+###
+git remote add origin https://github.com/johnsmith/test.git
+###
+
+git push origin --delete serverfix	// удаляет ветку на сервере
+
+git fetch [имя удал. сервера]	// забирает с сервера, но не сливает с локальными изминениями
+
+git branch	// показывает список веток
+	-v	// покажет еще и последние коммиты на ветках
+	--merged/--no-merged	// покажет слитые/не слитые ветки с текущей
+
+git branch testing	// новая ветка (без переключения на нее)
+		   -d hotfix	// удаляет ненужную ветку
+		   -D testing	// удаляет ненужную ветку даже если она не слита
+
+git checkout testing	// переключение на ветку (HEAD переместится на ветку testing)
+			 -b iss53	// создание и переключение на ветку
+
+git merge hotfix	// сольет текущуе ветку с hotfix
+
+
+
+git log --oneline --decorate --graph --all	// показывает историю коммитов и указатели веток, и ветвления истории проекта
+
+HEAD указывает на текущую ветку
+
+// алиасы для комманд
+$ git config --global alias.co checkout
+$ git config --global alias.br branch
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+$ git config --global alias.unstage 'reset HEAD --'

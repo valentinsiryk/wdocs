@@ -1,0 +1,39 @@
+===============
+Autorun scripts
+===============
+
+Создаём пустой файл.
+Первой строкой пишем:
+
+#!/bin/sh
+
+Данная строка указывает, какую командную оболочку необходимо использовать. Дальше свои команды.
+Сохраним его под оригинальным названием (чтоб не совпадал с уже существующими) в каталоге /usr/sbin/bbb_run.
+
+Чтобы скрипт запускался при загрузке, необходимо прописать его в файле /etc/rc.local до строчки exit 0. Если у вас не существует данного файла, создайте его и вставьте в него следующее содержимое:
+
+#!/bin/sh -e
+#Здесь вставляем строку с указанием вашего скрипта.
+/usr/sbin/mescripts
+exit 0
+
+######################
+######################
+
+
+nano /etc/init.d/vm_start.sh
+	#! /bin/sh
+	### BEGIN INIT INFO
+	# Provides:          skeleton
+	# Required-Start:    $remote_fs $syslog
+	# Required-Stop:     $remote_fs $syslog
+	# Default-Start:     2 3 4 5
+	# Default-Stop:      0 1 6
+	# Short-Description: Example initscript
+	# Description:       This file should be used to construct scripts to be
+	#                    placed in /etc/init.d.
+	### END INIT INFO
+	sudo -u <user> VBoxManage startvm <vm_name> --type headless
+
+chmod +x /etc/init.d/vm_start.sh
+update-rc.d vm_start.sh  defaults

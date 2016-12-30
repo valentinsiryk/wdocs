@@ -1,0 +1,84 @@
+=============================
+Standalone/domain run options
+=============================
+
+./EAP_HOME/bin/standalone.sh
+./EAP_HOME/bin/domain.sh
+
+
+#
+#
+
+--admin-only							Standalone			Set the server’s running type to ADMIN_ONLY.
+															This will cause it to open administrative interfaces and accept management requests,
+															but not start other runtime services or accept end user requests.
+
+--admin-only							Domain				Set the host controller’s running type to ADMIN_ONLY causing it to open
+															administrative interfaces and accept management requests but not start servers or,
+															if this host controller is the master for the domain, accept incoming connections
+															from slave host controllers.
+
+-b=<value>, -b <value>					Standalone, Domain	Set system property jboss.bind.address, which is used in configuring the bind address for
+															the public interface. This defaults to 127.0.0.1 if no value is specified.
+															See the -b<interface>=<value> entry for setting the bind address for other interfaces.
+
+-b<interface>=<value>					Standalone, Domain	Set system property jboss.bind.address.<interface> to the given value. E.g -bmanagement=IP_ADDRESS
+
+--backup								Domain				Keep a copy of the persistent domain configuration even if this host is not the Domain Controller.
+
+-c=<config>, -c <config>				Standalone			Name of the server configuration file to use. The default is standalone.xml.
+
+-c=<config>, -c <config>				Domain				Name of the server configuration file to use. The default is domain.xml.
+
+--cached-dc								Domain				If the host is not the Domain Controller and cannot contact the Domain Controller at boot,
+															boot using a locally cached copy of the domain configuration.
+
+--debug [<port>]						Standalone			Activate debug mode with an optional argument to specify the port.
+															Only works if the launch script supports it.
+
+-D<name>[=<value>]						Standalone, Domain	Set a system property.
+
+--domain-config=<config>				Domain				Name of the server configuration file to use. The default is domain.xml.
+
+-h, --help								Standalone, Domain	Display the help message and exit.
+
+--host-config=<config>					Domain				Name of the host configuration file to use. The default is host.xml.
+
+--interprocess-hc-address=<address>		Domain				Address on which the host controller should listen for communication from the process controller.
+
+--interprocess-hc-port=<port>			Domain				Port on which the host controller should listen for communication from the process controller.
+
+--master-address=<address>				Domain				Set system property jboss.domain.master.address to the given value.
+															In a default slave Host Controller config, this is used to configure the address of
+															the master Host Controller.
+
+--master-port=<port>					Domain				Set system property jboss.domain.master.port to the given value.
+															In a default slave Host Controller config, this is used to configure the port used for
+															native management communication by the master Host Controller.
+
+--read-only-server-config=<config>		Standalone			Name of the server configuration file to use.
+															This differs from --server-config and -c in that the original file is never overwritten.
+
+--read-only-domain-config=<config>		Domain				Name of the domain configuration file to use.
+															This differs from --domain-config and -c in that the initial file is never overwritten.
+
+--read-only-host-config=<config>		Domain				Name of the host configuration file to use.
+															This differs from --host-config in that the initial file is never overwritten.
+
+-P=<url>, -P <url>, --properties=<url>	Standalone, Domain	Load system properties from the given URL.
+
+--pc-address=<address>					Domain				Address on which the process controller listens for communication from processes it controls.
+
+--pc-port=<port>						Domain				Port on which the process controller listens for communication from processes it controls.
+
+-S<name>[=<value>]						Standalone			Set a security property.
+
+-secmgr									Standalone, Domain	Runs the server with a security manager installed.
+
+--server-config=<config>				Standalone			Name of the server configuration file to use. The default is standalone.xml.
+
+-u=<value>, -u <value>					Standalone, Domain	Set system property jboss.default.multicast.address, which is used in configuring the
+															multicast address in the socket-binding elements in the configuration files.
+															This defaults to 230.0.0.4 if no value is specified.
+
+-v, -V, --version						Standalone, Domain	Display the application server version and exit.

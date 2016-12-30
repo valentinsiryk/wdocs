@@ -1,0 +1,29 @@
+[WebServersG1]
+webserver1-g1 ansible_ssh_port=5555 ansible_ssh_host=192.168.1.50 ansible_ssh_user=ubuntu
+staging.ucat.com.ua
+
+[WebServersG2]
+webserver1-g2:5555		# alternative SSH port
+webserver2-g2
+
+[WebServersProxy]
+webserver-proxy1
+webserver-proxy2
+
+[DataBase]
+db1
+db2
+
+[DataBaseSlave]
+dbs1
+dbs2
+
+[SomeServers]
+someserver1
+someserver2
+
+
+[WEB:children]
+WebServersG1
+WebServersG2
+WebServersProxy

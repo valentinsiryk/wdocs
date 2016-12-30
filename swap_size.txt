@@ -1,0 +1,6 @@
+====================
+SWAP recomended size
+====================
+
+SWAP = 2GB	// RAM > 2GB
+SWAP = RAM	// RAM < 2GB

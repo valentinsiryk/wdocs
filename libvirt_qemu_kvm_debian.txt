@@ -1,0 +1,106 @@
+=============================
+libvirt + QEMU + KVM + Debian
+=============================
+
+egrep -c '(vmx|svm)' /proc/cpuinfo
+sudo kvm-ok
+
+sources.list
+		deb http://ftp.de.debian.org/debian jessie main non-free
+		deb-src http://ftp.de.debian.org/debian jessie main non-free
+
+sudo apt-get update
+sudo apt-get dist-upgrade
+
+# install drivers
+sudo apt-get install firmware-realtek firmware-linux		
+
+sudo apt-get install bridge-utils
+
+nano /etc/sysctl.conf
+	net.ipv4.ip_forward=1
+
+# create bridge
+sudo brctl addbr br0
+
+sudo nano /etc/network/interfaces
+	auto lo
+	iface lo inet loopback
+
+	auto eth1
+	iface eth1 inet manual
+
+	auto br0
+	iface br0 inet static
+		address <host_ip>
+		netmask <mask>
+		gateway <ip>
+		dns-nameservers <ip1> <ip2>
+		bridge_ports eth1
+		bridge_stp off
+		bridge_fd 0
+		bridge_maxwait 0
+		
+sudo /etc/init.d/networking restart
+ifconfig
+
+
+apt-get install qemu-kvm libvirt-bin
+adduser root libvirt
+adduser lee libvirt
+
+# установка самой новой версии vit-manager'a
+sudo wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu wily-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
+sudo apt-get update && sudo apt-get dist-upgrade
+apt-get install virt-manager
+
+# конфиг virt-manager лежит тут ~/.gconf/apps/virt-manager/
+
+
+/etc/libvirt/		хранятся конфигурационные файлы
+/etc/libvirt/storage/	storage's конфиги
+/var/lib/libvirt/	будут хранится образы жестких дисков, мгновенные снимки системы и многое другое.
+
+####################
+# посмотреть мосты
+brctl show
+
+virsh # попадаем в virsh
+	help		# список всех команд
+
+	pool-list --all # список хранилищ (storages)
+	pool-list	# список активных хранилищ (storages)
+
+	pool-define-as name_of_storage dir --target /etc/libvirt/images/	# создаем хранилище
+	pool-autostart name_of_storage	# делаем, чтобы пул запускадся автоматически
+	pool-start name_of_storage	# стартуем пул
+
+
+# смотреть список машин
+	virsh --connect qemu:///system list
+
+# сгенерировать xml
+	virsh --connect qemu:///system dumpxml <domain> > <domain>.xml 
+
+# Создания нового гостевого домена и запуска виртуальной машины
+	virsh --connect qemu:///system create alice.xml
+
+# Остановка виртуальной машины и уничтожения гостевого домена
+	virsh --connect qemu:///system destroy alice
+
+# Выключения виртуальной машины (без уничтожения домена)
+	virsh --connect qemu:///system shutdown alice
+
+# Приостановка/возобновление работы виртуальной машины
+	virsh --connect qemu:///system suspend alice
+	virsh --connect qemu:///system resume alice
+
+# Для автозапуска виртуальной машины после загрузки хоста
+	virsh --connect qemu:///system autostart alice
+
+# Получить информациюо домене виртуальной машины
+	virsh --connect qemu:///system dominfo alice
+
+# Управлять виртуальными машинами из сессии virsh. Для создания новой сессии virsh и входа в нее:
+	virsh --connect qemu:///system

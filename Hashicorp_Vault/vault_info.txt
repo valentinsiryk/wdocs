@@ -1,0 +1,113 @@
+=====
+Vault
+=====
+
+vault init -key-shares=1 -key-threshold=1	# Initialize Vault with 1 unseal key	
+
+vault seal									# seal vault
+vault unseal <key>							# unseal vault
+
+vault auth <root token>						# Authorize with a client token
+
+
+vault write secret/<path> <key>=<value>
+
+vault read 		secret/<path>
+			-format=json	# json output
+
+vault delete secret/<path>
+
+vault write secret/hello value=world excited=yes
+vault read -format=json secret/hello | jq -r .data.excited
+
+
+
+vault mount 	generic		# mount generic backend
+				aws			# mount aws backend
+			-path=<path>
+
+vault unmount generic/
+
+vault mounts			# show mounts
+
+vault path-help aws		# show help paths
+vault path-help aws/creds/operator
+
+############################
+# Tokens
+
+
+vault token-create
+vault token-revoke <token_id>
+vault auth <token_id>
+
+# Auth backend
+https://www.vaultproject.io/intro/getting-started/authentication.html
+
+############################
+# AWS
+#
+
+vault mount aws
+
+vault write aws/config/root access_key=<ACCESS_KEY> secret_key=<SECRET_KEY>
+
+nano policy.json
+	{
+	  "Version": "2012-10-17",
+	  "Statement": [
+		{
+		  "Sid": "Stmt1426528957000",
+		  "Effect": "Allow",
+		  "Action": [
+		    "ec2:*"
+		  ],
+		  "Resource": [
+		    "*"
+		  ]
+		}
+	  ]
+	}
+
+vault write aws/roles/deploy policy=@policy.json
+
+# Generate credentials 
+vault read aws/creds/deploy	# create IAM user with policy (show credentials)
+
+vault revoke <lease_id>		# purge access
+
+
+##############################################
+
+# Docker:
+https://hub.docker.com/_/vault/
+
+
+# host1
+vault server -dev
+
+
+# host2
+export VAULT_ADDR='http://127.0.0.1:8200'
+
+
+Example policy
+--------------
+
+**policy.json**::
+
+	{
+	  "Version": "2012-10-17",
+	  "Statement": [
+		{
+		  "Sid": "Stmt1426528957000",
+		  "Effect": "Allow",
+		  "Action": [
+		    "ec2:*"
+		  ],
+		  "Resource": [
+		    "*"
+		  ]
+		}
+	  ]
+	}

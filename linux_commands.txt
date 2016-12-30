@@ -1,0 +1,193 @@
+==============
+Linux commands
+==============
+
+
+id <username> // выводит группы, в которых состоит пользователь
+
+df		// свободное/занятое место на разделах
+	-h (-m -k) // сокращение размера до MB,GB,KB
+
+du <папка/файл>	// узнать размер
+	-h // сокращение размера до MB,GB,KB
+	-s // размер папки, не перечисляя вложений
+	
+sudo du -hs /[!.]* |sort -h      # show and sort with hidden files
+
+tail -f <file>	// показывает последние строчки файла в режиме реального времени
+
+netstat -antup	// посмотреть на локалхосте подробную информацию по открытым портам (udp, pid..)
+
+arp	// ARP таблица содержит адреса устройств, с которыми взаимодействует данная ОС. А так же MAC'и
+	-n	// только IP(без доменов)
+	-a	// IP и домены
+cat /proc/net/arp	// сомтрим в файле
+
+
+apt-cache policy <package>	# search versions of packages, enables to install
+
+
+
+
+fdisk -l	// вся инфа по дискам и разделам
+
+blkid		// короткий список дисков, UUID, TYPE
+
+lsblk		# type, size, name, mountpoint
+
+ls -al /dev/disk/by-uuid/	# all UUID of disks
+
+sudo mount -a	# mount al of fstab (run it after fstab changed!!!)
+
+sudo hdparm -I /dev/sda	// вывод инфы о диске
+	| grep -i trim	// проверить поддержку трим для ссд
+
+sudo mkfs -t ext4 device_name		# create partition table
+
+
+touch file{1..100}	# create 100 files: file1, file2, ..., file100
+
+
+
+nmap <ip>		// сканировать ip
+	-sT // TCP
+	-sU // UDP
+	-O // узнать версию ПО
+	--verbose // показывать вывод
+
+service --status-all // текущее состояние всех системных служб
+
+ssh-keygen -R "hostname" // удалить существующие записи
+
+adduser <name> // создать нового пользователя
+		-r	# create system user
+		-g 	# group
+
+useradd
+		-u			# UID
+		-r			# create system user
+		-g <group>	# name or ID of group
+		-m          # create home dir
+		-d <path>	# path to home dir
+		-s <shell>	# register shell for user
+		-c			# comments 
+
+
+userdel <name> 
+		-r			# del home dir
+
+
+groupadd <name>
+		-r	# create system group
+		-g	# group ID
+
+shutdown [options] <now|time> // управление питанием (выключить сейчас: shutdown -h now)
+	-r // перезагрузка после shutdown;
+	-h // отключение питания после shutdown;
+	-c // отмена запущенного shutdown;
+
+halt -p // полное выключение
+
+write <user> [tty] // послать сообщение пользователю, вошедшему в систему
+
+who // показать пользователей, выполнивших вход
+last // история входов пользователей
+	reboot // последняя перезагрузка
+	spider // последнее сеансы пользователя
+lastlog // список пользователей, кто когда заходил
+
+inxi -F // вывести информацию о системе
+lshw | more | less // вывести информацию об аппаратных составляющих, в том числе показывает размер сектора
+lscpu	// вывести информацию о процессоре
+lsblk	// вывести инфу о дисках
+
+sudo dmidecode -t system	// информация об аппаратной составляющей компьютера (можно узнать какая машина - виртуальная или физическая)
+
+
+################## уменьшаем размер *.vdi ######################
+sudo dd if=/dev/zero of=zero bs=512k // на гостевой машине - заполнить нулями пустое место (после чего этот файл надо удалить)
+	bs= // размер сектора
+	
+sudo rm zero
+	
+vboxmanage modifyhd /path/to/thedisk.vdi --compact // на хосте
+################################################################
+
+tar -xvzf archive.tar.gz // распаковать в текущую директорию
+sudo -u lee <command> // выполнить команду от определенного пользователя
+
+sudo nano /etc/environment // to add PATH
+
+
+mkswap /dev/sdc2 // Создадим необходимую структуру данных для работы swap на имеющемся разделе
+swapon /dev/sdc2 // сообщим ядру системы, что оно может использовать раздел под swap
+swapon -s // Проверить результат можно посмотрев на вывод команды
+echo "UUID=<UUID swap-раздела> swap swap defaults 0 0"| sudo tee -a /etc/fstab // для автомонтирования
+
+sudo ifconfig wlan0 down && sudo ifconfig wlan0 up // перезапуск networking'a 
+
+#####################################################################
+
+wget -qO- 127.0.0.1	# get and show page
+
+
+grep -iR -E '(error_report|ini_set)' ./*.php	# find in files
+		-l	# show only file names 
+		-i	# ignore case sensetive
+		--exclude="*\.svn*"	# exclude
+		--exclude-dir="dir"	| {dir1,dir2}	# exclude dir
+
+# замена слов
+grep -iRl -E "(DB_PASSWORD = 'YnB27GrWe')" | xargs sed -i "s/$DB_USER = 'root'/$DB_USER = 'u_passdiscount'/g"
+
+
+# find
+# https://ru.wikipedia.org/wiki/Find
+
+find ./ -name 'path*'	# find files
+		-type (f=файл, d=каталог, l=ссылка (link), p=канал (pipe), s=сокет)	# type of file
+
+find ./ -mtime 0 -type f -not -path "./" -exec cp --parents "{}" $TODAY_DIR/ \;
+
+find . -type f -exec chmod 644 {} \;	# chmod only files
+
+################
+Delete old files
+
+ls -t | sed -e '1,10d' | xargs -d '\n' rm -f
+	ls -t 				# lists all files in the current directory in decreasing order of modification time
+	sed -e '1,10d' 		# deletes the first 10 lines, ie, the 10 newest files
+	xargs -d '\n' rm 	# collects each input line (without the terminating newline) and passes each line as an argument to rm.
+	-f					# ignore if empty
+
+tar -czpf $CONFIGBACKUPDIR/$CONFIGBK --directory=$CONFIGDIR --exclude=$CONFIGBACKUPDIR .
+
+############
+# clear file
+
+> filename
+############
+
+# PASSWORD GENERATE
+apg
+	-t	# print pronunciation for generated pronounceable passwor
+	-q	# quiet mode (do not print warnings)
+	-n	# count of generated passwords
+	-m	# minimum pass length
+	-x	# maximum pass length
+	-a	# choose algorithm:
+		1 - random password generation according to password modes
+		0 - pronounceable password generation
+
+# Example:
+apg -q -m 8 -x 8 -a 1 -n 5
+
+################################
+
+# SECURITY
+
+awk -F: '($2 == "") {print}' /etc/shadow	# find empty passwords
+
+awk -F: '($3 == "0") {print}' /etc/passwd	# find users with uid==0
+
+netstat -tulpn

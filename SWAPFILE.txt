@@ -1,0 +1,20 @@
+============
+SWAP in file
+============
+
+# Создайте файл размером 4 ГБ в корневом каталоге
+# убедитесь, что у вас хватает свободного места
+
+sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+
+sudo chmod 600 /swapfile	
+
+# создать область подкачки
+sudo mkswap /swapfile	
+
+sudo swapoff -a		
+
+# подключить файл как swap
+sudo swapon /swapfile	
+	
+sudo echo "/swapfile swap swap defaults 0 0"| sudo tee -a /etc/fstab

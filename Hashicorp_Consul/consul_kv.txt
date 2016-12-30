@@ -1,0 +1,31 @@
+
+========================
+Consul KEY/VALUE storage
+========================
+#
+
+consul kv put <key> <value>
+				-flags=42
+
+consul kv get <key>
+				-flags=42
+				-detailed	# detailed view
+				-recurse	# all child view
+
+# Example:
+consul kv get some/key
+consul kv put some/key 1
+consul kv put some/key @<file>	# put file content
+
+echo "5" | consul kv put redis/config/password -	# put from stdin ('-' parameter)
+
+
+consul kv delete some/key			# delete 
+consul kv delete -recurse <key>		# delete recursive
+
+
+
+
+
+
+

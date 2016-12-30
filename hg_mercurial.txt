@@ -1,0 +1,43 @@
+============
+Hg mercurial
+============
+
+https://www.mercurial-scm.org/wiki/Tutorial
+https://www.mercurial-scm.org/guide
+
+# ssh access
+https://confluence.atlassian.com/bitbucket/set-up-ssh-for-mercurial-728138122.html
+
+sudo apt-get install mercurial
+
+nano ~/.hgrc
+	[ui]
+	username = John Smith <john@gmail.com>
+
+hg status	# show changes in working directory
+
+hg branch				# show current branch
+			feature1	// создать ветку
+	
+
+
+
+hg branch feature1				# create branch
+hg update feature1				# change branch
+hg commit -m "start new branch"	# commit new branch
+hg push --new-branch			# push creates new remote branches
+hg addremove					# add all new files that are not ignored, and remove all locally missing files
+
+
+
+
+
+
+
+
+hg commit --close-branch -m "finished feature1"	// удалить ветку
+
+hg merge feature1	// слияние веток
+
+hg commit == hg ci
+hg update == hg up
