@@ -44,7 +44,6 @@ Make an exact copy of an environment::
 Remove environment::
 
     conda remove --name flowers --all
-							    <pkg_name>	# remove pkg from flowers
 						
 							    
 Remove pkg from env::
