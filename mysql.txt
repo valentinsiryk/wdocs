@@ -70,7 +70,10 @@ New ROOT password (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x8
     mysqladmin -p -u root password
 
 
-UPDATE <table> SET <key>='<value>' WHERE <key>='<value>';
+::
+
+    UPDATE <table> SET <key>='<value>' WHERE <key>='<value>';
+
 
 Clear mysql command history::
     
