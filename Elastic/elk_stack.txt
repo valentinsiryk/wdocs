@@ -1,0 +1,121 @@
+=========
+ELK stack
+=========
+
+
+Docker
+------
+
+::
+
+    sudo sysctl -w vm.max_map_count=262144
+    docker-compose up -d
+    
+
+
+``docker-compose.yml``::
+
+    version: '2'
+    services:
+
+      filebeat:
+        image: prima/filebeat:5.1.1
+        container_name: filebeat
+        volumes:
+          - ./logs:/logs
+          - ./filebeat/data:/data
+          - ./filebeat/filebeat.yml:/filebeat.yml
+          
+      logstash:
+        image: logstash:5.1.1
+        container_name: logstash
+        volumes:
+          - ./logstash.conf:/logstash.conf
+          - ./geo/GeoLite2-City.mmdb:/etc/logstash/geo_db
+        command: -f /logstash.conf
+              
+      elasticsearch:
+        image: elasticsearch:5.1.1
+        container_name: elasticsearch
+        environment:
+          - cluster.name=docker-cluster
+          - bootstrap.memory_lock=true
+          - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        mem_limit: 1g
+        volumes:
+          - ./esdata:/usr/share/elasticsearch/data
+          
+      kibana:
+        image: kibana:5.1.1
+        container_name: kibana
+        environment:
+          - ELASTICSEARCH_URL=http://elasticsearch:9200
+        ports:
+          - "5601:5601"
+
+
+``filebeat/filebeat.yml``::
+
+    filebeat.prospectors:
+
+    - input_type: log
+
+      # Paths that should be crawled and fetched. Glob based paths.
+      paths:
+        - /logs/*.log
+        
+       
+    #----------------------------- Logstash output --------------------------------
+    output.logstash:
+      # The Logstash hosts
+      hosts: ["logstash:5044"]
+      
+      
+``logstash.conf``::
+
+    input {
+      beats {
+        port => "5044"
+      }
+    }
+
+    filter {
+      grok {
+        match => { "message" => "%{WORD}\[%{NUMBER}\]: \[%{HTTPDATE:time}\] %{IPORHOST:ip} \"(?:%{WORD:verbs} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http})?|%{DATA:rawrequest})\" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:agent} \"%{NUMBER:duration}\"" }
+      }
+      
+      date { 
+        match => [ "time", "dd/MMM/yyyy:HH:mm:ss Z" ]
+      }
+      
+      if "_grokparsefailure" in [tags] {
+        drop { }
+      }
+      
+      geoip {
+          source => "ip"
+          database => "/etc/logstash/geo_db"
+          fields => [
+            "city_name",
+            "continent_code",
+            "country_code2",
+            #"country_code3",
+            "country_name",
+            #"dma_code",
+            #"ip",
+            #"latitude",
+            "location",
+            #"longitude",
+            #"postal_code",
+            "region_name",
+            "timezone"
+          ] 
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["elasticsearch:9200"]
+      }
+    }
+
