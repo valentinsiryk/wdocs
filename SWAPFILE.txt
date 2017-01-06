@@ -1,6 +1,24 @@
-============
+====
+SWAP
+====
+
+Linux SWAP recommended size
+---------------------------
+
+.. note::
+    
+    It's not a rule. It's only recommendation for general configurations.
+
+===== ====
+RAM   SWAP
+===== ====
+> 2GB 2GB
+< 2GB RAM
+===== ====
+
+
 SWAP in file
-============
+------------
 
 1. Create SWAP file at root with size 4GB::
 
