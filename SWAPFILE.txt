@@ -2,18 +2,23 @@
 SWAP in file
 ============
 
-# Create file at root with size 4GB
+1. Create SWAP file at root with size 4GB::
 
-sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+    sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile	
 
-sudo chmod 600 /swapfile	
 
-# create swap
-sudo mkswap /swapfile	
+2. Disable all SWAP::
 
-sudo swapoff -a		
+    sudo swapoff -a		
 
-# connect swap file
-sudo swapon /swapfile	
-	
-sudo echo "/swapfile swap swap defaults 0 0"| sudo tee -a /etc/fstab
+
+3. Connect new SWAP file::
+
+    sudo swapon /swapfile	
+
+
+4. Add new SWAP to fstab (auto mount when system start)::
+
+    sudo echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab

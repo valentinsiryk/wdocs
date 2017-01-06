@@ -3,11 +3,42 @@ Filebeat
 ========
 
 - Tutorial: https://www.elastic.co/guide/en/beats/filebeat/current/index.html
-- Config example: https://github.com/elastic/beats/blob/master/filebeat/filebeat.yml
 
+
+Install
+-------
+
+https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
+
+deb::
+
+    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.1.1-amd64.deb
+    sudo dpkg -i filebeat-5.1.1-amd64.deb
+
+
+Config
+------
+
+``/etc/filebeat/filebeat.yml``
+
+
+Run
+---
+
+Run in background::
+
+    sudo /etc/init.d/filebeat start
+
+Run in foreground::
+
+    sudo filebeat.sh -e
+    
+    
 
 Config template
 ---------------
+
+https://github.com/elastic/beats/blob/master/filebeat/filebeat.yml
 
 ``filebeat.yml``::
 
