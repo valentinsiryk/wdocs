@@ -21,7 +21,8 @@ roles.txt
 #
 ansible-galaxy install -r install_roles.yml
 
-install_roles.yml
+install_roles.yml::
+
 	# from galaxy
 	- src: yatesr.timezone
 

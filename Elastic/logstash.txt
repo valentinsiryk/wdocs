@@ -8,3 +8,22 @@ Patterns
 https://github.com/logstash-plugins/logstash-patterns-core/tree/master/patterns
 
 ``/etc/logstash/patterns/nginx``
+
+
+Route events to Elasticsearch only when grok is successful::
+
+    output {
+      if "_grokparsefailure" not in [tags] {
+        elasticsearch { ... }
+      }
+    }
+    
+    
+Metrics and conditions::
+
+    if [response] =~ /^2[0-9]{2,2}$/ {
+      metrics {
+        meter => [ "http_2xx" ]
+        add_tag => "metric"
+      }
+    }

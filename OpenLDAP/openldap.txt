@@ -95,8 +95,9 @@ ldapmodify -D "cn=admin,dc=mycorp,dc=com" -w password -f adduser.ldif
 ############
 # Commands #
 ############
+::
 
-ldapsearch -D "cn=admin,dc=mydomain,dc=com"
+    ldapsearch -D "cn=admin,dc=mydomain,dc=com"
 			  -w <pass>	# bind password (for simple authentication)
 			  -W		# prompt for bind password
 

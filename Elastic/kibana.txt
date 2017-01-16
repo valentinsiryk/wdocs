@@ -1,0 +1,19 @@
+======
+Kibana
+======
+
+Filters
+-------
+
+http://www.lucenetutorial.com/lucene-query-syntax.html
+
+::
+
+    # To exclude a term containing specific text
+    -field: "text"
+    
+    # To exclude different texts
+    -field: ("text1" or "text2")
+    
+    #If it's two separate fields
+    -field1: "text1" -field2: "text2"

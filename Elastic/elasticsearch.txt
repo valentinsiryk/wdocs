@@ -1,0 +1,8 @@
+=============
+Elasticsearch
+=============
+
+
+Clear index::
+
+    curl -XDELETE localhost:9200/*

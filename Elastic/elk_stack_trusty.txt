@@ -1,0 +1,322 @@
+============================
+ELK stack 5.x [Ubuntu 14.04]
+============================
+
+
+1. Filebeat
+-----------
+
+**Filebeat** (reads logs and delivers them to logstash).
+
+.. note::
+
+    Install Filebeat on host, where logs are situated
+
+
+**Installation**
+
+.. note::
+
+    Full newer instruction here - https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
+
+::
+
+    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.1.1-amd64.deb
+    sudo dpkg -i filebeat-5.1.1-amd64.deb
+
+
+Use the update-rc.d command to configure Filebeat to start automatically when the system boots up::
+
+    sudo update-rc.d filebeat defaults 95 10   
+
+
+**Configuration** ``/etc/filebeat/filebeat.yml``::
+
+    filebeat.prospectors:
+
+    # Each - is a prospector. Most options can be set at the prospector level, so
+    # you can use different prospectors for various configurations.
+    # Below are the prospector specific configurations.
+
+    - input_type: log
+      # Paths that should be crawled and fetched. Glob based paths.
+      paths:
+        - <path_to_log(s)>
+      fields:
+        env: <environment>
+        
+    # Different environments on same host.    
+    #- input_type: log
+      # Paths that should be crawled and fetched. Glob based paths.
+    #  paths:
+    #    - <path_to_log(s)>
+    #  fields:
+    #    env: <environment>
+       
+    #----------------------------- Logstash output --------------------------------
+    output.logstash:
+      # The Logstash hosts
+      hosts: ["<logstash_ip>:5044"]
+  
+  
+- ``path_to_log(s)`` - /var/log/nginx/access.log, etc.
+- ``environment`` - staging, live, some_env, etc. This field necessary for separating custom environment.
+- ``logstash_ip`` - 192.168.10.10, logstash.myhost.com, etc.
+ 
+
+**Start Filebeat**::
+
+    # start in background
+    sudo service filebeat start
+
+
+.. note:: 
+
+    After installation and configuration Filebeat will read and send messages to Logstash
+    
+
+2. Elastic apt-repos
+--------------------
+
+Run next commands step by step::
+
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -    
+    sudo apt-get install apt-transport-https
+    echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+    sudo apt-get update
+    
+
+3. Logstash
+-----------
+
+**Logstash** (receives input messages, filters them and sends to Elasticsearch).
+
+**Installation**
+   
+.. note::
+
+    Full newer instruction here - https://www.elastic.co/guide/en/logstash/5.1/installing-logstash.html
+
+
+.. note::
+
+    Logstash requires Java 8. Java 9 is not supported. Use the official Oracle distribution or an open-source distribution such as OpenJDK.
+
+
+Install **Logstash** from repos::
+
+    sudo apt-get install logstash
+
+
+Logstash will start automatically, after system starting
+
+
+**Configuration.** Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf``::
+
+    input {
+      beats {
+        port => "5044"
+      }
+    }
+
+
+    filter {
+      grok {
+        
+        # Pattern for next nginx access log format:
+        #
+        # log_format  main  '[$time_local] $remote_addr "$request" '
+        #                   '$status $body_bytes_sent '
+        #                   '"$http_user_agent" "$request_time"';
+        
+        match => { "message" => "%{WORD}\[%{NUMBER}\]: \[%{HTTPDATE:time}\] %{IPORHOST:ip} \"(?:%{WORD:verbs} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http})?|%{DATA:rawrequest})\" %{NUMBER:response} (?:%{NUMBER:bytes:integer}|-) %{QS:agent} \"%{NUMBER:duration:float}\"" }
+      }
+      
+      # Drop messages, who not match with grok pattern.
+      if "_grokparsefailure" in [tags] {
+        drop { }
+      }
+      
+      mutate {
+        add_field => { "request_clean" => "%{request}" }
+      }
+      
+      mutate {
+        gsub => [
+          "request_clean", "\?.*", ""
+        ]
+      }
+      
+      # Set @timestamp same as 'time' field.
+      date { 
+        match => [ "time", "dd/MMM/yyyy:HH:mm:ss Z" ]
+      }
+       
+      # Add useragent information. 
+      useragent {
+        source => "agent"
+        target => "useragent"
+      }
+      
+      # Remove not necessary fields.
+      mutate {
+        remove_field => [
+          "[useragent][major]",
+          "[useragent][minor]",
+          "[useragent][os_major]",
+          "[useragent][os_minor]",
+          "[useragent][patch]"
+        ]
+      }
+      
+      # Add geoip information.
+      geoip {
+          source => "ip"
+          fields => [
+            "city_name",
+            "continent_code",
+            "country_code2",
+            "country_name",
+            "location",
+            "region_name",
+            "timezone"
+          ] 
+      }
+    }
+
+
+    output {
+      elasticsearch {
+        hosts => ["<elasticsearch_ip>:9200"]
+        index => "logstash-%{[fields][env]}-%{+YYYY.MM.dd}"
+      }
+      
+      # Debug mode (output on stdout).
+      #stdout {
+      #  codec => rubydebug
+      #}
+    }
+  
+- ``elasticsearch_ip`` - 192.168.10.10, my-elastic.test.com, etc.
+
+
+.. note::
+
+    Logstash will send messages with next index template ``logstash-<env_field_from_filebeat>-<timestamp>``
+   
+
+**Start/restart Logstash**::
+
+    # start in background
+    sudo service logstash start
+
+    # restart
+    sudo service logstash restart
+
+
+.. note:: 
+
+    After installation and configuration Logstash will receive messages, filter them and send to Elasticsearch
+
+
+4. Elasticsearch
+----------------
+
+**Elasticsearch** (receives input messages from Logstash and stores them).
+
+**Installation**
+
+.. note::
+
+    Full newer instruction here - https://www.elastic.co/guide/en/elasticsearch/reference/5.1/deb.html
+
+
+.. note::
+
+    Elasticsearch requires Java 8. Java 9 is not supported. Use the official Oracle distribution or an open-source distribution such as OpenJDK.
+
+
+Install Elasticsearch from repos::
+
+    sudo apt-get install elasticsearch
+
+
+Use the update-rc.d command to configure Elasticsearch to start automatically when the system boots up::
+
+    sudo update-rc.d elasticsearch defaults 95 10
+
+    
+**Configuration** 
+
+.. note::
+
+    Elasticsearch will assign the entire heap specified in ``/etc/elasticsearch/jvm.options`` via the Xms (minimum heap size) and Xmx (maximum heap size) settings.
+
+
+Main config-file ``/etc/elasticsearch/elasticsearch.yml``::
+
+    # path to directory where to store the data (separate multiple locations by comma)
+    path.data: /path/to/data
+
+
+**Start/restart Elasticsearch**::
+   
+    # start in background
+    sudo service elasticsearch start
+    
+    # restart
+    sudo service elasticsearch restart   
+
+
+5. Kibana
+---------
+
+**Kibana** (visualises data from Elasticsearch).
+
+**Installation**
+   
+.. note::
+   
+    Full newer instruction here - https://www.elastic.co/guide/en/kibana/current/deb.html
+    
+    
+Install Kibana from repos::
+   
+    sudo apt-get install kibana
+    
+    
+Use the update-rc.d command to configure Kibana to start automatically when the system boots up::
+
+    sudo update-rc.d kibana defaults 95 10
+   
+        
+**Configuration** 
+   
+.. note::
+   
+    Kibana loads its configuration from the ``/etc/kibana/kibana.yml`` file by default.
+    
+    
+Change main parameters in ``/etc/kibana/kibana.yml``::
+   
+    # allow remote connections
+    server.host: "0.0.0.0"
+    
+    # Elasticsearch URL
+    elasticsearch.url: "http://localhost:9200"
+    
+ 
+**Start/restart Kibana**::
+   
+    # start in background
+    sudo service kibana start
+    
+    # restart
+    sudo service kibana restart  
+    
+    
+**Open WEB UI (ip:5601)**
+    
+Setup index with next template ``logstash-env_field_from_filebeat-*``
+
+
