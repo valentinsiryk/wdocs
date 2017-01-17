@@ -2,6 +2,8 @@
 ELK stack 5.x [Ubuntu 14.04]
 ============================
 
+.. figure:: elk_stack.svg
+    
 
 1. Filebeat
 -----------
