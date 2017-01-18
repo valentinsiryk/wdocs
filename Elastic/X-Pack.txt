@@ -1,0 +1,25 @@
+======
+X-Pack
+======
+
+Enabling and Disabling X-Pack Features
+--------------------------------------
+
+By default, all X-Pack features are enabled. You can explicitly enable or disable X-Pack features in ``elasticsearch.yml`` and ``kibana.yml``::
+
+    # Set to false to disable X-Pack security. Configure in both elasticsearch.yml and kibana.yml.
+    xpack.security.enabled
+    
+    # Set to false to disable X-Pack monitoring. Configure in both elasticsearch.yml and kibana.yml.
+    xpack.monitoring.enabled
+    
+    # Set to false to disable X-Pack graph. Configure in both elasticsearch.yml and kibana.yml.
+    xpack.graph.enabled
+    
+    # Set to false to disable Watcher. Configure in elasticsearch.yml only.
+    xpack.watcher.enabled
+
+    # Set to false to disable X-Pack reporting. Configure in kibana.yml only.
+    xpack.reporting.enabled
+
+    

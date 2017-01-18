@@ -3,81 +3,9 @@ ELK stack 5.x [Ubuntu 14.04]
 ============================
 
 .. figure:: elk_stack.svg
-    
+     
 
-1. Filebeat
------------
-
-**Filebeat** (reads logs and delivers them to logstash).
-
-.. note::
-
-    Install Filebeat on host, where logs are situated
-
-
-**Installation**
-
-.. note::
-
-    Full newer instruction here - https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
-
-::
-
-    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.1.1-amd64.deb
-    sudo dpkg -i filebeat-5.1.1-amd64.deb
-
-
-Use the update-rc.d command to configure Filebeat to start automatically when the system boots up::
-
-    sudo update-rc.d filebeat defaults 95 10   
-
-
-**Configuration** ``/etc/filebeat/filebeat.yml``::
-
-    filebeat.prospectors:
-
-    # Each - is a prospector. Most options can be set at the prospector level, so
-    # you can use different prospectors for various configurations.
-    # Below are the prospector specific configurations.
-
-    - input_type: log
-      # Paths that should be crawled and fetched. Glob based paths.
-      paths:
-        - <path_to_log(s)>
-      fields:
-        env: <environment>
-        
-    # Different environments on same host.    
-    #- input_type: log
-      # Paths that should be crawled and fetched. Glob based paths.
-    #  paths:
-    #    - <path_to_log(s)>
-    #  fields:
-    #    env: <environment>
-       
-    #----------------------------- Logstash output --------------------------------
-    output.logstash:
-      # The Logstash hosts
-      hosts: ["<logstash_ip>:5044"]
-  
-  
-- ``path_to_log(s)`` - /var/log/nginx/access.log, etc.
-- ``environment`` - staging, live, some_env, etc. This field necessary for separating custom environment.
-- ``logstash_ip`` - 192.168.10.10, logstash.myhost.com, etc.
- 
-
-**Start Filebeat**::
-
-    # start in background
-    sudo service filebeat start
-
-
-.. note:: 
-
-    After installation and configuration Filebeat will read and send messages to Logstash
-    
-
-2. Elastic apt-repos
+1. Elastic apt-repos
 --------------------
 
 Run next commands step by step::
@@ -88,12 +16,215 @@ Run next commands step by step::
     sudo apt-get update
     
 
-3. Logstash
+2. Elasticsearch
+----------------
+
+**Elasticsearch** (receives input messages from Logstash and stores them).
+
+Installation
+^^^^^^^^^^^^
+
+.. note::
+
+    Full newer instruction here - https://www.elastic.co/guide/en/elasticsearch/reference/5.1/deb.html
+
+
+.. note::
+
+    Elasticsearch requires Java 8. Java 9 is not supported. Use the official Oracle distribution or an open-source distribution such as OpenJDK.
+
+
+Install Elasticsearch from repos::
+
+    sudo apt-get install elasticsearch
+    
+
+Elasticsearch will be installed in ``/usr/share/elasticsearch``
+
+
+Use the update-rc.d command to configure Elasticsearch to start automatically when the system boots up::
+
+    sudo update-rc.d elasticsearch defaults 95 10
+
+    
+Configuration
+^^^^^^^^^^^^^ 
+
+.. note::
+
+    Elasticsearch will assign the entire heap specified in ``/etc/elasticsearch/jvm.options`` via the Xms (minimum heap size) and Xmx (maximum heap size) settings.
+
+
+Main config-file ``/etc/elasticsearch/elasticsearch.yml``::
+
+    # path to directory where to store the data (separate multiple locations by comma)
+    path.data: /path/to/data
+
+
+**Start/restart Elasticsearch**::
+   
+    # start in background
+    sudo service elasticsearch start
+    
+    # restart
+    sudo service elasticsearch restart   
+
+
+3. Kibana
+---------
+
+**Kibana** (visualises data from Elasticsearch).
+
+Installation
+^^^^^^^^^^^^
+   
+.. note::
+   
+    Full newer instruction here - https://www.elastic.co/guide/en/kibana/current/deb.html
+    
+    
+Install Kibana from repos::
+   
+    sudo apt-get install kibana
+    
+    
+Use the update-rc.d command to configure Kibana to start automatically when the system boots up::
+
+    sudo update-rc.d kibana defaults 95 10
+   
+        
+Configuration
+^^^^^^^^^^^^^ 
+   
+.. note::
+   
+    Kibana loads its configuration from the ``/etc/kibana/kibana.yml`` file by default.
+    
+    
+Change main parameters in ``/etc/kibana/kibana.yml``::
+   
+    # allow remote connections
+    server.host: "<your_dns_name_or_ip>"
+    
+    # Elasticsearch URL
+    elasticsearch.url: "http://localhost:9200"
+    
+ 
+**Start/restart Kibana**::
+   
+    # start in background
+    sudo service kibana start
+    
+    # restart
+    sudo service kibana restart  
+    
+
+4. X-Pack
+---------
+
+**X-Pack** (security, alerting, monitoring, reporting, and graph capabilities into one easy-to-install package)
+
+
+Installation
+^^^^^^^^^^^^
+   
+.. note::
+   
+    Full newer instruction here - https://www.elastic.co/guide/en/x-pack/current/installing-xpack.html
+    
+
+On host with Elasticsearch and Kibana run next commands::
+
+    # install X-Pack plugin for Elasticsearch
+    sudo /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack --batch
+    
+    # restart Elasticsearch
+    sudo service elasticsearch restart
+    
+    # install X-Pack plugin for Kibana
+    sudo /usr/share/kibana/bin/kibana-plugin install x-pack
+    
+    # restart Kibana
+    sudo service kibana restart
+    
+ 
+.. note::
+
+    To log in to Kibana, you can use the built-in ``elastic`` user and the password ``changeme``. In Kibana WEB UI select ``Management->Users`` and change default passwords for ``elastic`` and ``kibana`` users.
+    
+    After changing the password for the ``kibana`` user, you will need to update ``/etc/kibana/kibana.yml``::
+    
+        elasticsearch.username: "kibana"
+        elasticsearch.password: "<kibana_password>"
+        
+    
+    And restart Kibana::
+    
+        sudo service kibana restart
+        
+        
+Create internal Logstash user
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create a ``logstash_writer`` role that has the ``manage_index_templates`` cluster privilege, and the ``write, delete, and create_index`` privileges for the Logstash indices. You can create roles from the ``Dev Tools -> Consloe`` in Kibana. If you use a custom Logstash index pattern, specify that pattern instead of the default ``logstash-*`` pattern.
+::
+
+    POST _xpack/security/role/logstash_writer
+    {
+      "cluster": ["manage_index_templates", "monitor"],
+      "indices": [
+        {
+          "names": [ "logstash-*" ], 
+          "privileges": ["write","delete","create_index"]
+        }
+      ]
+    }
+
+
+Create a ``logstash_internal`` user and assign it the ``logstash_writer`` role. You can create users from the ``Dev Tools -> Consloe`` UI in Kibana.
+::
+
+    POST /_xpack/security/user/logstash_internal
+    {
+      "password" : "<your_logstash_password>",
+      "roles" : [ "logstash_writer"],
+      "full_name" : "Internal Logstash User"
+    }
+
+
+Configure Logstash to authenticate as the logstash_internal user you just created. You configure credentials separately for each of the Elasticsearch plugins in your Logstash .conf file. For example::
+
+    output {
+      elasticsearch {
+        ...
+        user => "logstash_internal"
+        password => "<your_logstash_password>"
+      }
+    }
+
+    
+    And restart Logstash::
+    
+        sudo service logstash restart
+    
+    
+Configuration
+^^^^^^^^^^^^^ 
+By default, all X-Pack features are enabled. You can explicitly enable or disable X-Pack features in ``elasticsearch.yml`` and ``kibana.yml``.
+
+
+- Config logstash with credentials to connect to elasticsearch
+- Config filebeat to connect to logstash (certs)
+
+
+
+5. Logstash
 -----------
 
 **Logstash** (receives input messages, filters them and sends to Elasticsearch).
 
-**Installation**
+Installation
+^^^^^^^^^^^^
    
 .. note::
 
@@ -113,7 +244,9 @@ Install **Logstash** from repos::
 Logstash will start automatically, after system starting
 
 
-**Configuration.** Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf``::
+Configuration
+^^^^^^^^^^^^^
+Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf``::
 
     input {
       beats {
@@ -221,104 +354,80 @@ Logstash will start automatically, after system starting
     After installation and configuration Logstash will receive messages, filter them and send to Elasticsearch
 
 
-4. Elasticsearch
-----------------
 
-**Elasticsearch** (receives input messages from Logstash and stores them).
 
-**Installation**
 
-.. note::
+6. Filebeat
+-----------
 
-    Full newer instruction here - https://www.elastic.co/guide/en/elasticsearch/reference/5.1/deb.html
-
+**Filebeat** (reads logs and delivers them to logstash).
 
 .. note::
 
-    Elasticsearch requires Java 8. Java 9 is not supported. Use the official Oracle distribution or an open-source distribution such as OpenJDK.
+    Install Filebeat on host, where logs are situated
 
 
-Install Elasticsearch from repos::
-
-    sudo apt-get install elasticsearch
-
-
-Use the update-rc.d command to configure Elasticsearch to start automatically when the system boots up::
-
-    sudo update-rc.d elasticsearch defaults 95 10
-
-    
-**Configuration** 
+Installation
+^^^^^^^^^^^^
 
 .. note::
 
-    Elasticsearch will assign the entire heap specified in ``/etc/elasticsearch/jvm.options`` via the Xms (minimum heap size) and Xmx (maximum heap size) settings.
+    Full newer instruction here - https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
+
+::
+
+    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.1.1-amd64.deb
+    sudo dpkg -i filebeat-5.1.1-amd64.deb
 
 
-Main config-file ``/etc/elasticsearch/elasticsearch.yml``::
+Use the update-rc.d command to configure Filebeat to start automatically when the system boots up::
 
-    # path to directory where to store the data (separate multiple locations by comma)
-    path.data: /path/to/data
-
-
-**Start/restart Elasticsearch**::
-   
-    # start in background
-    sudo service elasticsearch start
-    
-    # restart
-    sudo service elasticsearch restart   
+    sudo update-rc.d filebeat defaults 95 10   
 
 
-5. Kibana
----------
+Configuration
+^^^^^^^^^^^^^
 
-**Kibana** (visualises data from Elasticsearch).
+``/etc/filebeat/filebeat.yml``::
 
-**Installation**
-   
-.. note::
-   
-    Full newer instruction here - https://www.elastic.co/guide/en/kibana/current/deb.html
-    
-    
-Install Kibana from repos::
-   
-    sudo apt-get install kibana
-    
-    
-Use the update-rc.d command to configure Kibana to start automatically when the system boots up::
+    filebeat.prospectors:
 
-    sudo update-rc.d kibana defaults 95 10
-   
+    # Each - is a prospector. Most options can be set at the prospector level, so
+    # you can use different prospectors for various configurations.
+    # Below are the prospector specific configurations.
+
+    - input_type: log
+      # Paths that should be crawled and fetched. Glob based paths.
+      paths:
+        - <path_to_log(s)>
+      fields:
+        env: <environment>
         
-**Configuration** 
-   
-.. note::
-   
-    Kibana loads its configuration from the ``/etc/kibana/kibana.yml`` file by default.
-    
-    
-Change main parameters in ``/etc/kibana/kibana.yml``::
-   
-    # allow remote connections
-    server.host: "0.0.0.0"
-    
-    # Elasticsearch URL
-    elasticsearch.url: "http://localhost:9200"
-    
+    # Different environments on same host.    
+    #- input_type: log
+      # Paths that should be crawled and fetched. Glob based paths.
+    #  paths:
+    #    - <path_to_log(s)>
+    #  fields:
+    #    env: <environment>
+       
+    #----------------------------- Logstash output --------------------------------
+    output.logstash:
+      # The Logstash hosts
+      hosts: ["<logstash_ip>:5044"]
+  
+  
+- ``path_to_log(s)`` - /var/log/nginx/access.log, etc.
+- ``environment`` - staging, live, some_env, etc. This field necessary for separating custom environment.
+- ``logstash_ip`` - 192.168.10.10, logstash.myhost.com, etc.
  
-**Start/restart Kibana**::
-   
+
+**Start Filebeat**::
+
     # start in background
-    sudo service kibana start
-    
-    # restart
-    sudo service kibana restart  
-    
-    
-**Open WEB UI (ip:5601)**
-    
-Setup index with next template ``logstash-env_field_from_filebeat-*``
+    sudo service filebeat start
 
 
+.. note:: 
+
+    After installation and configuration Filebeat will read and send messages to Logstash. When filebeat will have sent first message, you will can open WEB UI of Kibana (kibana_ip:5601) and setup index with next template ``logstash-env_field_from_filebeat-*``
