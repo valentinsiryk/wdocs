@@ -476,4 +476,4 @@ Create file ``/etc/filebeat/filebeat.yml``::
 
 .. note:: 
 
-    After installation and configuration Filebeat will read and send messages to Logstash. When filebeat will have sent first message, you will can open WEB UI of Kibana (kibana_ip:5601) and setup index with next template ``logstash-env_field_from_filebeat-*``
+    After installation and configuration Filebeat will read and send messages to Logstash. When filebeat will have sent first message, you will can open WEB UI of Kibana (<elk_host_dns>:5601) and setup index with next template ``logstash-env_field_from_filebeat-*``
