@@ -1,0 +1,36 @@
+===========
+letsencrypt
+===========
+
+**Let’s Encrypt** - https://letsencrypt.org/getting-started/
+
+https://certbot.eff.org
+
+
+Add to web-server config (if not exist)::
+
+    # [Nginx]
+    
+    location /.well-known {
+        root   /var/www/html;
+    }
+    
+
+
+Generate certificates::
+
+    sudo apt install letsencrypt
+    
+    # Replace with your webroot and hostname
+    letsencrypt certonly --webroot -w /var/www/html -d my.company.com
+    
+    # Letsencrypt will generate certs and show path to them (paste this path to web-server config)
+    
+
+Add CRON tasks (auto renew)::
+
+    sudo crontab -e
+    
+    # Check or renew certs twice per day
+    30 12 * * * root letsencrypt renew
+    0 18 * * * root letsencrypt renew

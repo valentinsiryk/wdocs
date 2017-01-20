@@ -2,11 +2,112 @@
 SSL
 ===
 
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+
+Show info::
+
+    openssl x509 -noout -issuer -enddate -in root.pem
 
 
-You can also add -nodes if you don't want to protect your private key with a passphrase, otherwise it will prompt you for "at least a 4 character" password.
-The days parameter (365) you can replace with any number to affect expiration date.
+Validate the certificate even though the protocol used to communicate with server is not based on HTTP. For example::
+
+    curl -v --cacert ca.crt https://logs.mycompany.com:5044
+
+
+
+Self-signed
+-----------
+
+Generate on Linux::
+
+    sudo openssl req -x509 -newkey rsa:4096 -keyout key.key -out cert.crt -days 365 -nodes -batch
+    sudo chmod 600 key.key
+    
+    
+    # alternate
+    openssl req -x509 -newkey rsa:4096 -keyout logstash.key -out logstash.crt -days 3650 -nodes -batch -subj '/CN=test.com/subjectAltName=DNS.1=test.com,DNS.2=test2.com'
+
+
+Without questions ``-batch``. Add /CN ``-subj /CN=test``.
+You can also add ``-nodes`` if you don't want to protect your private key with a passphrase, otherwise it will prompt you for "at least a 4 character" password.
+The days parameter (``365``) you can replace with any number to affect expiration date.
 It will then prompt you for things like "Country Name" but you can just hit enter and accept defaults.
 
 Self-signed certs are not validated with any third party unless you import them to the browsers previously. If you need more security, you should use a certificate signed by a CA.
+
+
+Self-signed with SAN
+--------------------
+
+Create config ``ssl.conf``::
+
+    [ req ]
+    distinguished_name = req_distinguished_name
+    x509_extensions    = v3_req
+    prompt             = no
+
+    [ req_distinguished_name ]
+    O = My Organisation
+
+    [ v3_req ]
+    basicConstraints = CA:TRUE
+    subjectAltName   = @alt_names
+
+    [ alt_names ]
+    DNS.1 = *
+    DNS.2 = *.*
+    DNS.3 = *.*.*
+    DNS.4 = *.*.*.*
+    DNS.5 = *.*.*.*.*
+    DNS.6 = *.*.*.*.*.*
+    DNS.7 = *.*.*.*.*.*.*
+    IP.1  = 10.10.11.222
+    IP.2  = 127.0.0.1
+
+
+.. note::
+
+    In ``[ alt_names ]`` section you can describe only one host DNS name or IP.
+
+
+Run generate command::
+
+    sudo openssl req -x509 -newkey rsa:4096 -keyout key.key -out cert.crt -days 3650 -nodes -batch -config ssl.conf
+    sudo chmod 600 key.key
+
+
+
+
+Letsencrypt
+-----------
+
+**Let’s Encrypt** - https://letsencrypt.org/getting-started/
+
+https://certbot.eff.org
+
+
+Add to web-server config (if not exist)::
+
+    # [Nginx]
+    
+    location /.well-known {
+        root   /var/www/html;
+    }
+    
+
+Generate certificates::
+
+    sudo apt install letsencrypt
+    
+    # Replace with your webroot and hostname
+    letsencrypt certonly --webroot -w /var/www/html -d my.company.com
+    
+    # Letsencrypt will generate certs and show path to them (paste this path to web-server config)
+    
+
+Add CRON tasks (auto renew)::
+
+    sudo crontab -e
+    
+    # Check or renew certs twice per day
+    30 12 * * * root letsencrypt renew
+    0 18 * * * root letsencrypt renew

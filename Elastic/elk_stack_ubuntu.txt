@@ -1,22 +1,105 @@
-============================
-ELK stack 5.x [Ubuntu 14.04]
-============================
+==================================
+ELK stack 5.x [Ubuntu 14.04/16.04]
+==================================
 
 .. figure:: elk_stack.svg
      
 
-1. Elastic apt-repos
---------------------
+1. NGINX
+--------
 
-Run next commands step by step::
+Installation and configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
 
-    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -    
-    sudo apt-get install apt-transport-https
-    echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
-    sudo apt-get update
+    apt update
+    apt install nginx
     
 
-2. Elasticsearch
+Use openssl to create an admin user, called ``kibanaadmin`` (you should use another name), that can access the Kibana web interface::
+
+    sudo -v
+    echo "kibanaadmin:`openssl passwd -apr1`" | sudo tee -a /etc/nginx/htpasswd.users
+    
+    
+Change the Nginx default server block ``/etc/nginx/sites-available/default``::
+
+    server {
+        listen 80 default_server;
+        return 301 https://$host$request_uri;
+    }
+
+    server {
+        listen 443 ssl default_server;
+
+        # Replace with your hostname
+        server_name elk.company.com;
+
+        ssl on;
+        
+        # Replace with your paths to certs
+        ssl_certificate /path/to/keys/cert.crt;
+        ssl_certificate_key /path/to/keys/key.key;
+
+        location / {
+            auth_basic "Restricted Access";
+            auth_basic_user_file /etc/nginx/htpasswd.users;
+
+            proxy_pass http://localhost:5601;
+        }
+        
+        # Path for letsencrypt temporary files
+        location /.well-known {
+            root   /var/www/html;
+        }
+    }
+
+    
+Generate certificates
+^^^^^^^^^^^^^^^^^^^^^
+
+**Self-signed** [not-recomended]::
+
+    sudo mkdir /path/to/keys
+    cd /path/to/keys
+    sudo openssl req -x509 -nodes -newkey rsa:4096 -keyout key.key -out cert.crt -days 365
+    
+    sudo nginx -t
+    sudo service nginx restart
+
+
+**Letsencrypt**::
+
+    sudo apt install letsencrypt
+    
+    # Replace with your webroot and hostname
+    letsencrypt certonly --webroot -w /var/www/html -d elk.company.com
+    
+    # Letsencrypt will generate certs and show path to them (paste this path to web-server config)
+    
+
+Add CRON tasks to renew automatically Letsencrypt certs::
+
+    sudo crontab -e
+    
+    # Check or renew certs twice per day
+    30 12 * * * root letsencrypt renew
+    0 18 * * * root letsencrypt renew
+
+
+
+2. Elastic apt-repos
+--------------------
+
+Add Elastic apt-repos. Run next commands step by step::
+
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -    
+    sudo apt install apt-transport-https
+    echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+    sudo apt update
+    
+
+3. Elasticsearch
 ----------------
 
 **Elasticsearch** (receives input messages from Logstash and stores them).
@@ -26,7 +109,7 @@ Installation
 
 .. note::
 
-    Full newer instruction here - https://www.elastic.co/guide/en/elasticsearch/reference/5.1/deb.html
+    Full newest instruction here - https://www.elastic.co/guide/en/elasticsearch/reference/5.1/deb.html
 
 
 .. note::
@@ -34,17 +117,37 @@ Installation
     Elasticsearch requires Java 8. Java 9 is not supported. Use the official Oracle distribution or an open-source distribution such as OpenJDK.
 
 
+Install Java 8::
+
+    # Ubuntu 16.04
+    sudo apt install openjdk-8-jre
+    
+    # Ubuntu 14.04
+    # use any method of Java 8 installation
+    
+
 Install Elasticsearch from repos::
 
-    sudo apt-get install elasticsearch
+    sudo apt install elasticsearch
     
 
 Elasticsearch will be installed in ``/usr/share/elasticsearch``
 
 
-Use the update-rc.d command to configure Elasticsearch to start automatically when the system boots up::
+.. note::
 
-    sudo update-rc.d elasticsearch defaults 95 10
+    Add Elasticsearch to autorun - https://www.elastic.co/guide/en/elasticsearch/reference/5.1/deb.html#_sysv_literal_init_literal_vs_literal_systemd_literal
+    
+    - systemd [Ubuntu 16.04]::
+    
+        sudo /bin/systemctl daemon-reload
+        sudo /bin/systemctl enable elasticsearch.service
+        
+        
+    - init [Ubuntu 14.04]::
+    
+        sudo update-rc.d elasticsearch defaults 95 10
+    
 
     
 Configuration
@@ -59,18 +162,17 @@ Main config-file ``/etc/elasticsearch/elasticsearch.yml``::
 
     # path to directory where to store the data (separate multiple locations by comma)
     path.data: /path/to/data
-
-
-**Start/restart Elasticsearch**::
-   
-    # start in background
-    sudo service elasticsearch start
     
-    # restart
-    sudo service elasticsearch restart   
+    # Use a descriptive name for the node:
+    node.name: node-1
 
 
-3. Kibana
+**Start Elasticsearch**::
+
+    sudo service elasticsearch start
+
+
+4. Kibana
 ---------
 
 **Kibana** (visualises data from Elasticsearch).
@@ -80,17 +182,28 @@ Installation
    
 .. note::
    
-    Full newer instruction here - https://www.elastic.co/guide/en/kibana/current/deb.html
+    Full newest instruction here - https://www.elastic.co/guide/en/kibana/current/deb.html
     
     
 Install Kibana from repos::
    
-    sudo apt-get install kibana
+    sudo apt install kibana
     
-    
-Use the update-rc.d command to configure Kibana to start automatically when the system boots up::
 
-    sudo update-rc.d kibana defaults 95 10
+.. note::
+
+    Add Kibana to autorun - https://www.elastic.co/guide/en/kibana/current/deb.html#_sysv_literal_init_literal_vs_literal_systemd_literal
+    
+    - systemd [Ubuntu 16.04]::
+    
+        sudo /bin/systemctl daemon-reload
+        sudo /bin/systemctl enable kibana.service
+        
+        
+    - init [Ubuntu 14.04]::
+    
+        sudo update-rc.d kibana defaults 95 10
+
    
         
 Configuration
@@ -102,120 +215,21 @@ Configuration
     
     
 Change main parameters in ``/etc/kibana/kibana.yml``::
+
+    # Kibana is served by a back end server. This setting specifies the port to use.
+    server.port: 5601
    
     # allow remote connections
-    server.host: "<your_dns_name_or_ip>"
+    server.host: "localhost"
     
     # Elasticsearch URL
     elasticsearch.url: "http://localhost:9200"
     
  
-**Start/restart Kibana**::
-   
-    # start in background
+**Start Kibana**::
+
     sudo service kibana start
-    
-    # restart
-    sudo service kibana restart  
-    
-
-4. X-Pack
----------
-
-**X-Pack** (security, alerting, monitoring, reporting, and graph capabilities into one easy-to-install package)
-
-
-Installation
-^^^^^^^^^^^^
-   
-.. note::
-   
-    Full newer instruction here - https://www.elastic.co/guide/en/x-pack/current/installing-xpack.html
-    
-
-On host with Elasticsearch and Kibana run next commands::
-
-    # install X-Pack plugin for Elasticsearch
-    sudo /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack --batch
-    
-    # restart Elasticsearch
-    sudo service elasticsearch restart
-    
-    # install X-Pack plugin for Kibana
-    sudo /usr/share/kibana/bin/kibana-plugin install x-pack
-    
-    # restart Kibana
-    sudo service kibana restart
-    
- 
-.. note::
-
-    To log in to Kibana, you can use the built-in ``elastic`` user and the password ``changeme``. In Kibana WEB UI select ``Management->Users`` and change default passwords for ``elastic`` and ``kibana`` users.
-    
-    After changing the password for the ``kibana`` user, you will need to update ``/etc/kibana/kibana.yml``::
-    
-        elasticsearch.username: "kibana"
-        elasticsearch.password: "<kibana_password>"
-        
-    
-    And restart Kibana::
-    
-        sudo service kibana restart
-        
-        
-Create internal Logstash user
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Create a ``logstash_writer`` role that has the ``manage_index_templates`` cluster privilege, and the ``write, delete, and create_index`` privileges for the Logstash indices. You can create roles from the ``Dev Tools -> Consloe`` in Kibana. If you use a custom Logstash index pattern, specify that pattern instead of the default ``logstash-*`` pattern.
-::
-
-    POST _xpack/security/role/logstash_writer
-    {
-      "cluster": ["manage_index_templates", "monitor"],
-      "indices": [
-        {
-          "names": [ "logstash-*" ], 
-          "privileges": ["write","delete","create_index"]
-        }
-      ]
-    }
-
-
-Create a ``logstash_internal`` user and assign it the ``logstash_writer`` role. You can create users from the ``Dev Tools -> Consloe`` UI in Kibana.
-::
-
-    POST /_xpack/security/user/logstash_internal
-    {
-      "password" : "<your_logstash_password>",
-      "roles" : [ "logstash_writer"],
-      "full_name" : "Internal Logstash User"
-    }
-
-
-Configure Logstash to authenticate as the logstash_internal user you just created. You configure credentials separately for each of the Elasticsearch plugins in your Logstash .conf file. For example::
-
-    output {
-      elasticsearch {
-        ...
-        user => "logstash_internal"
-        password => "<your_logstash_password>"
-      }
-    }
-
-    
-    And restart Logstash::
-    
-        sudo service logstash restart
-    
-    
-Configuration
-^^^^^^^^^^^^^ 
-By default, all X-Pack features are enabled. You can explicitly enable or disable X-Pack features in ``elasticsearch.yml`` and ``kibana.yml``.
-
-
-- Config logstash with credentials to connect to elasticsearch
-- Config filebeat to connect to logstash (certs)
-
+  
 
 
 5. Logstash
@@ -228,7 +242,7 @@ Installation
    
 .. note::
 
-    Full newer instruction here - https://www.elastic.co/guide/en/logstash/5.1/installing-logstash.html
+    Full newest instruction here - https://www.elastic.co/guide/en/logstash/5.1/installing-logstash.html
 
 
 .. note::
@@ -238,7 +252,7 @@ Installation
 
 Install **Logstash** from repos::
 
-    sudo apt-get install logstash
+    sudo apt install logstash
 
 
 Logstash will start automatically, after system starting
@@ -246,11 +260,52 @@ Logstash will start automatically, after system starting
 
 Configuration
 ^^^^^^^^^^^^^
+
+.. note::
+
+    Logstash will assign the entire heap specified in ``/etc/logstash/jvm.options`` via the Xms (minimum heap size) and Xmx (maximum heap size) settings.
+    
+
+Create config for certs generating ``/etc/logstash/ssl/ssl.conf``::
+
+    [ req ]
+    distinguished_name = req_distinguished_name
+    x509_extensions    = v3_req
+    prompt             = no
+
+    [ req_distinguished_name ]
+    O = My Organisation
+
+    [ v3_req ]
+    basicConstraints = CA:TRUE
+    subjectAltName   = @alt_names
+
+    [ alt_names ]
+    DNS.1 = <HOST_DNS>
+
+
+``HOST_DNS`` - elk.my-company.com, etc. (Host, where logstash is installed and listen input connections)
+
+.. note::
+
+    In ``[ alt_names ]`` section you can describe host DNS name's or IP's.
+
+
+Generate SSL cert::
+
+    cd /etc/logstash/ssl/
+    sudo openssl req -x509 -newkey rsa:4096 -keyout logstash.key -out logstash.crt -days 3650 -nodes -batch -config ssl.conf
+    sudo chmod 600 key.key
+
+
 Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf``::
 
     input {
       beats {
         port => "5044"
+        ssl => true
+        ssl_certificate => "/etc/logstash/ssl/logstash.crt"
+        ssl_key => "/etc/logstash/ssl/logstash.key"
       }
     }
 
@@ -322,7 +377,7 @@ Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf
 
     output {
       elasticsearch {
-        hosts => ["<elasticsearch_ip>:9200"]
+        hosts => ["localhost:9200"]
         index => "logstash-%{[fields][env]}-%{+YYYY.MM.dd}"
       }
       
@@ -331,8 +386,6 @@ Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf
       #  codec => rubydebug
       #}
     }
-  
-- ``elasticsearch_ip`` - 192.168.10.10, my-elastic.test.com, etc.
 
 
 .. note::
@@ -340,13 +393,9 @@ Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf
     Logstash will send messages with next index template ``logstash-<env_field_from_filebeat>-<timestamp>``
    
 
-**Start/restart Logstash**::
+**Start Logstash**::
 
-    # start in background
     sudo service logstash start
-
-    # restart
-    sudo service logstash restart
 
 
 .. note:: 
@@ -355,9 +404,7 @@ Add your config-file in ``conf.d``-directory ``/etc/logstash/conf.d/my-conf.conf
 
 
 
-
-
-6. Filebeat
+7. Filebeat
 -----------
 
 **Filebeat** (reads logs and delivers them to logstash).
@@ -372,7 +419,7 @@ Installation
 
 .. note::
 
-    Full newer instruction here - https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
+    Full newest instruction here - https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation.html
 
 ::
 
@@ -388,7 +435,10 @@ Use the update-rc.d command to configure Filebeat to start automatically when th
 Configuration
 ^^^^^^^^^^^^^
 
-``/etc/filebeat/filebeat.yml``::
+Create dir ``/etc/filebeat/ssl`` and put there your Logstash certificate (generated early at /etc/logstash/ssl/logstash.crt on ELK host)
+
+
+Create file ``/etc/filebeat/filebeat.yml``::
 
     filebeat.prospectors:
 
@@ -415,6 +465,8 @@ Configuration
     output.logstash:
       # The Logstash hosts
       hosts: ["<logstash_ip>:5044"]
+      ssl:
+      ssl.certificate_authorities: ["/etc/filebeat/ssl/logstash.crt"]
   
   
 - ``path_to_log(s)`` - /var/log/nginx/access.log, etc.

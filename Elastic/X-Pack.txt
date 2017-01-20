@@ -2,6 +2,63 @@
 X-Pack
 ======
 
+**X-Pack** (security, alerting, monitoring, reporting, and graph capabilities into one easy-to-install package)
+
+
+Installation
+------------
+   
+.. note::
+   
+    Full newer instruction here - https://www.elastic.co/guide/en/x-pack/current/installing-xpack.html
+    
+
+On host with Elasticsearch and Kibana run next commands::
+
+    # install X-Pack plugin for Elasticsearch
+    sudo /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack --batch
+    
+    # restart Elasticsearch
+    sudo service elasticsearch restart
+    
+    # install X-Pack plugin for Kibana
+    sudo /usr/share/kibana/bin/kibana-plugin install x-pack
+    
+    # restart Kibana
+    sudo service kibana restart
+    
+ 
+.. note::
+
+    To log in to Kibana, you can use the built-in ``elastic`` user and the password ``changeme``. In Kibana WEB UI select ``Management->Users`` and change default passwords for ``elastic`` and ``kibana`` users.
+    
+    After changing the password for the ``kibana`` user, you will need to update ``/etc/kibana/kibana.yml``::
+    
+        elasticsearch.username: "kibana"
+        elasticsearch.password: "<kibana_user_password>"
+        
+    
+    And restart Kibana::
+    
+        sudo service kibana restart
+
+
+Removing
+--------   
+
+On host with Elasticsearch and Kibana run next commands::
+
+    # remove X-Pack plugin for Elasticsearch
+    sudo /usr/share/elasticsearch/bin/elasticsearch-plugin remove x-pack
+    sudo service elasticsearch restart
+    
+    # remove X-Pack plugin for Kibana
+    sudo /usr/share/kibana/bin/kibana-plugin remove x-pack
+    sudo service kibana restart
+    
+    
+    
+
 Enabling and Disabling X-Pack Features
 --------------------------------------
 
@@ -21,5 +78,6 @@ By default, all X-Pack features are enabled. You can explicitly enable or disabl
 
     # Set to false to disable X-Pack reporting. Configure in kibana.yml only.
     xpack.reporting.enabled
+
 
     

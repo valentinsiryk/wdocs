@@ -2,17 +2,29 @@
 CRON
 ====
 
-# open crontab for edit
-crontab -e
+Online checker - https://crontab.guru/
 
-* * * * * *
-| | | | | | 
-| | | | | +--- Годы       (диапазон: 1900-3000)
-| | | | +----- Дни недели (диапазон: 1-7)
-| | | +------- Месяцы     (диапазон: 1-12)
-| | +--------- Дни месяца (диапазон: 1-31)
-| +----------- Часы       (диапазон: 0-23)
-+------------- Минуты     (диапазон: 0-59)
 
-#<timing>   <user> <command>
-11 * * * *  root   /usr/lib/command
+Edit CRON tasks::
+
+    sudo crontab -e
+
+
+Cron log::
+
+     grep CRON /var/log/syslog
+
+
+Schema::
+
+    * * * * * *
+    | | | | | | 
+    | | | | | +--- Years            (range: 1900-3000)
+    | | | | +----- Days of week     (range: 1-7)
+    | | | +------- Months           (range: 1-12)
+    | | +--------- Days of month    (range: 1-31)
+    | +----------- Hours            (range: 0-23)
+    +------------- Minutes          (range: 0-59)
+
+    # <timing>  <user> <command>
+    11 * * * *  root   /usr/lib/command

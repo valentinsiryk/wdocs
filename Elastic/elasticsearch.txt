@@ -6,3 +6,15 @@ Elasticsearch
 Clear index::
 
     curl -XDELETE localhost:9200/*
+    
+    
+Start/restart Elasticsearch::
+   
+    # Ubuntu 14.04
+    sudo service elasticsearch start
+    sudo service elasticsearch restart 
+    
+    # Ubuntu 16.04 
+    
+    sudo systemctl start elasticsearch.service
+    sudo systemctl stop elasticsearch.service
