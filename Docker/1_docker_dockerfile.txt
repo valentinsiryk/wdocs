@@ -2,50 +2,47 @@
 Dockerfile
 ==========
 
-First, create a directory and a Dockerfile.
 
-mkdir sinatra
-cd sinatra
-touch Dockerfile
+Without bash::
 
-	# This is a comment
-	FROM ubuntu:14.04
-	MAINTAINER Kate Smith <ksmith@example.com>
-	RUN apt-get update && apt-get install -y ruby ruby-dev
-	RUN gem install sinatra
-	
-docker build -t ouruser/sinatra:v2 .
+    RUN ["apt-get", "install", "-y", "nginx"]
 
-######################################
 
-FROM ubuntu:14.04
-MAINTAINER John Smith <john@gmail.com>
-RUN apt-get update && apt-get install -y nginx
-RUN echo 'Hi, I am in your container' > /usr/share/nginx/html/index.html
-EXPOSE 80
+Example ``Dockerfile``::
 
-######################################
-RUN ["apt-get", "install", "-y", "nginx"]	# without bash
-##########################################
+    FROM ubuntu:14.04
+    MAINTAINER John Smith <john@gmail.com>
+    RUN apt-get update && apt-get install -y nginx
+    RUN echo 'Hi, I am in your container' > /usr/share/nginx/html/index.html
+    EXPOSE 80
 
-FROM ubuntu:14.04
-MAINTAINER John Smith <john@gmail.com>
-RUN apt-get update && apt-get install -y php5-fpm
-RUN echo 'cgi.fix_pathinfo = 0' >> /etc/php5/fpm/php.ini
-ENTRYPOINT ["php5-fpm"]
-CMD ["-F"]
-EXPOSE 9000
 
-###########################################
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV myName="John Doe" myDog=Rex\ The\ Dog \
-    myCat=fluffy
-###########################################
+Example php5-fpm::
 
-ARG var[=value]	# переменные, которые используются при билде, можно инициализировать
-				docker build --build-arg var=value, только те что описаны в докерфайле
+    FROM ubuntu:14.04
+    MAINTAINER John Smith <john@gmail.com>
+    RUN apt-get update && apt-get install -y php5-fpm
+    RUN echo 'cgi.fix_pathinfo = 0' >> /etc/php5/fpm/php.ini
+    ENTRYPOINT ["php5-fpm"]
+    CMD ["-F"]
+    EXPOSE 9000
+
+
+
+Clean up APT when done::
+
+    RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+::
+
+    ENV myName="John Doe" myDog=Rex\ The\ Dog \
+        myCat=fluffy
+
+
+    ARG var[=value]	# переменные, которые используются при билде, можно инициализировать
+				    docker build --build-arg var=value, только те что описаны в докерфайле
 
 
 

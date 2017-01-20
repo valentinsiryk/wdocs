@@ -3,6 +3,14 @@ Docker
 ======
 
 
+File ``.dockerignore``::
+
+    Dockerfile
+    docker-compose.yml
+    
+    
+
+
 Ctrl+p, Ctrl+q	# exit without stopped
 
 docker ps		# show running containers

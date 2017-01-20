@@ -2,54 +2,61 @@
 Docker-compose
 ==============
 
-*.yml
-##############################
-version: '2'
-services:
-  nginx1:
-    image: nginx
-    ports:
-     - "81:80"
-    external_links:
-     - redis_1
-     - project_db_1:mysql
-     - project_db_1:postgresql
-    tty: true
-##############################
 
-docker-compose up -d	# start sevices
-			   stop		# stop services
-			   stop <service_name>
-			   run <service_name> <command>
-			   exec <service_name> <command>	# -ti avto
-			   -p <project_name>	# name of project
-			   --force-recreate		# recreate containers
-			   down					# stop and delete containers and network_default
-					--rmi all		# + del all service images
+::
 
-#################################################
-version: '2'
-services:
-  app:
-    build: .
-    container_name: hydrareports
-    image: hydrareports
-    ports:
-     - "80:80"
-    restart: always
-    depends_on:
-     - postgres
-    volumes:
-     - ./.env:/var/www/html/.env
+    docker-compose up -d	# start sevices
+			       stop	
+			       stop <service_name>
+			       run <service_name> <command>
+			       exec <service_name> <command>	# -ti auto
+			       -p <project_name>	# name of project
+			       --force-recreate		# recreate containers
+			       down					# stop and delete containers and network_default
+					    --rmi all		# + del all service images
 
-  postgres:
-    image: postgres
-    container_name: hydrareports_postgres
-    volumes:
-     - ./.data/db:/var/lib/postgresql/data
-    restart: always
-    environment:
-     - TZ=Europe/Kiev
-     - POSTGRES_PASSWORD=${DATASOURCES_PASSWORD}
-     - POSTGRES_USER=${DATASOURCES_USERNAME}
-     - POSTGRES_DB=${DATASOURCES_DB}
+
+Example nginx ``docker-compose.yml``::
+
+    version: '2'
+    services:
+      nginx1:
+        image: nginx
+        ports:
+         - "81:80"
+        external_links:
+         - redis_1
+         - project_db_1:mysql
+         - project_db_1:postgresql
+        tty: true
+
+
+
+
+Example app with postgres::
+
+    version: '2'
+    services:
+      app:
+        build: .
+        container_name: hydrareports
+        image: hydrareports
+        ports:
+         - "80:80"
+        restart: always
+        depends_on:
+         - postgres
+        volumes:
+         - ./.env:/var/www/html/.env
+
+      postgres:
+        image: postgres
+        container_name: hydrareports_postgres
+        volumes:
+         - ./.data/db:/var/lib/postgresql/data
+        restart: always
+        environment:
+         - TZ=Europe/Kiev
+         - POSTGRES_PASSWORD=${DATASOURCES_PASSWORD}
+         - POSTGRES_USER=${DATASOURCES_USERNAME}
+         - POSTGRES_DB=${DATASOURCES_DB}

@@ -2,9 +2,12 @@
 md
 ==
 
-mdadm --assemble -scan
 
-mdadm --run /dev/md0
-mdadm --run /dev/md1
-mdadm --run /dev/md2
-mdadm --run /dev/md....
+::
+
+    mdadm --assemble -scan
+
+    mdadm --run /dev/md0
+    mdadm --run /dev/md1
+    mdadm --run /dev/md2
+    mdadm --run /dev/md....

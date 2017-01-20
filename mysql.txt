@@ -24,6 +24,16 @@ MySQL
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+Backup/restore dump::
+
+    # create dump
+    mysqldump -u USER -pPASSWORD DATABASE > dump.sql
+
+    # restore from dump
+    mysql -u USER -p DATABASE < dump.sql
+
+
+
 ::
 
     mysqladmin -u root password NEWPASSWORD	# set new password for user (if not set)
@@ -33,8 +43,7 @@ MySQL
     mysql -u <user>
 	      -p		# connect with pass
 	      -h <ip>
-
-    mysqldump -u USER -pPASSWORD DATABASE > /path/to/file/dump.sql
+ 
 
 
     CREATE DATABASE users;
@@ -58,12 +67,18 @@ MySQL
 
 Create user and add privileges::
 
+    CREATE DATABASE db_name;
+
     CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
-    GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'localhost';			# db.table
+    GRANT ALL PRIVILEGES ON db_name.* TO 'newuser'@'localhost';			# db.table
     FLUSH PRIVILEGES;
 
     SHOW GRANTS FOR 'root'@'localhost';
 
+
+
+    # delete user
+    DROP USER ‘demo’@‘localhost’;
 
 New ROOT password (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x86_64) using readline 5.1)::
 
