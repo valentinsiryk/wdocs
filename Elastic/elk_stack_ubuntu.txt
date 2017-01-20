@@ -442,12 +442,7 @@ Create file ``/etc/filebeat/filebeat.yml``::
 
     filebeat.prospectors:
 
-    # Each - is a prospector. Most options can be set at the prospector level, so
-    # you can use different prospectors for various configurations.
-    # Below are the prospector specific configurations.
-
     - input_type: log
-      # Paths that should be crawled and fetched. Glob based paths.
       paths:
         - <path_to_log(s)>
       fields:
@@ -455,7 +450,6 @@ Create file ``/etc/filebeat/filebeat.yml``::
         
     # Different environments on same host.    
     #- input_type: log
-      # Paths that should be crawled and fetched. Glob based paths.
     #  paths:
     #    - <path_to_log(s)>
     #  fields:
