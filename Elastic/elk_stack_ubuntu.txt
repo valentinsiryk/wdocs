@@ -254,7 +254,19 @@ Install **Logstash** from repos::
     sudo apt install logstash
 
 
-Logstash will start automatically, after system starting
+.. note::
+
+    Add Logstash to autorun
+    
+    - systemd [Ubuntu 16.04]::
+    
+        sudo /bin/systemctl daemon-reload
+        sudo /bin/systemctl enable logstash.service
+        
+        
+    - init [Ubuntu 14.04]::
+    
+        sudo update-rc.d logstash defaults 95 10
 
 
 Configuration
