@@ -83,8 +83,7 @@ Add CRON tasks to renew automatically Letsencrypt certs::
     sudo crontab -e
     
     # Check or renew certs twice per day
-    30 12 * * * root letsencrypt renew
-    0 18 * * * root letsencrypt renew
+    0 12,18 * * * root letsencrypt renew
 
 
 
