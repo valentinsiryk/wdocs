@@ -130,15 +130,16 @@ sudo ifconfig wlan0 down && sudo ifconfig wlan0 up // перезапуск netwo
 
 wget -qO- 127.0.0.1	# get and show page
 
+::
 
-grep -iR -E '(error_report|ini_set)' ./*.php	# find in files
-		-l	# show only file names 
-		-i	# ignore case sensetive
-		--exclude="*\.svn*"	# exclude
-		--exclude-dir="dir"	| {dir1,dir2}	# exclude dir
+    grep -iR -E '(error_report|ini_set)' ./*.php	# find in files
+		    -l	# show only file names 
+		    -i	# ignore case sensetive
+		    --exclude="*\.svn*"	# exclude
+		    --exclude-dir="dir"	| {dir1,dir2}	# exclude dir
 
-# замена слов
-grep -iRl -E "(DB_PASSWORD = 'YnB27GrWe')" | xargs sed -i "s/$DB_USER = 'root'/$DB_USER = 'u_passdiscount'/g"
+Замена слов::
+    grep -iRl -E "(SOURCE)" | xargs sed -i "s/SOURCE/DEST/g"
 
 
 # find

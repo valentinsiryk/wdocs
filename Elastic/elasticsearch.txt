@@ -18,3 +18,11 @@ Start/restart Elasticsearch::
     
     sudo systemctl start elasticsearch.service
     sudo systemctl stop elasticsearch.service
+    
+    
+Old indexes clear
+-----------------
+
+- http://www.ragingcomputer.com/2014/02/removing-old-records-for-logstash-elasticsearch-kibana
+- https://www.elastic.co/guide/en/elasticsearch/client/curator/current/singleton-cli.html
+- https://www.elastic.co/blog/curator-tending-your-time-series-indices

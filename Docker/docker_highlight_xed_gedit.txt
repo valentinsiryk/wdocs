@@ -1,0 +1,13 @@
+========================================
+Gedit and xed docker syntax highlighting
+========================================
+
+
+https://github.com/mrorgues/gedit-xed-docker-syntax-highlighting
+
+
+::
+
+    wget -q https://raw.githubusercontent.com/mrorgues/gedit-xed-docker-syntax-highlighting/master/docker.lang
+    sudo mv -i docker.lang /usr/share/gtksourceview-3.0/language-specs/docker.lang
+    sudo chmod 644 /usr/share/gtksourceview-3.0/language-specs/docker.lang

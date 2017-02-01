@@ -2,19 +2,24 @@
 Test HDD speed in Linux
 =======================
 
-ТЕСТ Скорости ЗАПИСИ Жесткого Диска - «dd»
-------------------------------------------
+Write speed (dd)
+----------------
 
 ::
 
-    $ sync; dd if=/dev/zero of=tempfile bs=1M count=1024; sync
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB) copied, 3.28696 s, 327 MB/s
+    sync; dd if=/dev/zero of=tempfile bs=1M count=1024; sync
+    
+    # 1024+0 records in
+    # 1024+0 records out
+    # 1073741824 bytes (1.1 GB) copied, 3.28696 s, 327 MB/s
+
+    # if you want to delete created tempfile
+    rm tempfile
 
 
-ТЕСТ Скорости ЧТЕНИЯ Жесткого Диска - «dd»
-------------------------------------------
+
+Read speed (dd)
+---------------
 
 tempfile, был закэширован в буфер и скорость его чтения будет выше чем реальная . Чтобы получить реальную скорость, необходимо очистить кэш.
 Выполни следующую команду, чтобы узнать Скорость ЧТЕНИЯ из Буфера::

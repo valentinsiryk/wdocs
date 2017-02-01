@@ -1,0 +1,56 @@
+=======
+HAProxy
+=======
+
+- Check repository for your OS: https://haproxy.debian.net/
+- Documentation: http://www.haproxy.org/download/1.7/doc/configuration.txt
+
+
+Add header if ssl::
+    
+    http-request add-header X-Forwarded-Proto https if { ssl_fc }
+    
+
+Check config::
+
+    haproxy -c -f /etc/haproxy/haproxy.cfg
+
+
+
+haproxy.cfg::
+    
+    frontend fe
+    
+    # HTTP log format format, which is the most advanced for HTTP proxying.
+    # It provides the same information as the TCP format with some HTTP-specific fields such as the request, the status code, and captures of headers and cookies.
+    # This format is recommended for HTTP proxies.
+       option httplog 
+      
+    backend be
+                
+        stick-table type string len 32 size 1M peers haproxy-peers
+        # type string len 32 - String 32 characters
+        # size 1M - maximum number of entries that can fit in the table. Count approximately 50 bytes per entry, plus the size of a string if any.
+        # The size supports suffixes "k", "m", "g" for 2^10, 2^20 and 2^30 factors.
+
+        # Define a request pattern to associate a user to a server
+        stick on req.cook(SERVERID)
+        
+        # Define a request pattern matching condition to stick a user to a server
+        stick match <pattern> [table <table>] [{if | unless} <cond>]
+  
+  
+
+Geolocation
+-----------
+
+- http://agiletesting.blogspot.com/2014/01/geolocation-detection-with-haproxy.html
+- http://blog.haproxy.com/2012/07/02/use-geoip-database-within-haproxy/
+
+
+Sticky session
+--------------
+
+- http://blog.haproxy.com/2012/03/29/load-balancing-affinity-persistence-sticky-sessions-what-you-need-to-know/
+- https://docs.oracle.com/cd/E37670_01/E41138/html/section_jyh_zhz_4r.html
+- 

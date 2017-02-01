@@ -1,0 +1,21 @@
+=======================
+Python SimpleHTTPServer
+=======================
+
+::
+
+    sudo python -m SimpleHTTPServer 80
+
+
+for python 3.x version, you may need ::
+
+    sudo python -m http.server 80
+
+
+Ports below 1024 require root privileges.
+
+As George added in a comment, running this command as root is not a good idea - it opens up all kinds of security vulnerabilities.
+
+However, it answers the question.
+
+
