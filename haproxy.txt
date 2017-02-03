@@ -38,8 +38,38 @@ haproxy.cfg::
         
         # Define a request pattern matching condition to stick a user to a server
         stick match <pattern> [table <table>] [{if | unless} <cond>]
+        
+        
+SSL backend::
+
+    backend be
+        balance roundrobin
+        server s1 example.com:443 check ssl verify none
+    # ssl verify none - without ssl verification
+        
+
   
-  
+HATop
+-----
+
+HATop is an interactive ncurses client and real-time monitoring,
+statistics displaying tool for the HAProxy TCP/HTTP load balancer.
+
+http://feurix.org/projects/hatop/
+
+
+First of all, make sure you have the stats socket enabled in the haproxy config::
+
+    global
+      stats socket /run/haproxy/admin.sock mode 0600 level admin
+
+
+That's all you need to use HATop::
+
+    sudo hatop -s /run/haproxy/admin.sock
+
+
+
 
 Geolocation
 -----------

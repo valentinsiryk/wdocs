@@ -1,0 +1,8 @@
+======
+Tomcat
+======
+
+Get static file from tomcat server
+----------------------------------
+
+Find ``webapps`` directory, usually it sutuated in ``/var/lib/tomcat7/webapps``. In this dir create some dir ``webapps/downloads`` and put there some files. Files will available at URL ``<hostname>/downloads/<filename>``.

@@ -1,6 +1,6 @@
-=============
-Clonning disk
-=============
+============
+Cloning disk
+============
 
 This instructions about how you can clone full your physical disk to another physical disk.
 
