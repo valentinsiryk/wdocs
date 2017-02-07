@@ -1,0 +1,80 @@
+=======
+Libvirt
+=======
+
+
+
+Domain.xml
+----------
+
+
+Port forwarding to machine::
+
+    <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+    ...
+    
+    <interface type='network'> -> <interface type='user'>
+    ...    
+    <qemu:commandline>
+       <qemu:arg value='-redir'/>
+       <qemu:arg value='tcp:2222::22'/>
+    </qemu:commandline>
+    
+
+    
+
+
+
+
+Virsh
+-----
+
+::
+
+    virsh # попадаем в virsh
+	    help		# список всех команд
+
+	    pool-list --all # список хранилищ (storages)
+	    pool-list	# список активных хранилищ (storages)
+
+	    pool-define-as name_of_storage dir --target /etc/libvirt/images/	# создаем хранилище
+	    pool-autostart name_of_storage	# делаем, чтобы пул запускадся автоматически
+	    pool-start name_of_storage	# стартуем пул
+
+
+    # define domain from XML (without run)
+        virsh --connect qemu:///system define <file.xml>
+        
+    # undefine domain from XML
+        virsh --connect qemu:///system undefine <domain>
+
+    # смотреть список машин
+	    virsh --connect qemu:///system list
+
+    # сгенерировать xml
+	    virsh --connect qemu:///system dumpxml <domain> > <domain>.xml 
+
+    # Создания нового гостевого домена и запуска виртуальной машины
+	    virsh --connect qemu:///system create alice.xml
+
+    # Остановка виртуальной машины и уничтожения гостевого домена
+	    virsh --connect qemu:///system destroy alice
+
+    # Выключения виртуальной машины (без уничтожения домена)
+	    virsh --connect qemu:///system shutdown alice
+
+    # Приостановка/возобновление работы виртуальной машины
+	    virsh --connect qemu:///system suspend alice
+	    virsh --connect qemu:///system resume alice
+
+    # Для автозапуска виртуальной машины после загрузки хоста
+	    virsh --connect qemu:///system autostart alice
+
+    # Получить информациюо домене виртуальной машины
+	    virsh --connect qemu:///system dominfo alice
+		
+	# Edit domain xml
+		 virsh --connect qemu:///system edit DOMAIN
+
+    # Управлять виртуальными машинами из сессии virsh. Для создания новой сессии virsh и входа в нее:
+	    virsh --connect qemu:///system

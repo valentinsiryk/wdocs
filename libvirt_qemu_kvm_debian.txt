@@ -14,6 +14,25 @@ Check Debian source list ``sources.list``::
     deb-src http://ftp.de.debian.org/debian jessie main non-free
 
 
+
+
+
+Install KVM, libvirt
+--------------------
+
+::
+
+    apt-get install qemu-kvm libvirt-bin qemu-utils cpu-checker
+    # adduser root libvirt
+    # adduser lee libvirt
+
+::
+
+    /etc/libvirt/         # configs
+    /etc/libvirt/storage/ # storage configs
+    /var/lib/libvirt/     # images, snapshots, etc.
+
+
 Bridge configuration
 --------------------
 
@@ -66,20 +85,6 @@ Show bridges::
     brctl show
 
 
-Install KVM, libvirt
---------------------
-
-::
-
-    apt-get install qemu-kvm libvirt-bin
-    adduser root libvirt
-    adduser lee libvirt
-
-::
-
-    /etc/libvirt/         # configs
-    /etc/libvirt/storage/ # storage configs
-    /var/lib/libvirt/     # images, snapshots, etc.
 
 
 Virt-manager
@@ -96,46 +101,4 @@ Install latest version::
     ~/.gconf/apps/virt-manager/
 
 
-Virsh
------
 
-::
-
-    virsh # попадаем в virsh
-	    help		# список всех команд
-
-	    pool-list --all # список хранилищ (storages)
-	    pool-list	# список активных хранилищ (storages)
-
-	    pool-define-as name_of_storage dir --target /etc/libvirt/images/	# создаем хранилище
-	    pool-autostart name_of_storage	# делаем, чтобы пул запускадся автоматически
-	    pool-start name_of_storage	# стартуем пул
-
-
-    # смотреть список машин
-	    virsh --connect qemu:///system list
-
-    # сгенерировать xml
-	    virsh --connect qemu:///system dumpxml <domain> > <domain>.xml 
-
-    # Создания нового гостевого домена и запуска виртуальной машины
-	    virsh --connect qemu:///system create alice.xml
-
-    # Остановка виртуальной машины и уничтожения гостевого домена
-	    virsh --connect qemu:///system destroy alice
-
-    # Выключения виртуальной машины (без уничтожения домена)
-	    virsh --connect qemu:///system shutdown alice
-
-    # Приостановка/возобновление работы виртуальной машины
-	    virsh --connect qemu:///system suspend alice
-	    virsh --connect qemu:///system resume alice
-
-    # Для автозапуска виртуальной машины после загрузки хоста
-	    virsh --connect qemu:///system autostart alice
-
-    # Получить информациюо домене виртуальной машины
-	    virsh --connect qemu:///system dominfo alice
-
-    # Управлять виртуальными машинами из сессии virsh. Для создания новой сессии virsh и входа в нее:
-	    virsh --connect qemu:///system

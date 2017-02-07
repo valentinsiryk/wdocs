@@ -40,3 +40,27 @@ SWAP in file
 4. Add new SWAP to fstab (auto mount when system start)::
 
     sudo echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab
+    
+
+Automated swapfile create
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Run as root::
+
+    #!/bin/sh
+    
+    # Create SWAP file at root with size 4GB
+    dd if=/dev/zero of=/swapfile bs=1M count=4096
+    chmod 600 /swapfile
+    mkswap /swapfile	
+
+    # Disable all SWAP
+    swapoff -a		
+
+    # Connect new SWAP file
+    swapon /swapfile	
+
+    # Add new SWAP to fstab (auto mount when system start)
+    sudo echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab
+    
+    

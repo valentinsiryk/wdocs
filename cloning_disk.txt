@@ -35,6 +35,21 @@ Maybe faster (not testing)::
     dd if=/dev/sda | dd of=/dev/sdb
 
 
+Tested
+^^^^^^
+
+::
+
+    sudo dd if=/dev/sda of=/dev/sdb bs=32M conv=sync,noerror status=progress
+
+    120057757696 bytes (120 GB, 112 GiB) copied, 2919.16 s, 41.1 MB/s
+    3577+1 records in
+    3578+0 records out
+    120057757696 bytes (120 GB, 112 GiB) copied, 2951.48 s, 40.7 MB/s
+       
+
+
+
 cat (clonning)
 --------------
 

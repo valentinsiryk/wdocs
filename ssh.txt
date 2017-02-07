@@ -12,10 +12,29 @@ SSH
 	    -p  <port>
 
 
-::
+
+    	    
+
+Multiple SSH private keys on one client
+---------------------------------------
+
+``.ssh/config``::
+
+    Host myshortname realname.example.com
+        HostName realname.example.com
+        IdentityFile ~/.ssh/realname_rsa # private key for realname
+        User remoteusername
+
+    Host myother realname2.example.org
+        HostName realname2.example.org
+        IdentityFile ~/.ssh/realname2_rsa
+        User remoteusername
+
+
+Or::
 
     ssh-add <path_to_private_key>
-    	    
+
 
 SSH tunneling
 -------------
