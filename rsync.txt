@@ -1,0 +1,12 @@
+=====
+rsync
+=====
+
+- http://greendail.ru/node/rsync-primery-ispolzovaniya
+- https://losst.ru/rsync-primery-sinhronizatsii
+
+
+Send big file on server::
+
+    rsync -v --progress --inplace <src> <user>@<ip>:</path/to/dest>
+

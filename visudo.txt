@@ -2,5 +2,6 @@
 visudo
 ======
 
-# Allow user to run command (without password)
-jboss   ALL=(ALL)       NOPASSWD: /sbin/service jboss-eap start, /sbin/service jboss-eap stop
+Allow user to run command (without password)::
+
+    jboss   ALL=(ALL)       NOPASSWD: /sbin/service jboss-eap start, /sbin/service jboss-eap stop

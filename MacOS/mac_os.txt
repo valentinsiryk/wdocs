@@ -1,0 +1,21 @@
+======
+Mac OS
+======
+
+
+Create bootable flash
+---------------------
+
+Mac OS Sierra - http://www.macworld.com/article/3092900/macs/how-to-create-a-bootable-macos-sierra-installer-drive.html
+
+
+
+	
+	
+	
+
+	
+	
+
+
+

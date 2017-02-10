@@ -2,34 +2,46 @@
 rsyslog
 =======
 
-# rules path
-/etc/rsyslog.d/*.conf	# num-<name>.conf (num < 50-default.conf)
+Rules path::
 
-# config path
-/etc/rsyslog.conf
+    /etc/rsyslog.d/*.conf	# num-<name>.conf (num < 50-default.conf)
 
 
-##########################
-# ON receive logs from UDP
+Config path::
 
-/etc/rsyslog.conf
+    /etc/rsyslog.conf
+
+
+ON receive logs from UDP ``/etc/rsyslog.conf``::
+
 	# uncomment next lines
 	
 	# provides UDP syslog reception
 	module(load="imudp")
 	input(type="imudp" port="514")
 
-sudo service rsyslog restart
+
+::
+
+    sudo service rsyslog restart
 
 
-#########################
-# Rotate received logs to files
-# http://www.rsyslog.com/doc/v8-stable/configuration/filters.html
+Rotate received logs to files
+-----------------------------
 
-/etc/rsyslog.d/*.conf
+- http://www.rsyslog.com/doc/v8-stable/configuration/filters.html
+
+
+``/etc/rsyslog.d/*.conf``::
+
 	:syslogtag, contains, "<tag>" /var/log/<log_name>.log	# tag contains 
 	:syslogtag, isequal, "<tag>" /var/log/<log_name>.log	# tag equal
 	:msg, contains, "<msg>" /var/log/<log_name>.log			# msg contains
 	:msg, isequal, "<msg>" /var/log/<log_name>.log			# msg equal
 
-sudo service rsyslog restart
+
+::
+
+    sudo service rsyslog restart
+    
+    

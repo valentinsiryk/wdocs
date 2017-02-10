@@ -139,27 +139,31 @@ wget -qO- 127.0.0.1	# get and show page
 		    --exclude-dir="dir"	| {dir1,dir2}	# exclude dir
 
 Замена слов::
+
     grep -iRl -E "(SOURCE)" | xargs sed -i "s/SOURCE/DEST/g"
 
+    sed -i "s@SOURCE@DEST@g" /path/to/file
 
 # find
 # https://ru.wikipedia.org/wiki/Find
 
-find ./ -name 'path*'	# find files
-		-type (f=файл, d=каталог, l=ссылка (link), p=канал (pipe), s=сокет)	# type of file
+::
 
-find ./ -mtime 0 -type f -not -path "./" -exec cp --parents "{}" $TODAY_DIR/ \;
+    find ./ -name 'path*'	# find files
+		    -type (f=файл, d=каталог, l=ссылка (link), p=канал (pipe), s=сокет)	# type of file
 
-find . -type f -exec chmod 644 {} \;	# chmod only files
+    find ./ -mtime 0 -type f -not -path "./" -exec cp --parents "{}" $TODAY_DIR/ \;
+
+    find . -type f -exec chmod 644 {} \;	# chmod only files
 
 ################
-Delete old files
+Delete old files::
 
-ls -t | sed -e '1,10d' | xargs -d '\n' rm -f
-	ls -t 				# lists all files in the current directory in decreasing order of modification time
-	sed -e '1,10d' 		# deletes the first 10 lines, ie, the 10 newest files
-	xargs -d '\n' rm 	# collects each input line (without the terminating newline) and passes each line as an argument to rm.
-	-f					# ignore if empty
+    ls -t | sed -e '1,10d' | xargs -d '\n' rm -f
+	    ls -t 				# lists all files in the current directory in decreasing order of modification time
+	    sed -e '1,10d' 		# deletes the first 10 lines, ie, the 10 newest files
+	    xargs -d '\n' rm 	# collects each input line (without the terminating newline) and passes each line as an argument to rm.
+	    -f					# ignore if empty
 
 tar -czpf $CONFIGBACKUPDIR/$CONFIGBK --directory=$CONFIGDIR --exclude=$CONFIGBACKUPDIR .
 
@@ -185,10 +189,30 @@ apg -q -m 8 -x 8 -a 1 -n 5
 
 ################################
 
-# SECURITY
+SECURITY
+--------
 
-awk -F: '($2 == "") {print}' /etc/shadow	# find empty passwords
+Find empty passwords::
 
-awk -F: '($3 == "0") {print}' /etc/passwd	# find users with uid==0
+    awk -F: '($2 == "") {print}' /etc/shadow
 
-netstat -tulpn
+
+Find users with uid == 0::
+
+    awk -F: '($3 == "0") {print}' /etc/passwd
+
+
+Port listening check::
+
+    netstat -tulpn
+
+
+Add service to autorun
+----------------------
+
+- Ubuntu 16.04::
+
+    sudo /bin/systemctl daemon-reload   
+    sudo /bin/systemctl enable <SERVICE_NAME>.service
+
+

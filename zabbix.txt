@@ -1,0 +1,82 @@
+======
+Zabbix
+======
+
+
+PSK Zabbix 3.0
+--------------
+
+https://www.zabbix.com/documentation/3.0/ru/manual/encryption/using_pre_shared_keys
+
+- Generate secret psk::
+
+    # min 16, max 256 (lvl of encrypt)
+    openssl rand -hex 64
+    
+
+- Create some file on zabbix-agent host. Example ``/etc/zabbix/zabbix_agentd.psk``. Put generated psk in created file at first line::
+
+    1f87b595725ac58dd977beef14b97461a7c1045b9a1c963065002c5473194952
+    
+
+- Change owner and rules::
+
+    sudo chown zabbix:zabbix /etc/zabbix/zabbix_agentd.psk 
+    sudo chmod 400 /etc/zabbix/zabbix_agentd.psk
+
+
+- Change next parametrs in config ``zabbix_agentd.conf``::
+
+    TLSConnect=psk
+    TLSAccept=psk
+    TLSPSKFile=/etc/zabbix/zabbix_agentd.psk
+    TLSPSKIdentity=PSK 001
+
+
+- Restart agent::
+
+    sudo service zabbix-agent restart 
+    
+    
+- Configure host in Zabbix-server to use PSK. Need to wait some time, before Zabbix cache update.
+  
+    
+
+
+Zabbix agent 3.0
+----------------
+
+Installation
+^^^^^^^^^^^^
+
+https://www.zabbix.com/documentation/3.0/manual/installation/install_from_packages
+
+- Ubuntu 16.04::
+
+    wget http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+xenial_all.deb
+    sudo dpkg -i zabbix-release_3.0-1+xenial_all.deb
+    sudo apt update
+    
+    sudo apt install zabbix-agent
+    sudo service zabbix-agent start
+    
+    # add to autostart
+    sudo /bin/systemctl daemon-reload
+    sudo /bin/systemctl enable zabbix-agent.service
+    
+    
+Configuration
+^^^^^^^^^^^^^
+
+``/etc/zabbix/zabbix_agentd.conf``::
+
+    Server=127.0.0.1,<ZABBIX_SERVER_IP>
+    
+    # ServerActive=127.0.0.1,<ZABBIX_SERVER_IP>
+    
+    Hostname=<HOSTNAME>
+
+
+::
+
+    sudo service zabbix-agent restart

@@ -4,7 +4,11 @@ libvirt + QEMU + KVM + Debian
 
 Check cpu virtualization access::
 
+    # sudo virt-host-validate
+
     egrep -c '(vmx|svm)' /proc/cpuinfo
+    
+    sudo apt-get install cpu-checker
     sudo kvm-ok
 
 
@@ -16,13 +20,43 @@ Check Debian source list ``sources.list``::
 
 
 
+Nested virtualization
+---------------------
+
+Check is enabled::
+
+    cat /sys/module/kvm_intel/parameters/nested
+    # Y or N
+
+
+Enable nested module on host
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    sudo sh -c "echo 'options kvm-intel nested=Y' > /etc/modprobe.d/kvm-intel.conf"
+    
+    # reboot or reload the kernel module
+    modprobe -r kvm_intel
+    modprobe kvm_intel
+
+
+Configuration in virt-manager
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Make sure your VM is shut down. Open virt-manager, go to the VM details page for that VM. Click on the Processor page. In the Configuration section, there are two options - either type host-passthrough into to Model field or enable Copy host CPU configuration checkbox (that fills host-model value into the Model field). Click Apply. The difference between those two values is complicated, some details are in bug 1055002. For nested virt, you'll probably want to use host-passthrough until issues with host-model are worked out. Be aware though, that host-passthrough is not recommended for general usage, just for nested virt purposes.
+
+
+
+
 
 Install KVM, libvirt
 --------------------
 
 ::
-
-    apt-get install qemu-kvm libvirt-bin qemu-utils cpu-checker
+    
+    sudo apt-get update
+    sudo apt-get install qemu-kvm libvirt-bin qemu-utils
     # adduser root libvirt
     # adduser lee libvirt
 
