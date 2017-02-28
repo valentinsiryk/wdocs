@@ -40,6 +40,23 @@ haproxy.cfg::
         stick match <pattern> [table <table>] [{if | unless} <cond>]
         
         
+        
+Proxy to backend depending on hostname. Only https. If hostname rule is not exist - proxy to default backend::
+
+    frontend https-front-session
+            bind *:443 ssl crt /etc/ssl/key.pem
+            bind *:80
+            redirect scheme https if !{ ssl_fc }
+
+            default_backend back-session
+
+            acl is_old hdr_end(host) -i old.example.com
+            use_backend old_example if is_old
+
+            acl is_new hdr_end(host) -i new.example.com
+            use_backend new_example if is_new
+        
+        
 SSL backend::
 
     backend be
@@ -69,6 +86,15 @@ That's all you need to use HATop::
     sudo hatop -s /run/haproxy/admin.sock
 
 
+HAProxy + LetsEncrypt
+---------------------
+
+::
+
+    sudo apt install letsencrypt
+    
+
+
 
 
 Geolocation
@@ -83,4 +109,5 @@ Sticky session
 
 - http://blog.haproxy.com/2012/03/29/load-balancing-affinity-persistence-sticky-sessions-what-you-need-to-know/
 - https://docs.oracle.com/cd/E37670_01/E41138/html/section_jyh_zhz_4r.html
-- 
+
+

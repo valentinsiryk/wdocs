@@ -67,4 +67,27 @@ Change the Nginx default server block ``/etc/nginx/sites-available/default``::
     }
 
 
+NGINX log off
+-------------
+
+Off images access loging in access_log::
+
+    location ~* \.(gif|jpg|png) {
+	    access_log off;
+    }
+
+
+Change images access logimg location::
+
+    location ~* \.(gif|jpg|png)$ {
+	    access_log /path/to/access.log;
+    }
+
+
+Off access loging to dir and subdir::
+
+    location ^~ /images/ {
+	    access_log off;
+    }
+
 

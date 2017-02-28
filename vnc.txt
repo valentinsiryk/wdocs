@@ -1,0 +1,10 @@
+===
+VNC
+===
+
+xtightvncviewer
+---------------
+
+::
+
+    xtightvncviewer IP -quality 0

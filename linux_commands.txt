@@ -63,6 +63,12 @@ adduser <name> // создать нового пользователя
 		-r	# create system user
 		-g 	# group
 
+		
+Add existing user to existing group::
+
+	sudo usermod -a -G groupName userName
+	
+	
 useradd
 		-u			# UID
 		-r			# create system user
@@ -102,6 +108,15 @@ lscpu	// вывести информацию о процессоре
 lsblk	// вывести инфу о дисках
 
 sudo dmidecode -t system	// информация об аппаратной составляющей компьютера (можно узнать какая машина - виртуальная или физическая)
+
+
+CPU benchmark::
+
+    apt install sysbench
+    sysbench --test=cpu --cpu-max-prime=20000 run
+
+
+
 
 
 ################## уменьшаем размер *.vdi ######################

@@ -6,3 +6,8 @@ curl
 Hide output::
 
     curl -s 'http://example.com' > /dev/null
+    
+
+Basic auth::
+
+    curl -u user:password https://example.com

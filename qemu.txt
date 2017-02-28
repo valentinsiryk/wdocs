@@ -3,4 +3,11 @@ qemu-system-x86_64
 =================== 
 
 
+Show supported machines types::
 
+    qemu-system-x86_64 -machine help
+    
+    
+Create image::
+    
+    qemu-img create -f qcow2 /path/to/image.qcow2 15g

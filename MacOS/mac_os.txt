@@ -2,6 +2,10 @@
 Mac OS
 ======
 
+Remote connect::
+
+    https://support.apple.com/en-us/HT201710
+
 
 Create bootable flash
 ---------------------
@@ -10,8 +14,17 @@ Mac OS Sierra - http://www.macworld.com/article/3092900/macs/how-to-create-a-boo
 
 
 
-	
-	
+Brew
+----
+
+Installation::
+
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+
+Install some app::
+
+    brew install <app>
 	
 
 	
