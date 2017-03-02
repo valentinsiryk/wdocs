@@ -25,6 +25,86 @@ Installation::
 Install some app::
 
     brew install <app>
+    
+    
+System limits
+-------------
+
+::
+
+    launchctl limit
+
+    # set limit (before system restart)
+    sysctl -w kern.maxproc=2048
+    sysctl -w kern.maxfiles=5000
+    
+    sysctl -a
+    
+    # show sysem limits
+    sysctl kern.maxproc
+    sysctl kern.maxfiles
+
+    # show user limits
+    ulimit -a
+    
+    # set user limit
+    ulimit -u 2048
+
+    launchctl limit maxfiles 1000000 1000000
+    launchctl limit maxproc 1000000 1000000
+
+    # set mac server mode
+    sudo serverinfo --setperfmode true
+
+
+**For 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), and 10.12 (Sierra)**
+
+Create file (owner: root:wheel, mode: 0644) ``/Library/LaunchDaemons/limit.maxfiles.plist``::
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+            <string>limit.maxfiles</string>
+          <key>ProgramArguments</key>
+            <array>
+              <string>launchctl</string>
+              <string>limit</string>
+              <string>maxfiles</string>
+              <string>65536</string>
+              <string>65536</string>
+            </array>
+           <key>RunAtLoad</key>
+            <true/>
+          <key>ServiceIPC</key>
+            <false/>
+        </dict>
+      </plist>
+
+
+Create file (owner: root:wheel, mode: 0644) ``/Library/LaunchDaemons/limit.maxproc.plist``::
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+            <string>limit.maxproc</string>
+          <key>ProgramArguments</key>
+            <array>
+              <string>launchctl</string>
+              <string>limit</string>
+              <string>maxproc</string>
+              <string>2048</string>
+              <string>2048</string>
+            </array>
+          <key>RunAtLoad</key>
+            <true />
+          <key>ServiceIPC</key>
+            <false />
+        </dict>
+      </plist>
 	
 
 	

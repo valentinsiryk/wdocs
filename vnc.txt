@@ -7,4 +7,4 @@ xtightvncviewer
 
 ::
 
-    xtightvncviewer IP -quality 0
+    xtightvncviewer <IP> -quality 0

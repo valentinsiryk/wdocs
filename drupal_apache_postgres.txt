@@ -2,51 +2,47 @@
 Drupal + Apache + PostgreSQL
 ============================
 
-#
-# instruction!!!
-https://www.howtoforge.com/tutorial/how-to-install-drupal_8-with-apache-and-ssl-on-ubuntu-15-10/
+- https://www.howtoforge.com/tutorial/how-to-install-drupal_8-with-apache-and-ssl-on-ubuntu-15-10/
 	
-# UBUNTU XENIAL
-
-#
-# Install prerequirements
-#
-sudo apt-get update
-sudo apt-get install postgresql apache2 php libapache2-mod-php7.0 php7.0-gd php7.0-xml php7.0-pgsql
-
-systemctl restart apache2
-a2enmod rewrite ssl
-systemctl restart apache2
-apache2ctl -M | egrep 'ssl|rewrite'
+**Tested on Ubuntu Xenial (16.04)**
 
 
-#
-# Download end extract drupal
-#
-cd /var/www/
-wget https://ftp.drupal.org/files/projects/drupal-8.2.2.tar.gz
-tar -xvzf drupal-8.2.2.tar.gz
-mv drupal-8.2.2 drupal
-chown www-data:www-data -R drupal/
+Install prerequirements::
+
+    sudo apt update
+    sudo apt install postgresql apache2 php libapache2-mod-php7.0 php7.0-gd php7.0-xml php7.0-pgsql
+
+    a2enmod rewrite ssl
+    systemctl restart apache2
+    
+    # check ssl, rewrite
+    apache2ctl -M | egrep 'ssl|rewrite'
 
 
-#
-# Apache config
-# 
+Download end extract drupal::
 
-# SSL
-cd /etc/apache2/
-mkdir ssl
-cd ssl/
+    cd /var/www/
+    wget https://ftp.drupal.org/files/projects/drupal-8.2.2.tar.gz
+    tar -xvzf drupal-8.2.2.tar.gz
+    mv drupal-8.2.2 drupal
+    chown www-data:www-data -R drupal/
 
-# Generate a self-signed SSL certificate:
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/drupalssl.key -out /etc/apache2/ssl/drupalssl.crt
-chmod 600 *
 
-# vhost config
-cd /etc/apache2/sites-available/
-nano drupal.conf
-		<VirtualHost *:80>
+Apache configuration
+--------------------
+
+SSL::
+
+    mkdir /etc/apache2/ssl
+
+    # generate a self-signed SSL certificate
+    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/drupalssl.key -out /etc/apache2/ssl/drupalssl.crt
+    sudo chmod 600 /etc/apache2/ssl/*
+
+
+Virtual host config ``/etc/apache2/sites-available/drupal.conf``::
+
+        <VirtualHost *:80>
                 ServerName www.mydrupal.co
                 DocumentRoot /var/www/drupal
 
@@ -97,22 +93,34 @@ nano drupal.conf
         </VirtualHost>
 	
 
-apachectl configtest
-a2ensite drupal
-a2dissite 000-default
+Enable new virtual host::
 
-systemctl restart apache2
+    # check config
+    apachectl configtest
+    
+    # enable new host
+    a2ensite drupal
+    
+    # disable default host config
+    a2dissite 000-default
+
+    systemctl restart apache2
 
 
-#
-# DB Postgres for drupal
-#
-su - postgres
-psql
-	CREATE USER drupal WITH password 'PASSWORD';
-	CREATE DATABASE drupal OWNER drupal;
-	GRANT ALL privileges ON DATABASE drupal TO drupal;
+DB Postgres for drupal
+----------------------
 
-psql -h localhost drupal drupal
-	ALTER DATABASE "drupal" SET bytea_output = 'escape';
+Create DB and User for Drupal::
+
+    su - postgres
+
+    psql
+        CREATE USER drupal WITH password 'PASSWORD';
+        CREATE DATABASE drupal OWNER drupal;
+        GRANT ALL privileges ON DATABASE drupal TO drupal;
+	    
+    exit
+
+    psql -h localhost drupal drupal
+        ALTER DATABASE "drupal" SET bytea_output = 'escape';
 

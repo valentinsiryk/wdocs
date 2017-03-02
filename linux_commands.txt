@@ -2,21 +2,45 @@
 Linux commands
 ==============
 
+Show user group id's (GID)::
 
-id <username> // выводит группы, в которых состоит пользователь
+    id <username>
 
-df		// свободное/занятое место на разделах
-	-h (-m -k) // сокращение размера до MB,GB,KB
 
-du <папка/файл>	// узнать размер
-	-h // сокращение размера до MB,GB,KB
-	-s // размер папки, не перечисляя вложений
-	
-sudo du -hs /[!.]* |sort -h      # show and sort with hidden files
+Show free/usage space on partitions::
 
-tail -f <file>	// показывает последние строчки файла в режиме реального времени
+    df -h # readable
+       -m
+       -k
 
-netstat -antup	// посмотреть на локалхосте подробную информацию по открытым портам (udp, pid..)
+
+Show count of chars, lines, bytes, etc.::
+
+    wc
+
+
+Show size::
+
+    du <dir/file>
+        -h # readable
+        -s # size of dir
+        
+        
+Show size and sort with hidden files::
+
+    du -hs /[!.]* |sort -h      
+
+
+Show last lines of file in realtime::
+
+    tail -f <file>
+
+
+Show listening ports::
+
+    netstat -antup
+
+
 
 arp	// ARP таблица содержит адреса устройств, с которыми взаимодействует данная ОС. А так же MAC'и
 	-n	// только IP(без доменов)
