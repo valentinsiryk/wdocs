@@ -41,6 +41,10 @@ Show listening ports::
     netstat -antup
 
 
+Change group::
+
+    chgrp [-R] <GID/gname>
+
 
 arp	// ARP таблица содержит адреса устройств, с которыми взаимодействует данная ОС. А так же MAC'и
 	-n	// только IP(без доменов)
@@ -183,20 +187,32 @@ wget -qO- 127.0.0.1	# get and show page
 
     sed -i "s@SOURCE@DEST@g" /path/to/file
 
-# find
-# https://ru.wikipedia.org/wiki/Find
+Find
+----
+
+- https://ru.wikipedia.org/wiki/Find
 
 ::
 
-    find ./ -name 'path*'	# find files
-		    -type (f=файл, d=каталог, l=ссылка (link), p=канал (pipe), s=сокет)	# type of file
+    find ./ -name 'path*'
+        -type (f=file, d=dir, l=link, p=pipe, s=socket)
 
     find ./ -mtime 0 -type f -not -path "./" -exec cp --parents "{}" $TODAY_DIR/ \;
 
-    find . -type f -exec chmod 644 {} \;	# chmod only files
+    # chmod only files
+    find . -type f -exec chmod 644 {} \;	
+    
+    # faster chmod only files
+    find . -type f -print0 | xargs -0 chmod 644
+    
+    # make iconv replace the input file with the converted output in one line
+    find . -type f -name '*.php' -exec sh -c 'iconv -f WINDOWS-1251 -t UTF-8 -o {}UTF_TMP {} && mv {}UTF_TMP {}' \;
 
-################
-Delete old files::
+
+Delete old files
+----------------
+
+::
 
     ls -t | sed -e '1,10d' | xargs -d '\n' rm -f
 	    ls -t 				# lists all files in the current directory in decreasing order of modification time

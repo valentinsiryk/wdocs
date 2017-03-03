@@ -94,7 +94,47 @@ HAProxy + LetsEncrypt
     sudo apt install letsencrypt
     
 
+``haproxy.cfg``::
 
+    frontend https-front-session
+	    bind *:443 ssl crt /etc/ssl/le/one.example.com.pem crt /etc/ssl/le/two.example.com.pem
+	    bind *:80	
+
+	    redirect scheme https if !{ ssl_fc }
+
+	    default_backend back-session
+
+	    acl is_le path_beg /.well-known/acme-challenge/
+	    acl is_old hdr_end(host) -i one.example.com
+	    acl is_new hdr_end(host) -i two.example.com
+
+	    # Order is important
+	    use_backend le if is_le
+	    use_backend b1 if is_old
+	    use_backend b2 if is_new
+
+    backend le
+	    server letsencrypt 127.0.0.1:54321
+
+
+Get cert::
+
+    sudo letsencrypt certonly --agree-tos --renew-by-default --standalone-supported-challenges http-01 --http-01-port 54321 -d <one.example.com>
+    
+
+``renewal.sh``::
+
+    #!/bin/sh
+
+    letsencrypt renew --agree-tos --standalone-supported-challenges http-01 --http-01-port 54321 
+
+    DOMAIN=<one.example.com>
+    cat /etc/letsencrypt/live/$DOMAIN/fullchain.pem /etc/letsencrypt/live/$DOMAIN/privkey.pem > /etc/ssl/le/$DOMAIN.pem 
+
+    DOMAIN=<two.example.com>
+    cat /etc/letsencrypt/live/$DOMAIN/fullchain.pem /etc/letsencrypt/live/$DOMAIN/privkey.pem > /etc/ssl/le/$DOMAIN.pem
+
+    service haproxy reload
 
 
 Geolocation

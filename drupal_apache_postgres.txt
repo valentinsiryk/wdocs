@@ -40,7 +40,7 @@ SSL::
     sudo chmod 600 /etc/apache2/ssl/*
 
 
-Virtual host config ``/etc/apache2/sites-available/drupal.conf``::
+Create virtual host config ``/etc/apache2/sites-available/drupal.conf``::
 
         <VirtualHost *:80>
                 ServerName www.mydrupal.co
