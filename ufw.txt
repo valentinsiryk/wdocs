@@ -2,34 +2,49 @@
 ufw
 ===
 
-Oct 20 11:02:27 bbb kernel: [ 7980.724380] [UFW BLOCK]
-IN=eth1 OUT= 
 
-# MAC |server (2x6)	|client (2x6)	  |
-MAC=   00:1e:8c:7b:cf:ca:fc:75:16:56:e4:78:08:00
+Main commands::
 
-# client
-SRC=192.168.35.67	
+    # show apps available profiles
+    sudo ufw app list
+    
+    # allow available profile
+    sudo ufw allow OpenSSH
 
-# server
-DST=192.168.35.10 
+    sudo ufw enable
+    sudo ufw status
 
-LEN=60 
-TOS=0x00 
-PREC=0x00 
-TTL=64 
-ID=61984 
-DF 
 
-# тип протокола TCP/UDP
-PROTO=TCP 
+Log analysis::
 
-SPT=37252 
+    Oct 20 11:02:27 bbb kernel: [ 7980.724380] [UFW BLOCK]
+    IN=eth1 OUT= 
 
-# PORT
-DPT=80
- 
-WINDOW=29200 
-RES=0x00 
-SYN 
-URGP=0 
+    # MAC |server (2x6)	|client (2x6)	  |
+    MAC=   00:1e:8c:7b:cf:ca:fc:75:16:56:e4:78:08:00
+
+    # client
+    SRC=192.168.35.67	
+
+    # server
+    DST=192.168.35.10 
+
+    LEN=60 
+    TOS=0x00 
+    PREC=0x00 
+    TTL=64 
+    ID=61984 
+    DF 
+
+    # type of protocol TCP/UDP
+    PROTO=TCP 
+
+    SPT=37252 
+
+    # PORT
+    DPT=80
+     
+    WINDOW=29200 
+    RES=0x00 
+    SYN 
+    URGP=0 

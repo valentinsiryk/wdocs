@@ -7,3 +7,220 @@ OpenLDAP
    :glob:
    
    *
+
+::
+      
+    /etc/ldap/slapd.d/cn=config/cn=schema	# schema location
+
+    slapcat	# show content of DB object
+
+
+    /usr/sbin/slapcat -v  -l dump.ldif	# backup SLAPD database
+
+    # Install
+
+    sudo apt-get install slapd ldap-utils
+
+    dpkg-reconfigure slapd
+	
+	    Omit OpenLDAP server configuration?			No
+	    DNS domain name?							mydomain.com	
+	    Organization name?							any name
+	    Administrator password?						password			
+	    Database backend? 							HDB	| BDB 
+	    Remove the database when slapd is purged?	No
+	    Move old database?							Yes
+	    Allow LDAPv2 protocol? 						No
+
+    RESTART SLAPD (or container)
+
+    ldapsearch -D "cn=admin,dc=mycorp,dc=com" -w password -b "dc=mycorp,dc=com"
+
+    ldapsearch -H ldap://localhost:389 -D "cn=admin,dc=mycorp,dc=com" -w password -b "dc=mycorp,dc=com"
+
+    
+    IMPORTANT DELETE ALL
+
+     ldapdelete -D cn=admin,dc=mycorp,dc=com -w password -r "dc=mycorp,dc=com"
+    ##########
+
+
+
+    ##############################################
+    # Создадим группу пользователей с названием «users» при помощи команды ldapmodify
+
+    ldapmodify -D "cn=admin,dc=mydomain,dc=com" -w password
+	    dn: ou=users,dc=mydomain,dc=com
+	    changetype: add
+	    objectClass: top
+	    objectClass: organizationalUnit
+	    ou: users
+	    description: Domain Users
+
+    Всё, начиная с «dn: » вводим руками. После ввода строки описания («description: Domain Users») нажимаем Enter два раза. Если всё введено без ошибок, вы должны увидеть такое сообщение: adding new entry "ou=Users,dc=mydomain,dc=com"
+
+    # Нажимаем Ctrl+C для выхода
+
+    ldapadd -D cn=admin,dc=mycorp,dc=com -w password -f addgroup.ldif
+
+    ##################################################
+
+
+
+    # Create user
+
+    slappasswd	# generate hash pass
+
+    ldapmodify -D "cn=admin,dc=mydomain,dc=com" -w password
+	    or
+    nano adduser.ldif
+
+	    dn: uid=jdoe,cn=John Doe,ou=users,dc=mydomain,dc=com
+	    changetype: add
+	    objectClass: top
+	    objectClass: person
+	    objectClass: organizationalPerson
+	    objectClass: inetOrgPerson
+	    cn: John Doe
+	    ou: users
+	    uid: jdoe
+	    givenName: John
+	    sn: Doe
+	    userPassword: {SSHA}hsxkIVICZSSQsUOQf4xWZutr0t44HSFP
+
+    ldapmodify -D "cn=admin,dc=mycorp,dc=com" -w password -f adduser.ldif
+    ######################################################################
+
+    # Modify ldif-file:
+	    dn: cn=John Doe,ou=users,dc=mycorp,dc=com
+	    changetype: modify
+	    add: userPassword
+	    userPassword: {SSHA}hsxkIlskflksfOQf4xWZutr0t44HSFP
+
+    ######################################################################
+
+
+    ############
+    # Commands #
+    ############
+    ::
+
+        ldapsearch -D "cn=admin,dc=mydomain,dc=com"
+			      -w <pass>	# bind password (for simple authentication)
+			      -W		# prompt for bind password
+
+
+
+			      -a deref   one of never (default), always, search, or find
+			      -A         retrieve attribute names only (no values)
+			      -b basedn  base dn for search
+			      -c         continuous operation mode (do not stop on errors)
+			      -E [!]<ext>[=<extparam>] search extensions (! indicates criticality)
+						     [!]domainScope              (domain scope)
+						     !dontUseCopy                (Don't Use Copy)
+						     [!]mv=<filter>              (RFC 3876 matched values filter)
+						     [!]pr=<size>[/prompt|noprompt] (RFC 2696 paged results/prompt)
+						     [!]sss=[-]<attr[:OID]>[/[-]<attr[:OID]>...]
+						                                 (RFC 2891 server side sorting)
+						     [!]subentries[=true|false]  (RFC 3672 subentries)
+						     [!]sync=ro[/<cookie>]       (RFC 4533 LDAP Sync refreshOnly)
+						             rp[/<cookie>][/<slimit>] (refreshAndPersist)
+						     [!]vlv=<before>/<after>(/<offset>/<count>|:<value>)
+						                                 (ldapv3-vlv-09 virtual list views)
+						     [!]deref=derefAttr:attr[,...][;derefAttr:attr[,...][;...]]
+						     [!]<oid>[=:<b64value>] (generic control; no response handling)
+			      -f file    read operations from `file'
+			      -F prefix  URL prefix for files (default: file:///tmp/)
+			      -l limit   time limit (in seconds, or "none" or "max") for search
+			      -L         print responses in LDIFv1 format
+			      -LL        print responses in LDIF format without comments
+			      -LLL       print responses in LDIF format without comments
+						     and version
+			      -M         enable Manage DSA IT control (-MM to make critical)
+			      -P version protocol version (default: 3)
+			      -s scope   one of base, one, sub or children (search scope)
+			      -S attr    sort the results by attribute `attr'
+			      -t         write binary values to files in temporary directory
+			      -tt        write all values to files in temporary directory
+			      -T path    write files to directory specified by path (default: /tmp)
+			      -u         include User Friendly entry names in the output
+			      -z limit   size limit (in entries, or "none" or "max") for search
+			    Common options:
+			      -d level   set LDAP debugging level to `level'
+			      -D binddn  bind DN
+			      -e [!]<ext>[=<extparam>] general extensions (! indicates criticality)
+						     [!]assert=<filter>     (RFC 4528; a RFC 4515 Filter string)
+						     [!]authzid=<authzid>   (RFC 4370; "dn:<dn>" or "u:<user>")
+						     [!]chaining[=<resolveBehavior>[/<continuationBehavior>]]
+						             one of "chainingPreferred", "chainingRequired",
+						             "referralsPreferred", "referralsRequired"
+						     [!]manageDSAit         (RFC 3296)
+						     [!]noop
+						     ppolicy
+						     [!]postread[=<attrs>]  (RFC 4527; comma-separated attr list)
+						     [!]preread[=<attrs>]   (RFC 4527; comma-separated attr list)
+						     [!]relax
+						     [!]sessiontracking
+						     abandon, cancel, ignore (SIGINT sends abandon/cancel,
+						     or ignores response; if critical, doesn't wait for SIGINT.
+						     not really controls)
+			      -h host    LDAP server
+			      -H URI     LDAP Uniform Resource Identifier(s)
+			      -I         use SASL Interactive mode
+			      -n         show what would be done but don't actually do it
+			      -N         do not use reverse DNS to canonicalize SASL host name
+			      -O props   SASL security properties
+			      -o <opt>[=<optparam>] general options
+						     nettimeout=<timeout> (in seconds, or "none" or "max")
+						     ldif-wrap=<width> (in columns, or "no" for no wrapping)
+			      -p port    port on LDAP server
+			      -Q         use SASL Quiet mode
+			      -R realm   SASL realm
+			      -U authcid SASL authentication identity
+			      -v         run in verbose mode (diagnostics to standard output)
+			      -V         print version info (-VV only)
+
+			      -x         Simple authentication
+			      -X authzid SASL authorization identity ("dn:<dn>" or "u:<user>")
+			      -y file    Read password from file
+			      -Y mech    SASL mechanism
+			      -Z         Start TLS request (-ZZ to require successful response)
+
+
+
+Backup data
+-----------
+
+**backup.sh**::
+
+    #!/bin/sh
+
+    LDAPBK=ldap_$( date +%H-%M_%d-%m-%Y ).ldif
+    BACKUPDIR=/var/backups
+
+    /usr/sbin/slapcat -v -l $BACKUPDIR/$LDAPBK
+
+    gzip -9 $BACKUPDIR/$LDAPBK
+    
+    
+Restore data
+------------
+
+1. stop slapd daemon::
+
+    /etc/init.d/slapd stop
+
+2. delete old database (make sure you are in right directory to use rm)::
+
+    cd /var/lib/ldap
+    rm -rf *
+
+3. Restore database from LDIF file::
+
+    /usr/sbin/slapadd -l backup.ldif
+
+4. run slapd daemon::
+
+    /etc/init.d/slapd start
+
+    
