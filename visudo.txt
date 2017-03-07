@@ -4,4 +4,5 @@ visudo
 
 Allow user to run command (without password)::
 
-    jboss   ALL=(ALL)       NOPASSWD: /sbin/service jboss-eap start, /sbin/service jboss-eap stop
+    sudo visudo
+        <username>   ALL=(ALL)       NOPASSWD: <command_1>, <command_2>

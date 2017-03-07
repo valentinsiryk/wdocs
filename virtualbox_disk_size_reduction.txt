@@ -1,30 +1,39 @@
-===================================
-VirtualBox уменьшение размера диска
-===================================
+=============================
+VirtualBox decrease disk size
+=============================
 
-
-##########################################################################################################
 Host OS — Windows. Guest OS — Linux
-##########################################################################################################
+-----------------------------------
 
-Размонтируем диск который собираемся уменьшать или грузимся с LiveCD
+Unmount disk which need to resize or start from LiveCD.
 
-sudo apt-get install zerofree
-sudo zerofree /dev/sda1 (уменьшаемый диск)
+On VM::
 
-В винде:
-
-cd C:\Program Files\Oracle\VirtualBox
-VBoxManage modifyhd D:\OS\VBox\vdi_file.vdi --compact
-
+    sudo apt-get install zerofree
+    sudo zerofree /dev/sda1
+    
+    # /dev/sda1 - your partition
 
 
-##########################################################################################################
-2 метод (хост и гость = линукс)
-##########################################################################################################
+On host Windows::
 
-dd if=/dev/zero of=zero bs=512k // на гостевой машине - заполнить нулями пустое место (после чего этот файл надо удалить)
-	bs= // размер сектора
+    cd C:\Program Files\Oracle\VirtualBox
+    VBoxManage modifyhd <path\to\vdi_file.vdi> --compact
 
-vboxmanage modifyhd /path/to/thedisk.vdi --compact // на хосте
-##########################################################################################################
+
+Host OS and guest OS — Linux
+----------------------------
+
+On guest::
+
+    # fill zeros all free space
+    # 'bs=' - sector size
+    dd if=/dev/zero of=zero bs=512k
+    
+    # remove zero file
+    rm zero
+	
+
+On host::
+
+    vboxmanage modifyhd </path/to/thedisk.vdi> --compact

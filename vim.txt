@@ -2,34 +2,52 @@
 vim
 ===
 
-vi /file_folder/filename - открыть файл в редакторе vi
-vi /file_folder/filename ++25 - открыть файл в редакторе vi и перейти к строке 25.
+Main commands::
 
-i - включить режим внесения зменений
-[Esc] - выйти из данного режима
+    # open file
+    vi /file_folder/filename
+    
+    # open file and go to line 25
+    vi /file_folder/filename ++25
 
-u - undo (отмена)
+    # ON modify mode
+    i
+    
+    # OFF modify mode
+    [Esc]
 
-:w [Enter] - сохранить внесенные изменения.
+    # undo
+    u
 
-:q! [Enter] - выйти без сохранения изменений
-:wq [Enter] - сохранить внесенные изменения и выйти.
+    # save changes
+    :w [Enter]
 
-dd - удалет строку на которой находится курсор
-x - удалет символ на котором находится курсов
+    # exit without saving
+    :q! [Enter]
+    
+    # save changes and exit
+    :wq [Enter]
 
-[y] - копирует строку в буфер
-[P] - вставляет скопированную строку после той, на которой в текущий момент находится курсор
+    # delete line
+    dd
+    
+    # delete symbol
+    x
 
-Поиск:
+    # copy line
+    [y]
+    # paste line
+    [P]
 
-/text [Enter] - выполняет поиск "text" в тексте
+    # find 'text'
+    /text [Enter]
 
-Автозамена:
+    # find and replace
+    :%s/OLD/NEW/gc 
 
-:%s/6201/6202/gc - ищет в документе вхождение 6201 и меняет (с подтверждением) на 6202 (замена порта). 
-
-Показать/Скрыть номера строк в редакторе vi:
-
-:set nu - нумеровать строки
-:set nonu - не нумеровать строки
+    # show line numbers
+    :set nu
+    # hide line numbers
+    :set nonu
+    
+    
