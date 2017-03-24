@@ -3,6 +3,25 @@ BASH
 ====
 
 
+Check if a variable is set::
+
+    if [ -z ${var+x} ]; then
+        echo "var is unset"
+    else
+        echo "var is set to '$var'"
+    fi
+    
+
+
+
+For in bash::
+
+    for i in $( ls ) ; do
+      rm -R $i
+    done 
+
+
+
 Multiline file creating::
 
 	cat > file <<EOF

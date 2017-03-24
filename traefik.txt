@@ -1,0 +1,29 @@
+=======
+Traefik
+=======
+
+``sample.toml``::
+
+    https://raw.githubusercontent.com/containous/traefik/master/traefik.sample.toml
+    
+    
+docker-compose config without traefik.toml::
+
+    #    command:
+    #     - --web
+    #     - --logLevel=DEBUG
+    #     - --defaultEntryPoints=http
+    #     - --defaultEntryPoints=http,https
+    #     - --entryPoints=Name:http Address::80
+    #     - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
+    #     - --entryPoints=Name:https Address::443 TLS
+    #     - --docker
+    #     - --docker.exposedbydefault=false
+    #     - --docker.domain=docker.localhost
+    #     - --acme=true
+    #     - --acme.caserver=https://acme-staging.api.letsencrypt.org/directory
+    #     - --acme.email=valentinsiryk@gmail.com
+    #     - --acme.entryPoint=https
+    #     - --acme.ondemand=true
+    #     - --acme.onhostrule=true
+    #     - --acme.storage=/certs/acme.json

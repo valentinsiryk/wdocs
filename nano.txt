@@ -1,0 +1,17 @@
+====
+nano
+====
+
+
+
+
+Show line nums - CTRL+C (without dynamic change), or::
+
+    nano -c <file>
+    
+
+Thus to display line numbers always when using nano::
+
+    nano ~/.nanorc
+        set const
+

@@ -2,6 +2,38 @@
 Mac OS
 ======
 
+Switch user::
+
+    uid=`id -u ${username}`    
+    /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -switchToUserID ${uid}
+
+
+Restart Screensharing::
+
+    sudo launchctl unload /System/Library/LaunchDaemons/com.apple.screensharing.plist  
+    sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
+
+
+Enable/disable fast user switching::
+
+    # enable
+    sudo defaults write /Library/Preferences/.GlobalPreferences MultipleSessionEnabled -bool YES
+    
+    # disable
+    sudo defaults write /Library/Preferences/.GlobalPreferences MultipleSessionEnabled -bool no
+    
+
+Open multiple instances of application::
+
+    open -na "Messages"
+    open -n /Applications/Messages.app/Contents/MacOS/Messages
+    
+    
+Run application at another user::
+
+    sudo login -f <username> /Applications/Messages.app/Contents/MacOS/Messages
+
+
 Remote connect::
 
     https://support.apple.com/en-us/HT201710

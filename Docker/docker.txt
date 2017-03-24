@@ -3,6 +3,7 @@ Docker
 ======
 
 
+
 File ``.dockerignore``::
 
     Dockerfile
@@ -90,6 +91,27 @@ docker push ouruser/sinatra
 export TERM=xterm
 
 
+Docker monitoring
+-----------------
 
+ctop
+^^^^
+
+https://github.com/bcicen/ctop/blob/master/README.md
+
+
+Installation::
+
+    wget https://github.com/bcicen/ctop/releases/download/v0.5/ctop-0.5-linux-amd64 -O ctop
+    sudo mv ctop /usr/local/bin/
+    sudo chmod +x /usr/local/bin/ctop
+    
+
+Run via docker::
+
+    docker run -ti --name ctop --rm -v /var/run/docker.sock:/var/run/docker.sock quay.io/vektorlab/ctop:latest
+    
+    
+    
 
 						

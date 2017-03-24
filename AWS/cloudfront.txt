@@ -1,0 +1,7 @@
+==========
+CloudFront
+==========
+
+1. Create distribution (cname - cdn.example.com)
+2. Create Route53 CNAME (cdn.example.com -> d34cbfrb6qn178.cloudfront.net)
+3. Add cert for https (*.example.com or cdn.example.com)

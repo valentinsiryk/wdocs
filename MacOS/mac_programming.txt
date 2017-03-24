@@ -1,0 +1,19 @@
+==================
+Mac OS programming
+==================
+
+AppleScript Programming/System Events
+-------------------------------------
+
+https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
+
+::
+
+    /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -switchToUserID ${uid}
+
+    osascript << EOF
+    tell application "System Events"
+      delay 1.0
+      keystroke "${password}" & return
+    end tell
+    EOF

@@ -27,8 +27,6 @@ Get directory from server::
 
 
 
-
-
 Мы может указать SFTP сохранить соответствующие привилегии и дату и время доступа путем добавления параметров "-P" или "-p":
 
 get -Pr someDirectory
@@ -43,9 +41,14 @@ SFTP logging
     http://www.the-art-of-web.com/system/sftp-logging-chroot/
     https://access.redhat.com/articles/1374633
 
+
+Logs writing in ``/var/log/auth.log``
+
+
 Enable SFTP auth logging in ``/etc/ssh/sshd_config``::
 
 	Subsystem sftp internal-sftp -l INFO
 	
-Logs writing in ``/var/log/auth.log``
+	
+
 	
