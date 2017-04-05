@@ -2,6 +2,10 @@
 Mac OS VM
 =========
 
+
+Important repo https://github.com/kholia/OSX-KVM
+
+
 Run Sierra on qemu-kvm
 ----------------------
 
@@ -118,8 +122,33 @@ Add next file to Sierra HD ``/Volumes/<Sierra_HD>/Extra/org.chameleon.boot.plist
     <string>1024x768x32</string>    
     </dict>
     </plist>
+
+
+6. Allow usb-tablet device
+
+- download driver from http://philjordan.eu/osx-virt/#usb-tablet and install it on your virtual Mac
+- add in virt-manager usb-tablet device and remove usb-mouse
+
+
+7. Add vmware svga driver
+
+- download and install https://sourceforge.net/projects/vmsvga2 on your Mac
+- add the following to ``/Extra/org.chameleon.Boot.plist``::
+
+    <key>Kernel Flags</key>
+    <string>vmw_options_fb=0x06</string>
     
+
+- add ``-vga vmware`` to QEMU parameters.
     
+
+Install Mac OS Sierra on VMWare
+-------------------------------
+
+1. Download and run script to unlock your VMWare for run Mac OS https://github.com/DrDonk/unlocker . P.S. Read readme in repo.
+
+2. 
+	
     
 Run Sierra on VirtualBox
 ------------------------

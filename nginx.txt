@@ -12,6 +12,13 @@ NGINX
     sudo service nginx reload
 
 
+NGINX installation
+------------------
+
+https://www.nginx.com/resources/wiki/start/topics/tutorials/install/
+
+
+
 NGINX config
 ------------
 

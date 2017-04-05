@@ -70,7 +70,10 @@ Generate certificates
 
 **Letsencrypt**::
 
-    sudo apt install letsencrypt
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install certbot 
+    
     
     # Replace with your webroot and hostname
     letsencrypt certonly --webroot -w /var/www/html -d elk.company.com
@@ -83,7 +86,7 @@ Add CRON tasks to renew automatically Letsencrypt certs::
     sudo crontab -e
     
     # Check or renew certs twice per day
-    0 12,18 * * * letsencrypt renew
+    0 12,18 * * * certbot renew --post-hook "systemctl reload nginx"
 
 
 

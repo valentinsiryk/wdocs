@@ -40,6 +40,12 @@ SWAP in file
 4. Add new SWAP to fstab (auto mount when system start)::
 
     sudo echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab
+
+
+5. Optional. We will use the command sysctl to change settings dedicated to the Linux virtual memory manager ``vm.swappiness``. This setting tells the Linux kernel/VM handler how likely it should be to use VM. It is a percent value, between 0 & 100. If you set this value to 0, the VM handler will be least likely to use any available swap space, and should use all available system memory first. If you set it to 100, the VM handler will be most likely to use available swap space and will try to leave a greater portion of system memory free for use. A value of 30% should be a happy medium between swapping and system memory::
+
+    sudo sysctl -w vm.swappiness=30
+
     
 
 Automated swapfile create
@@ -62,5 +68,8 @@ Run as root::
 
     # Add new SWAP to fstab (auto mount when system start)
     sudo echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab
+    
+    # Tweak system swap usage value
+    sudo sysctl -w vm.swappiness=30
     
     

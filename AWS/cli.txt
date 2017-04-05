@@ -2,7 +2,7 @@
 CLI
 ===
 
-~/.aws/config
+``~/.aws/config``::
 
 	[default]
 	output = json
@@ -12,9 +12,10 @@ CLI
 	output = json
 	region = eu-west-1	# important!
 
-~/.aws/credentials
+
+``~/.aws/credentials``::
 	
-	[default]
+    [default]
 	aws_access_key_id = <key_id>
 	aws_secret_access_key = <access_key>
 
@@ -22,28 +23,33 @@ CLI
 	aws_access_key_id = <key_id>
 	aws_secret_access_key = <access_key>
 
-########################################
 
-# for run as username:
+
+
+
+Run aws command as user::
+
 	aws --profile <username> <some_aws_command>
 
 
-# controll output
+Controll output::
 
-aws iam get-user --query 'User.Arn' --output text
-
-aws iam list-users --query 'Users[0]'	
-
-aws iam list-users --query 'Users[*].{name:UserName, arn:Arn}'
-
-aws iam list-users --query 'Users[*].[UserName, Arn]'					# output without keys
-
-aws iam list-users --query 'Users[?UserName==`den`].[UserName, Arn]'	# output where UserName==den
-	
-aws ec2 describe-volumes --query 'Volumes[*].{ID:VolumeId,InstanceId:Attachments[0].InstanceId,AZ:AvailabilityZone,Size:Size}'	
+    aws iam get-user --query 'User.Arn' --output text
+    aws iam list-users --query 'Users[0]'	
+    aws iam list-users --query 'Users[*].{name:UserName, arn:Arn}'
+    # output without keys
+    aws iam list-users --query 'Users[*].[UserName, Arn]'					
+    # output where UserName==den
+    aws iam list-users --query 'Users[?UserName==`den`].[UserName, Arn]'	
+    aws ec2 describe-volumes --query 'Volumes[*].{ID:VolumeId,InstanceId:Attachments[0].InstanceId,AZ:AvailabilityZone,Size:Size}'	
 
 
-# S3
+S3
+--
 
-aws --profile <user> s3 ls s3://<backet> --recursive  --human-readable
+::
+
+    aws --profile <user> s3 ls s3://<backet> --recursive  --human-readable
+
+
 	

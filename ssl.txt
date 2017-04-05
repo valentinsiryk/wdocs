@@ -6,6 +6,9 @@ SSL
 Show info::
 
     openssl x509 -noout -issuer -enddate -in root.pem
+    
+    # show cert expire time
+    openssl x509 -in /etc/letsencrypt/live/elk.swipe-services.com/fullchain.pem -text -noout | grep -A3 Validity
 
 
 Validate the certificate even though the protocol used to communicate with server is not based on HTTP. For example::
@@ -100,7 +103,7 @@ Generate certificates::
     letsencrypt certonly --webroot -w /var/www/html -d my.company.com
     
     # Letsencrypt will generate certs and show path to them (paste this path to web-server config)
-    
+
 
 Add CRON tasks (auto renew)::
 
@@ -109,3 +112,26 @@ Add CRON tasks (auto renew)::
     # Check or renew certs twice per day
     30 12 * * * letsencrypt renew
     0 18 * * * letsencrypt renew
+    
+        
+Certbot
+^^^^^^^
+
+Generate certificates (certbot)::
+    
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install certbot 
+    
+     # Replace with your webroot and hostname
+    certbot certonly --webroot -w /var/www/html -d my.company.com
+    
+    # Certbot will generate certs and show path to them (paste this path to web-server config)
+
+
+Add CRON tasks (auto renew, with reload nginx)::
+
+    sudo crontab -e
+    
+    # Check or renew certs twice per day
+    0 12,18 * * * certbot renew --post-hook "systemctl reload nginx"

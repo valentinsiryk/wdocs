@@ -2,20 +2,26 @@
 IAM
 ===
 
-# attach exist managed policy to user
-aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/<value> --user-name <value>
+Attach exist managed policy to user::
 
-# create new managed policy
-aws iam	create-policy --policy-name <value> --policy-document file://<value>
+    aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/<value> --user-name <value>
 
-# get user ID
-aws iam get-user --query 'User.Arn' --output text
-aws iam get-user | awk '/arn:aws:/{print $2}'
-aws iam list-users --query 'Users[?UserName==`den`].[Arn]' --output text
 
-aws iam create-group --group-name <value>	# create group
-		list-groups							# show groups
-		attach-group-policy --group-name <value> --policy-arn <policy_arn>	# attach policy to group (example arn - arn:aws:iam::aws:policy/AdministratorAccess)
-		list-attached-group-policies --group-name <value>					# show attached policies
-		remove-user-from-group --user-name <value> --group-name <value>		# delete user from group	
-		delete-group --group-name <value>	# delete group (first remove the users in the group, delete inline policies and detach any managed policies)
+Create new managed policy::
+
+    aws iam	create-policy --policy-name <value> --policy-document file://<value>
+
+
+Get user ID::
+
+    aws iam get-user --query 'User.Arn' --output text
+    aws iam get-user | awk '/arn:aws:/{print $2}'
+    aws iam list-users --query 'Users[?UserName==`den`].[Arn]' --output text
+
+
+aws iam create-group --group-name <value>   # create group
+        list-groups                         # show groups
+        attach-group-policy --group-name <value> --policy-arn <policy_arn>  # attach policy to group (example arn - arn:aws:iam::aws:policy/AdministratorAccess)
+        list-attached-group-policies --group-name <value>                   # show attached policies
+        remove-user-from-group --user-name <value> --group-name <value>     # delete user from group	
+        delete-group --group-name <value>                                   # delete group (first remove the users in the group, delete inline policies and detach any managed policies)

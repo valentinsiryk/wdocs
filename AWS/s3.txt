@@ -2,9 +2,7 @@
 S3
 ==
 
-# link to the file:
-	https://<aws_region>.amazonaws.com/<backet_name>/<file_name>
-Example:
-	https://s3-eu-west-1.amazonaws.com/my-super-bucket/linux-155549_960_720.png
+Link to the file looks like: ``https://<aws_region>.amazonaws.com/<backet_name>/<file_name>``.
+Example: ``https://s3-eu-west-1.amazonaws.com/my-super-bucket/linux-155549_960_720.png``
 
 
