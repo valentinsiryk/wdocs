@@ -14,6 +14,12 @@ https://git-scm.com/book/ru/v2
 	add <name> 
 
 
+
+Change url::
+
+    git remote set-url origin git@bitbucket.org:johnsmith/test.git
+
+
 ::
 
     git remote add origin https://github.com/johnsmith/test.git
@@ -33,8 +39,9 @@ https://git-scm.com/book/ru/v2
 		       -d hotfix    # delete unused branch
 		       -D testing   # delete unused branch also if not merged
 
-    git checkout testing    # switching to branch testing (HEAD transfer to branch testing)
-			     -b iss53   # create and switching branch
+    git checkout testing        # switching to branch testing (HEAD transfer to branch testing)
+			     -b iss53       # create and switching branch
+    git checkout path/to/file   # switching file version from server
 
     git merge hotfix        # merge current branch with hotfix
 

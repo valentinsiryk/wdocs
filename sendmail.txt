@@ -1,0 +1,7 @@
+========
+Sendmail
+========
+
+Send mail from console::
+
+    (echo "Subject:Hi"; echo "Body contents";) | sendmail -v -F "test"  my@mail

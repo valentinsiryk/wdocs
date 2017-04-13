@@ -3,6 +3,15 @@ BASH
 ====
 
 
+Boolean in BASH::
+
+    VAR=true
+
+    if [ "$VAR" = true ] ; then
+        echo 'true'
+    fi
+
+
 Check if a variable is set::
 
     if [ -z ${var+x} ]; then
@@ -11,6 +20,8 @@ Check if a variable is set::
         echo "var is set to '$var'"
     fi
     
+    # this will return true if a variable is unset or set to the empty string ("")
+    if [ -z "$VAR" ];    
 
 
 

@@ -38,6 +38,16 @@ Bash completion (https://docs.docker.com/compose/completion/)::
 					    --rmi all		# + del all service images
 
 
+
+::
+
+    version: '2.1'
+    services:
+      nginx1:
+        env_file: .env
+    
+
+
 Example nginx ``docker-compose.yml``::
 
     version: '2'

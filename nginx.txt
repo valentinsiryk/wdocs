@@ -25,9 +25,12 @@ NGINX config
 ::
 
     server {
-        ...
-        client_max_body_size 32m; // размер загружаемого файла клиентом на сервер
-        ...
+        # size of upload files
+        client_max_body_size 32m;
+        
+        # 301 redirect
+        return 301 https://example.com$request_uri;
+        return 301 https://$host$request_uri;
     }
 
 
