@@ -4,6 +4,25 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+Force “git pull” to overwrite local files::
+
+    # Downloads the latest from remote without trying to merge or rebase anything
+    git fetch --all
+
+    # Resets the master branch to what you just fetched. The --hard option changes all the files in your working tree to match the files in origin/master
+    git reset --hard origin/master
+
+    # OR If you are on some other branch
+    git reset --hard origin/<branch_name>
+
+    # Maintain current local commits by creating a branch from master before resetting
+    git checkout master
+    git branch new-branch-to-save-current-commits
+    git fetch --all
+    git reset --hard origin/master
+
+
+
 ::
 
     git push origin serverfix               # remote server/branch
@@ -12,6 +31,11 @@ https://git-scm.com/book/ru/v2
     git remote      # Show configured remote servers 
 	            -v  # Show match URL/name
 	add <name> 
+
+
+Clone only single branch::
+
+    git clone -b <branch> --single-branch git://sub.domain.com/repo.git
 
 
 

@@ -1,0 +1,6 @@
+=====================
+Apache benchmark (AB)
+=====================
+
+http://debian-help.ru/web-servers/ab-apache-benchmark-test-proizvoditelnosti-servera/
+https://www.digitalocean.com/community/tutorials/how-to-use-apachebench-to-do-load-testing-on-an-ubuntu-13-10-vps
