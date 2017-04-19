@@ -10,6 +10,9 @@ SSH
 	    -f                  background run
 	    -i	<private_key>   path to private key
 	    -p  <port>
+	    
+	# remove existing entry    
+	ssh-keygen -R "hostname"
 
 
 Multiple SSH private keys on one client

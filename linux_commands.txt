@@ -46,97 +46,132 @@ Change group::
     chgrp [-R] <GID/gname>
 
 
-arp	// ARP таблица содержит адреса устройств, с которыми взаимодействует данная ОС. А так же MAC'и
-	-n	// только IP(без доменов)
-	-a	// IP и домены
-cat /proc/net/arp	// сомтрим в файле
+Compress image size::
+
+    sudo apt-get install jpegoptim
+    
+    # recursive compress with 50% quality
+    find . -type f -name "*.jpg" -exec jpegoptim -m50 {} \;
 
 
-apt-cache policy <package>	# search versions of packages, enables to install
+ARP::
+        
+    arp     # ARP table contains device addresses and mac's which located in same network
+        -n  # only IP (without domains)
+        -a  # IP and domains
+    
+    # show in the file
+    cat /proc/net/arp
 
 
+APT ::
+
+    apt-cache policy <package>  # search versions of packages which enabled to install
 
 
-fdisk -l	// вся инфа по дискам и разделам
+::
 
-blkid		// короткий список дисков, UUID, TYPE
+    fdisk -l    # show info about disks and partitions
+    blkid       # show small list of disks, UUID, TYPE
+    lsblk       # show disk type, size, name, mountpoint
+    
+    # show UUID of all disks
+    ls -al /dev/disk/by-uuid/
+    
+    # show disk info
+    sudo hdparm -I /dev/sda
+                            | grep -i trim  # TRIM for SSD
+       
+    # mount all from fstab (run it after fstab was changed)                        
+    sudo mount -a
 
-lsblk		# type, size, name, mountpoint
-
-ls -al /dev/disk/by-uuid/	# all UUID of disks
-
-sudo mount -a	# mount al of fstab (run it after fstab changed!!!)
-
-sudo hdparm -I /dev/sda	// вывод инфы о диске
-	| grep -i trim	// проверить поддержку трим для ссд
-
-sudo mkfs -t ext4 device_name		# create partition table
-
-
-touch file{1..100}	# create 100 files: file1, file2, ..., file100
-
-
-
-nmap <ip>		// сканировать ip
-	-sT // TCP
-	-sU // UDP
-	-O // узнать версию ПО
-	--verbose // показывать вывод
-
-service --status-all // текущее состояние всех системных служб
-
-ssh-keygen -R "hostname" // удалить существующие записи
-
-adduser <name> // создать нового пользователя
-		-r	# create system user
-		-g 	# group
-
-		
-Add existing user to existing group::
-
-	sudo usermod -a -G groupName userName
-	
-	
-useradd
-		-u			# UID
-		-r			# create system user
-		-g <group>	# name or ID of group
-		-m          # create home dir
-		-d <path>	# path to home dir
-		-s <shell>	# register shell for user
-		-c			# comments 
+    # create partition table
+    sudo mkfs -t ext4 <device_name>
 
 
-userdel <name> 
-		-r			# del home dir
+::
+    
+    # create 100 files: file1, file2, ..., file100
+    touch file{1..100}
 
 
-groupadd <name>
-		-r	# create system group
-		-g	# group ID
+NMAP::
 
-shutdown [options] <now|time> // управление питанием (выключить сейчас: shutdown -h now)
-	-r // перезагрузка после shutdown;
-	-h // отключение питания после shutdown;
-	-c // отмена запущенного shutdown;
+    nmap <ip>       # scan IP
+                -sT # TCP
+                -sU # UDP
+                -O  # show software version
+                -v  # show process of scannig
 
-halt -p // полное выключение
+::
 
-write <user> [tty] // послать сообщение пользователю, вошедшему в систему
+    # show status of all services
+    service --status-all
 
-who // показать пользователей, выполнивших вход
-last // история входов пользователей
-	reboot // последняя перезагрузка
-	spider // последнее сеансы пользователя
-lastlog // список пользователей, кто когда заходил
 
-inxi -F // вывести информацию о системе
-lshw | more | less // вывести информацию об аппаратных составляющих, в том числе показывает размер сектора
-lscpu	// вывести информацию о процессоре
-lsblk	// вывести инфу о дисках
+Linux users and groups::
 
-sudo dmidecode -t system	// информация об аппаратной составляющей компьютера (можно узнать какая машина - виртуальная или физическая)
+    # add existing user to existing group
+    sudo usermod -a -G groupName userName
+    
+    adduser <name>  # create new user
+            -r      # create system user
+            -g      # group
 
+    useradd
+            -u          # UID
+            -r          # create system user
+            -g <group>  # name or ID of group
+            -m          # create home dir
+            -d <path>   # path to home dir
+            -s <shell>  # register shell for user
+            -c          # comments
+    
+    userdel <name>  # delete user
+            -r      # also delete home dir
+            
+    # create group        
+    groupadd <name>
+            -r      # create system group
+            -g      # group ID
+
+
+Shutdown commands::
+
+    shutdown [options] now|<time> # power management
+            -r  # reboot
+            -h  # power off after shutdown
+            -c  # cancelling scheduled shutdown
+    
+    # poweroff now
+    shutdown -h now    
+    halt -p 
+
+
+::
+    
+    # send message to another user
+    write <user> [tty]
+    
+    # show entered users
+    who
+    
+    last       # login history
+        reboot # reboot history
+        <user> # user login history
+        
+    lastlog    # show all user with login time
+    
+
+Show system information::
+
+    inxi -F             # show information about system
+    lshw | more | less  # show hardware information, also sector size
+    lscpu               # show CPU information
+    
+    # show hardware information, also type (virtual or bare metal)
+    sudo dmidecode -t system
+    
 
 CPU benchmark::
 
@@ -144,48 +179,48 @@ CPU benchmark::
     sysbench --test=cpu --cpu-max-prime=20000 run
 
 
+Decrease ``*.vdi`` size::
 
+    # 1. On guest - zero fill free space 
+    sudo dd if=/dev/zero of=zero bs=512k    # bs=<sector size>
+    sudo rm zero
+    
+    # 2. On host
+    vboxmanage modifyhd /path/to/thedisk.vdi --compact
+    
+    
+::
 
-
-################## уменьшаем размер *.vdi ######################
-sudo dd if=/dev/zero of=zero bs=512k // на гостевой машине - заполнить нулями пустое место (после чего этот файл надо удалить)
-	bs= // размер сектора
-	
-sudo rm zero
-	
-vboxmanage modifyhd /path/to/thedisk.vdi --compact // на хосте
-################################################################
-
-tar -xvzf archive.tar.gz // распаковать в текущую директорию
-sudo -u lee <command> // выполнить команду от определенного пользователя
-
-sudo nano /etc/environment // to add PATH
-
-
-mkswap /dev/sdc2 // Создадим необходимую структуру данных для работы swap на имеющемся разделе
-swapon /dev/sdc2 // сообщим ядру системы, что оно может использовать раздел под swap
-swapon -s // Проверить результат можно посмотрев на вывод команды
-echo "UUID=<UUID swap-раздела> swap swap defaults 0 0"| sudo tee -a /etc/fstab // для автомонтирования
-
-sudo ifconfig wlan0 down && sudo ifconfig wlan0 up // перезапуск networking'a 
-
-#####################################################################
-
-wget -qO- 127.0.0.1	# get and show page
+    # extract archive at current dir
+    tar -xf archive.tar.gz
+    
+    # run command as another user
+    sudo -u lee <command>
+    
+    # for adding PATH env
+    sudo nano /etc/environment
+    
+    # restart networking
+    sudo ifconfig wlan0 down && sudo ifconfig wlan0 up 
+    
+    # get and show page
+    wget -qO- 127.0.0.1
 
 ::
 
-    grep -iR -E '(error_report|ini_set)' ./*.php	# find in files
-		    -l	# show only file names 
-		    -i	# ignore case sensetive
-		    --exclude="*\.svn*"	# exclude
-		    --exclude-dir="dir"	| {dir1,dir2}	# exclude dir
+    grep -iR -E '(error_report|ini_set)' ./*.php    # find in files
+            -l  # show only file names 
+            -i  # ignore case sensetive
+            --exclude="*\.svn*" # exclude
+            --exclude-dir="dir" | {dir1,dir2}   # exclude dir
 
-Замена слов::
+
+Word replacement::
 
     grep -iRl -E "(SOURCE)" | xargs sed -i "s/SOURCE/DEST/g"
 
     sed -i "s@SOURCE@DEST@g" /path/to/file
+
 
 Find
 ----
@@ -200,7 +235,7 @@ Find
     find ./ -mtime 0 -type f -not -path "./" -exec cp --parents "{}" $TODAY_DIR/ \;
 
     # chmod only files
-    find . -type f -exec chmod 644 {} \;	
+    find . -type f -exec chmod 644 {} \;
     
     # faster chmod only files
     find . -type f -print0 | xargs -0 chmod 644
@@ -208,6 +243,9 @@ Find
     # make iconv replace the input file with the converted output in one line
     find . -type f -name '*.php' -exec sh -c 'iconv -f WINDOWS-1251 -t UTF-8 -o {}UTF_TMP {} && mv {}UTF_TMP {}' \;
 
+    # clear file
+    > filename
+    
 
 Delete old files
 ----------------
@@ -215,34 +253,33 @@ Delete old files
 ::
 
     ls -t | sed -e '1,10d' | xargs -d '\n' rm -f
-	    ls -t 				# lists all files in the current directory in decreasing order of modification time
-	    sed -e '1,10d' 		# deletes the first 10 lines, ie, the 10 newest files
-	    xargs -d '\n' rm 	# collects each input line (without the terminating newline) and passes each line as an argument to rm.
-	    -f					# ignore if empty
+        ls -t               # lists all files in the current directory in decreasing order of modification time
+        sed -e '1,10d'      # deletes the first 10 lines, ie, the 10 newest files
+        xargs -d '\n' rm    # collects each input line (without the terminating newline) and passes each line as an argument to rm.
+        -f                  # ignore if empty
 
-tar -czpf $CONFIGBACKUPDIR/$CONFIGBK --directory=$CONFIGDIR --exclude=$CONFIGBACKUPDIR .
 
-############
-# clear file
+::
 
-> filename
-############
+    tar -czpf $CONFIGBACKUPDIR/$CONFIGBK --directory=$CONFIGDIR --exclude=$CONFIGBACKUPDIR .
 
-# PASSWORD GENERATE
-apg
-	-t	# print pronunciation for generated pronounceable passwor
-	-q	# quiet mode (do not print warnings)
-	-n	# count of generated passwords
-	-m	# minimum pass length
-	-x	# maximum pass length
-	-a	# choose algorithm:
-		1 - random password generation according to password modes
-		0 - pronounceable password generation
 
-# Example:
-apg -q -m 8 -x 8 -a 1 -n 5
+PASSWORD GENERATE::
 
-################################
+    apg
+        -t  # print pronunciation for generated pronounceable passwor
+        -q  # quiet mode (do not print warnings)
+        -n  # count of generated passwords
+        -m  # minimum pass length
+        -x  # maximum pass length
+        -a  # choose algorithm:
+            1 - random password generation according to password modes
+            0 - pronounceable password generation
+
+    # Example:
+    apg -q -m 8 -x 8 -a 1 -n 5
+
+
 
 SECURITY
 --------
