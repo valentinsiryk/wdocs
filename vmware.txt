@@ -1,0 +1,42 @@
+======
+VMWare
+======
+
+
+Linux installation
+------------------
+
+https://pubs.vmware.com/workstation-12/index.jsp#com.vmware.ws.using.doc/GUID-1F5B1F14-A586-4A56-83FA-2E7D8333D5CA.html
+
+::
+
+    sh VMware-Workstation-xxxx-xxxxxxx.architecture.bundle --console --custom
+    
+    # deafults:
+    # /var/lib/vmware/Shared VMs
+    
+    # if linux without graphic
+    apt install xfonts-base libxinerama-dev libxcursor-dev libxtst-dev
+    
+    
+ 
+VMWare command line
+-------------------
+    
+::
+
+    # start vm in background
+    vmrun start <path_to_vmx> nogui
+    
+    vmrun clone <path_to_vmx> <path_to_dest_vmx> full|linked [-snapshot=Snapshot Name] [-cloneName=Name]
+    
+    # open GUI net configuration
+    vmware-netcfg
+    
+    # NAT config (port forwarding, etc.)
+    /etc/vmware/vmnet8/nat/nat.conf
+    
+    # reload network (apply network config changes)
+    vmware-networks --stop && vmware-networks --start
+    
+    

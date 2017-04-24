@@ -2,6 +2,27 @@
 Mac OS
 ======
 
+
+Allow only ssh key authentication ``/etc/ssh/sshd_config``::
+
+    PasswordAuthentication no
+    ChallengeResponseAuthentication no
+
+
+Control autoupdate::
+
+    # https://derflounder.wordpress.com/2014/12/29/managing-automatic-app-store-and-os-x-update-installation-on-yosemite/
+    # to disable the automatic update check
+    softwareupdate --schedule off
+    # or
+    defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool FALSE
+
+
+Allow to install apps::
+
+    sudo spctl --master-disable
+
+
 Switch user::
 
     uid=`id -u ${username}`    

@@ -140,6 +140,13 @@ Add next file to Sierra HD ``/Volumes/<Sierra_HD>/Extra/org.chameleon.boot.plist
     
 
 - add ``-vga vmware`` to QEMU parameters.
+
+
+8. Allow to install apps::
+
+    sudo spctl --master-disable
+
+
     
 
 Install Mac OS Sierra on VMWare

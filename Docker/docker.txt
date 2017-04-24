@@ -4,6 +4,14 @@ Docker
 
 
 
+
+To use node_modules locally, but ignore it in the docker container using the following syntax in the ``docker-compose.yml``. So everything in ``./angularApp`` is mapped to ``/opt/app`` and then I create another mount volume ``/opt/app/node_modules/`` which is now empty directory - even if in my local machine ``./angularApp/node_modules`` is not empty::
+
+    volumes:
+       - './angularApp:/opt/app'
+       - /opt/app/node_modules/
+
+
 File ``.dockerignore``::
 
     Dockerfile
