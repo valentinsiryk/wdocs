@@ -2,23 +2,31 @@
 history
 =======
 
-~/.bash_history
+History path ``~/.bash_history``.
 
-history
-		20		# show last 20 commands
-		-c		# clean history (don't forgot clear .bash_history file)
-		-d <num>	# clear command
-	
-!<num>	# show and exec command
-!!		# show and exec last command
+Show history of commands::
 
-# Add time to history
-echo "export HISTTIMEFORMAT="%d.%m.%Y-%H:%M:%S \"" >> ~/.bashrc
-source .bashrc
-	
-set +o history	# off save history
-set -o history	# on save history
+    history
+            20          # show last 20 commands
+            -c          # clean history (don't forgot clear .bash_history file)
+            -d <num>    # clear command
 
-echo $HISTSIZE	# show history size
+    set +o history  # off save history
+    set -o history  # on save history
 
-<space>command	# don't save history of this command
+    echo $HISTSIZE  # show history size
+
+    <space>command  # don't save history of this command
+                
+
+Exec command from history::
+
+    !<num>	# show and exec specific command
+    !!		# show and exec last command
+
+
+Add time to history::
+
+    echo "export HISTTIMEFORMAT="%d.%m.%Y-%H:%M:%S \"" >> ~/.bashrc
+    source .bashrc   
+

@@ -2,7 +2,9 @@
 Docker
 ======
 
+Clear container logs::
 
+    > $(docker inspect --format='{{.LogPath}}' <CONTAINER>)
 
 
 To use node_modules locally, but ignore it in the docker container using the following syntax in the ``docker-compose.yml``. So everything in ``./angularApp`` is mapped to ``/opt/app`` and then I create another mount volume ``/opt/app/node_modules/`` which is now empty directory - even if in my local machine ``./angularApp/node_modules`` is not empty::
@@ -17,86 +19,92 @@ File ``.dockerignore``::
     Dockerfile
     docker-compose.yml
     
+
+Exit without stopped::
+
+    Ctrl+p, Ctrl+q
+
+
+The TERM environment variable is unset!::
+
+    export TERM=xterm
     
 
+::
 
-Ctrl+p, Ctrl+q	# exit without stopped
-
-docker ps		# show running containers
-		  -a	# show all containers
-		  -l	# show last started container
-
-
-docker search <image>		# search images
-
-docker pull <image>:<tag>	# pull to local copy
-
-docker run -t -i <image>:<tag> [comand]
-			<image>
-			-ti <image>							# run end get TTY
-		  	-ti <image> [command]				# run command
-		  	-d <image> [command]					# run on background
-		  	-P ...								# open all required ports
-		  	-p 80:5000 -p 85:5005  ...			# 80 -> 5000
-		  	--name <some_name>					# add name for container
-		  	--env MYVAR2=foo						# add env variable
-		  	--env-file ./env.list				# add env file
-		  	-v /etc/localtime:/etc/localtime:ro	# mount volume or file
-
-			--log-driver=syslog
-			--log-opt syslog-address=udp://<address>:514
-			--log-opt tag="some_tag"
+    docker ps       # show running containers
+              -a    # show all containers
+              -l    # show last started container
 
 
-docker images					# show local images
-			  -q				# show only IDs
-			  -f dangling=true	# show trash images
+    docker search <image>        # search images
 
-docker rmi $(docker images -f dangling=true -q)	# remove trash images
+    docker pull <image>:<tag>    # pull to local copy
 
+    docker run -t -i <image>:<tag> [comand]
+                <image>
+                -ti <image>                          # run end get TTY
+                -ti <image> [command]                # run command
+                -d <image> [command]                 # run on background
+                -P ...                               # open all required ports
+                -p 80:5000 -p 85:5005  ...           # 80 -> 5000
+                --name <some_name>                   # add name for container
+                --env MYVAR2=foo                     # add env variable
+                --env-file ./env.list                # add env file
+                -v /etc/localtime:/etc/localtime:ro  # mount volume or file
 
-docker port <name>			# show opens ports
-				   [port]	# show port
-
-docker logs <name>		# Shows us the standard output of a container.
-			-f <name>	# tail -f
-
-docker stop <name>		# stop running container. return name of stopped
-
-docker start <name>		# start stopping container. return name of started
-		  	 -i <name>	# and in
-
-docker atach <name>	# atach to running container
-
-docker rm <name> <name> ...		# remove container if stopped
-		  -f <name> <name> ...	# remove container!
-
-docker rmi training/sinatra		# remove images
-
-docker cp <container>:<src_path_in_container> <dest_local_path>	# cp files and directories. Example: backup data
+                --log-driver=syslog
+                --log-opt syslog-address=udp://<address>:514
+                --log-opt tag="some_tag"
 
 
-docker top <name>		# top for container
+    docker images                   # show local images
+                  -q                # show only IDs
+                  -f dangling=true  # show trash images
 
-docker inspect <name>	# return json information
-			   -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <name>
-			  		
-docker commit -m "message" -a "John Smith" 0b2616b0e5a8 ouruser/sinatra:v2	# save current state of image
-
-docker tag 5db5f8471261 ouruser/sinatra:devel	# add new tag
+    docker rmi $(docker images -f dangling=true -q)    # remove trash images
 
 
-# Images that use the v2 or later format have a content-addressable identifier called a digest.
-# As long as the input used to generate the image is unchanged, the digest value is predictable.
-# To list image digest values, use the --digests flag:
-docker images --digests | head
-docker pull ouruser/sinatra@sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0382cfbdbf
+    docker port <name>         # show opens ports
+                       [port]  # show port
 
-docker push ouruser/sinatra
+    docker logs <name>         # Shows us the standard output of a container.
+                -f <name>      # tail -f
+
+    docker stop <name>         # stop running container. return name of stopped
+
+    docker start <name>        # start stopping container. return name of started
+                   -i <name>   # and in
+
+    docker atach <name>    # atach to running container
+
+    docker rm <name> <name> ...       # remove container if stopped
+              -f <name> <name> ...    # remove container!
+
+    docker rmi training/sinatra       # remove images
+
+    docker cp <container>:<src_path_in_container> <dest_local_path>    # cp files and directories. Example: backup data
 
 
-# The TERM environment variable is unset!
-export TERM=xterm
+    docker top <name>        # top for container
+
+    docker inspect <name>    # return json information
+                   -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <name>
+                          
+    docker commit -m "message" -a "John Smith" 0b2616b0e5a8 ouruser/sinatra:v2    # save current state of image
+
+    docker tag 5db5f8471261 ouruser/sinatra:devel    # add new tag
+
+
+Images that use the v2 or later format have a content-addressable identifier called a digest.
+As long as the input used to generate the image is unchanged, the digest value is predictable.
+To list image digest values, use the --digests flag::
+
+    docker images --digests | head
+    docker pull ouruser/sinatra@sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0382cfbdbf
+
+    docker push ouruser/sinatra
+
 
 
 Docker monitoring
@@ -122,4 +130,4 @@ Run via docker::
     
     
 
-						
+                        

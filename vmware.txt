@@ -25,10 +25,18 @@ VMWare command line
     
 ::
 
-    # start vm in background
-    vmrun start <path_to_vmx> nogui
+    # show running VM's
+    vmrun list
     
-    vmrun clone <path_to_vmx> <path_to_dest_vmx> full|linked [-snapshot=Snapshot Name] [-cloneName=Name]
+    # start VM in background
+    # If "Error: The file is already in use vmrun" delete *.lck dir (may be happen if vm was moved) 
+    vmrun start <path_to_vmx> [gui|nogui]
+    
+    # stop VM
+    stop <path_to_vmx> [hard|soft]
+    
+    # clonning VM
+    vmrun clone <path_to_vmx> <path_to_dest_vmx> full|linked [-snapshot=from_snapshot_name] [-cloneName=Name]
     
     # open GUI net configuration
     vmware-netcfg
@@ -38,5 +46,15 @@ VMWare command line
     
     # reload network (apply network config changes)
     vmware-networks --stop && vmware-networks --start
+    
+    # create cnapshot
+    vmrun snapshot <path_to.vmx> <snapshot_name>
+    
+    # show snapshots
+    vmrun listSnapshots <path_to.vmx> [showTree]
+    
+    # set VM state to a snapshot
+    vmrun revertToSnapshot <path_to.vmx> <snapshot_name>
+
     
     

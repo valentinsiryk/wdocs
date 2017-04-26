@@ -38,6 +38,13 @@ Bash completion (https://docs.docker.com/compose/completion/)::
 					    --rmi all		# + del all service images
 
 
+Logging::
+
+    logging:
+    driver: "json-file"
+    options:
+        max-size: "100M"
+        max-file: "5"
 
 ::
 

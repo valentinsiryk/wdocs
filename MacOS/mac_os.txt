@@ -2,6 +2,18 @@
 Mac OS
 ======
 
+Set/get Computer/Host/LocalHost names. The settings are stored in ``/Library/Preferences/SystemConfiguration/preferences.plist``.::
+
+    # set
+    sudo scutil --set ComputerName "newname"
+    sudo scutil --set LocalHostName "newname"
+    sudo scutil --set HostName "newname"
+    
+    # get
+    scutil --get ComputerName
+    scutil --get LocalHostName
+    scutil --get HostName
+
 
 Allow only ssh key authentication ``/etc/ssh/sshd_config``::
 

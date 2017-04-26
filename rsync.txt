@@ -8,5 +8,9 @@ rsync
 
 Send big file on server::
 
-    rsync -v --progress --inplace <src> <user>@<ip>:</path/to/dest>
+    rsync -v -r --progress --inplace <src> <user>@<ip>:</path/to/dest>
+        -r          # recursive
+        -v          # verbosity
+        --progress  # show progress during transfer
+        
 
