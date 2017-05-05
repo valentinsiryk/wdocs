@@ -4,23 +4,26 @@ sed
 
 Команда копирует файлы (по умолчанию со стандартного входа) на стандартный выход, редактирует их в соответствии со своими(!) командами, размещенными в "script" (в командном файле или строке редактора [а не shell!]). 
 
-sed [ -n ] [ -e скрипт ] [ -f скрипт-файл ] [ файлы ]
-Флаг -n подавляет вывод
--e — указывает на список инструкций, заданный в командной строке.
--f — указывает местонахождение файла-скрипта.
+::
 
-echo "The quick brown fox jumps over the lazy dog" | sed 's/dog/cat/'
+    sed [ -n ] [ -e скрипт ] [ -f скрипт-файл ] [ файлы ]
+    Флаг -n подавляет вывод
+    -e — указывает на список инструкций, заданный в командной строке.
+    -f — указывает местонахождение файла-скрипта.
 
-cat file | sed '/SOME_TEXT/ c NEW_TEXT' 	// заменяет строку с найденным текстом на новую
+    echo "The quick brown fox jumps over the lazy dog" | sed 's/dog/cat/'
 
-sed '/TEXT_IN_STRING/d' FILE_NAME	// удаляет строку, которая сожержит TEXT_IN_STRING
-	-i	# меняет файл, с которого читает
+    cat file | sed '/SOME_TEXT/ c NEW_TEXT' 	// заменяет строку с найденным текстом на новую
+
+    sed '/TEXT_IN_STRING/d' FILE_NAME	// удаляет строку, которая сожержит TEXT_IN_STRING
+	    -i	# меняет файл, с которого читает
 
 
-sed -i 's/OLD/NEW/g' FILE	# replace OLD to NEW in file 
+    sed -i 's/OLD/NEW/g' FILE	# replace OLD to NEW in file 
 
 
-sed 's@'"$PWD"'@yo@'	# env
+    sed 's@'"$PWD"'@yo@'	# env
+    
 
 https://ru.wikipedia.org/wiki/Sed
 http://linuxgeeks.ru/sed.htm

@@ -2,23 +2,28 @@
 Vagrant
 =======
 
-
 Boxes-hub::
 
     https://atlas.hashicorp.com/boxes/search
 
+
 ::
-
-    vagrant init [box_name]				# create vagrantfile with 'base' box
-			     hashicorp/precise64	# create vagrantfile with 'hashicorp/precise64' box
-		    up					# start vm, starts and provisions the vagrant environment
-		    reload				# restarts vagrant machine, loads new Vagrantfile configuration
-		    ssh					# connect to machine
-		    ssh-config			# outputs OpenSSH valid configuration to connect to the machine
-		    reload --provision	# enable provision
-		    global-status		# status of all machines
-
-Vagrant destroy // terminate vm (not remove downloaded box)
+    # show outdated boxes
+    vagrant box outdated    
+    
+    # update box
+    vagrant box update
+    
+    vagrant init [box_name]             # create vagrantfile with 'base' box
+			     hashicorp/precise64    # create vagrantfile with 'hashicorp/precise64' box
+		    up                          # start vm, starts and provisions the vagrant environment
+		    reload                      # restarts vagrant machine, loads new Vagrantfile configuration
+		    ssh                         # connect to machine
+		    ssh-config                  # outputs OpenSSH valid configuration to connect to the machine
+		    reload --provision          # enable provision
+		    global-status               # status of all machines
+    
+    vagrant destroy # terminate vm (not remove downloaded box)
 
 
 Remove old box versions

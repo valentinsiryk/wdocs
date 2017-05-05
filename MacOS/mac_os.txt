@@ -1,6 +1,32 @@
-======
-Mac OS
-======
+===================
+Mac OS instructions
+===================
+
+List of users (with information)::
+
+    dscacheutil -q user
+    
+    # only not system users
+    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
+
+
+Default background pictures paths::
+
+    # all pictures
+    /Library/Desktop\ Pictures/*.jpg
+    /Library/Desktop\ Pictures/Solid\ Colors/*.jpg
+    
+    # default background
+    /System/Library/CoreServices/DefaultDesktop.jpg
+
+
+Logout user::
+
+    sudo launchctl bootout user/$(id -u test)
+    
+    # graceful method
+    sudo launchctl asuser $(id -u <USERNAME>) osascript -e 'tell application "System Events"' -e 'log out' -e 'keystroke return' -e 'end tell'
+
 
 Set/get Computer/Host/LocalHost names. The settings are stored in ``/Library/Preferences/SystemConfiguration/preferences.plist``.::
 
@@ -30,7 +56,7 @@ Control autoupdate::
     defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool FALSE
 
 
-Allow to install apps::
+Allow to install apps from anywhere::
 
     sudo spctl --master-disable
 
@@ -70,6 +96,68 @@ Run application at another user::
 Remote connect::
 
     https://support.apple.com/en-us/HT201710
+
+
+LaunchDaemons
+-------------
+
+``/System/Library/LaunchDaemons/`` - load when system running 
+
+
+Bonjour::
+
+    /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+    /System/Library/LaunchDaemons/com.apple.mDNSResponderHelper.plist
+    
+
+Launchctl
+---------
+
+Agents and daemons paths::
+
+    ~/Library/LaunchAgents         # Per-user agents provided by the user.
+    /Library/LaunchAgents          # Per-user agents provided by the administrator.
+    /Library/LaunchDaemons         # System-wide daemons provided by the administrator.
+    /System/Library/LaunchAgents   # Per-user agents provided by Mac OS X.
+    /System/Library/LaunchDaemons  # System-wide daemons provided by Mac OS X.
+
+
+Install GUI application::
+
+    brew install Caskroom/cask/launchcontrol
+
+
+Create user agent::
+
+    mkdir $HOME/Library/LaunchAgents
+    # drwxr-xr-x    3 spider  staff   102 Apr 28 16:46 LaunchAgents
+
+
+Disabled jobs are stored in ``/var/db/com.apple.xpc
+
+::
+
+    launchctl
+    launchctl   list                                    # list all loaded services (PID LAST_EXIT_CODE NAME)
+                        <service_name>                  # show info about service
+                
+    launchctl   print-disabled user/<user_id>           # show disabled services for user
+                
+    launchctl   enable|disable user/<user_id>/<service> # disable service for user
+                               system/<service>         # disable daemons whir starts as root
+                
+    launchctl   remove <service>                        # unload service from launchd
+    launchctl   unload <path_to_plist>                  # unload service from launchd
+                       -w                               # pick disabled (save after reboot)
+
+    launchctl   load <path_to_plist>                    # load service to launchd
+                       -w                               # pick enabled (save after reboot)
+                       
+    launchctl   start|stop                              # start|stop service
+    
+    # run app as another user
+    sudo launchctl asuser $(id -u <user>) <command>
+                
 
 
 Create bootable flash

@@ -5,14 +5,29 @@ SSH
 ::
 
     ssh [options] <user>@<host>
-	    -L                  tunneling
-	    -N                  non entering to bash
-	    -f                  background run
-	    -i	<private_key>   path to private key
-	    -p  <port>
-	    
-	# remove existing entry    
-	ssh-keygen -R "hostname"
+        -L                  tunneling
+        -N                  non entering to bash
+        -f                  background run
+        -i  <private_key>   path to private key
+        -p  <port>
+        
+    # remove existing entry    
+    ssh-keygen -R "hostname"
+
+
+X11 application
+---------------
+
+Run GUI app;ication on remote desctop. Connect, export the display in-line and start the application in a way that won't close it after the ssh session dies::
+
+    ssh <user@server> "DISPLAY=:0 nohup firefox"
+
+
+Run remote GUI application on local desktop::
+
+     ssh -XC <user@server> firefox     
+     # or
+     ssh -YC <user@server> firefox
 
 
 Multiple SSH private keys on one client
@@ -43,7 +58,7 @@ SSH tunneling
 
     ssh -NL <local_port>:<remote_address>:<remote_port> <remote_user>@<remote_host>
 
-	
+    
 SSH aliases
 -----------
 

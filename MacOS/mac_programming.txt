@@ -7,6 +7,14 @@ AppleScript Programming/System Events
 
 https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 
+
+Pass command-line arguments to AppleScript ``osascript script.scpt hello world``. ``script.scpt``::
+
+    on run argv
+      return item 1 of argv & item 2 of argv
+    end run
+
+
 ::
 
     /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -switchToUserID ${uid}
@@ -17,3 +25,32 @@ https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
       keystroke "${password}" & return
     end tell
     EOF
+    
+    
+Open new tab in terminal and run command::
+
+    osascript << EOF
+    tell application "Terminal"
+        activate
+        tell application "System Events" to keystroke "t" using command down
+        repeat while contents of selected tab of window 1 starts with linefeed
+            delay 0.01
+        end repeat
+        do script "echo a" in window 1
+    end tell
+    EOF
+
+
+Run command in new or existing terminal an close it::
+
+    osascript << EOF
+    tell application "Terminal"
+        activate
+        do script "echo a" in window 1
+        quit
+    end tell
+    EOF
+    
+
+
+

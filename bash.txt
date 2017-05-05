@@ -3,6 +3,32 @@ BASH
 ====
 
 
+Functions on BASH::
+
+    #!/bin/sh
+
+    # this will fail because foo has not been declared yet.
+    myFunction parameter_1 parameter_2
+
+    [function] myFunction() {
+        echo "Parameters: $1 $2"
+    }
+
+    # this will work
+    myFunction parameter_1 parameter_2
+
+
+Do while with iterator::
+
+    COUNT=0
+
+    while [ $COUNT -lt 10 ]
+    do
+            (( COUNT++ ))
+            echo $COUNT
+    done
+
+
 Boolean in BASH::
 
     VAR=true

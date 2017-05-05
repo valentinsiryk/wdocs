@@ -2,6 +2,9 @@
 Ansible playbook
 ================
 
+Best prctices project structure::
+
+    http://docs.ansible.com/ansible/playbooks_best_practices.html
 
 
 ::

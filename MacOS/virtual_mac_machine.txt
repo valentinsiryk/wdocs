@@ -155,6 +155,31 @@ Install Mac OS Sierra on VMWare
 1. Download and run script to unlock your VMWare for run Mac OS https://github.com/DrDonk/unlocker . P.S. Read readme in repo.
 
 2. 
+
+
+Disable Mac OS csrutil (SIP) on VMware VM
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Start vmware
+
+2. Select Mac OS guest and ``power to firmware``
+
+3. In efi menu, enter ``setup`` -> ``config boot options`` -> ``add boot options`` -> ``select recovery partition`` -> ``select boot.efi``
+
+4. At input file description hit <enter> and type in label e.g. "recovery" -> ``commit changes and exit``
+
+5. Boot from "recovery" and be patient
+
+6. Follow prompt until you see OS X Utilities menu
+
+7. At the very top menu select ``Utilities`` -> ``Terminal``
+
+8. In terminal enter::
+    
+    csrutil status
+    csrutil disable
+    csrutil status
+    reboot
 	
     
 Run Sierra on VirtualBox

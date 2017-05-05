@@ -2,6 +2,14 @@
 Linux commands
 ==============
 
+Show count of processes of some user::
+
+    ps aux  | awk '{print $1}' | grep <user> | wc -l
+    
+    # show processes count of each user
+    ps -eo user=|sort|uniq -c
+
+
 Show user group id's (GID)::
 
     id <username>
@@ -206,13 +214,17 @@ Decrease ``*.vdi`` size::
     # get and show page
     wget -qO- 127.0.0.1
 
-::
+
+grep::
 
     grep -iR -E '(error_report|ini_set)' ./*.php    # find in files
-            -l  # show only file names 
-            -i  # ignore case sensetive
-            --exclude="*\.svn*" # exclude
-            --exclude-dir="dir" | {dir1,dir2}   # exclude dir
+            -R                                      # recursive (include inherited dirs)
+            -l                                      # show only file names 
+            -i                                      # ignore case sensetive
+            --exclude="*\.svn*"                     # exclude
+            --exclude-dir="dir" | {dir1,dir2}       # exclude dir
+            -A <num>                                # show also <num> lines after
+            -B <num>                                # show also <num> lines before
 
 
 Word replacement::
@@ -220,6 +232,15 @@ Word replacement::
     grep -iRl -E "(SOURCE)" | xargs sed -i "s/SOURCE/DEST/g"
 
     sed -i "s@SOURCE@DEST@g" /path/to/file
+    
+
+Remove the line which contains string::
+
+    # print the output to standard out
+    sed '/pattern to match/d' <file>
+    
+    # directly modify the file (and create a backup). Will create <file>.bak.
+    sed -i.bak '/pattern to match/d' <file>
 
 
 Find

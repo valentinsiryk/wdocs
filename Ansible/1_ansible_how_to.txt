@@ -2,53 +2,75 @@
 Ansible
 =======
 
-# https://habrahabr.ru/post/195048/
+Installation
+------------
+
+http://docs.ansible.com/ansible/intro_installation.html#installation
 
 
-# config
-	/etc/ansible/ansible.cfg or ~/.ansible.cfg
-		host_key_checking = False	# if host changed.. known_hosts...
+Instruction
+-----------
 
-# hosts
-	/etc/ansible/hosts
-
-ssh-keygen
-ssh-copy-id	# to hosts
-
-ssh-agent bash
-ssh-add ~/.ssh/id_rsa
-
-ansible <[group_of_hosts]> -a "/bin/echo Hello, World!"
-
-ansible all -m ping	# ping known hosts
-
-ansible all -m ping -u spider	# ping with user name
-
-ansible all -m ping -u bruce -b	# to root user
-ansible all -m ping -u bruce -b --become-user batman	# to sudo user
-
-ansible all -a "/bin/echo hello"
+https://habrahabr.ru/post/195048/
 
 
-ansible-playbook -i <inventory> <playbook.yml>
+Config ``/etc/ansible/ansible.cfg`` or ``~/.ansible.cfg``::
+
+    # if host changed.. known_hosts...
+    host_key_checking = False	
+
+Hosts ``/etc/ansible/hosts``
 
 
-# play playbook with ask sudo pass or root
+::
 
-ansible-playbook -i inventory playbooks/lemp.yml --ask-become-pass(-K) -u spider
-ansible-playbook -i inventory playbooks/lemp.yml -u root
+    ssh-keygen
+    ssh-copy-id	# to hosts
+
+    ssh-agent bash
+    ssh-add ~/.ssh/id_rsa
+    
+
+::
+
+    # run simple command
+    ansible <[group_of_hosts]> -a "/bin/echo Hello, World!"
+    ansible all -a "/bin/echo hello"
+
+    # using modulw 'service' on 'webservers' group
+    ansible webservers -m service -a "name=nginx state=stopped"
+    
+    # ping known hosts
+    ansible all -m ping	
+                        -u spider                           # ping with username	
+                        -u bruce -b	                        # to root user
+                        -u bruce -b --become-user batman	# to sudo user
+
+    # run playbook with inventory file
+    ansible-playbook -i <inventory> <playbook.yml>
+
+    # play playbook with ask sudo pass or root
+    ansible-playbook -i inventory playbooks/lemp.yml --ask-become-pass(-K) -u spider
+    ansible-playbook -i inventory playbooks/lemp.yml -u root
 
 
+Inventory file::
+
+    # become for all operations
+    192.168.0.5 ansible_become=true ansible_user=manager 
 
 
+Show all available facts::
+    
+    # gather_facts = true
+    
+    ansible -m setup localhost
 
-192.168.0.5 ansible_become=true ansible_user=manager # become for all operations
 
-ansible webservers -m service -a "name=nginx state=stopped"
+Use factsin playbook::
 
-
-{{ ansible_distribution_release }}	# trusty, ...
-{{ ansible_distribution }}			# Debian, ...
+    {{ ansible_distribution_release }}	# trusty, ...
+    {{ ansible_distribution }}			# Debian, ...
 
 
 Inventory file example
