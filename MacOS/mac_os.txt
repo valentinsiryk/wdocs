@@ -2,6 +2,47 @@
 Mac OS instructions
 ===================
 
+Manipulating OS X login items from command line
+
+- https://hamstergene.github.io/post/editing-osx-login-items-cmdline/
+- http://hints.macworld.com/article.php?story=20111226075701552
+
+
+Snoop new processes as they are executed, ``creatbyproc.d`` for files::
+
+    sudo newproc.d
+    sudo creatbyproc.d
+
+
+List memory usage in real time::
+
+    sudo fs_usage | grep -v 0.0000
+
+
+Force flush cached memory::
+
+    sudo sync && sudo purge
+    
+
+Enable/disable swapping in Mac OS X (not checked solution)::
+
+    # to disable swap (pager daemon)
+    sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.dynamic_pager.plist
+    
+    # after stopping pager daemon, you may want to remove swapfiles
+    sudo rm /private/var/vm/swapfile*
+    
+    # to enable swap, you need to boot in Single Mode (Hold [CMD + S] at booting time) and run this command:
+    sudo launchctl load /System/Library/LaunchDaemons/com.apple.dynamic_pager.plist
+
+
+Remove RecoveryHD partition::
+
+    diskutil list
+    diskutil eraseVolume HFS+ Blank /dev/<RecoveryHD_ID>
+    diskutil mergePartitions HFS+ <nameOfMainDisk> <mainDisk_ID> <RecoveryHD_ID>
+
+
 List of users (with information)::
 
     dscacheutil -q user
@@ -133,7 +174,7 @@ Create user agent::
     # drwxr-xr-x    3 spider  staff   102 Apr 28 16:46 LaunchAgents
 
 
-Disabled jobs are stored in ``/var/db/com.apple.xpc
+Disabled jobs are stored in ``/var/db/com.apple.xpc``
 
 ::
 

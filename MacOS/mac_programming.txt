@@ -7,6 +7,19 @@ AppleScript Programming/System Events
 
 https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 
+Loop (repeat) - http://alvinalexander.com/apple/applescript-for-loop-while-loop-examples
+
+
+Show all processes of application::
+
+    tell application "Finder"
+       set l to get name of every process
+
+       repeat with i in l
+            log i
+       end repeat
+    end tell
+
 
 Pass command-line arguments to AppleScript ``osascript script.scpt hello world``. ``script.scpt``::
 
@@ -14,6 +27,119 @@ Pass command-line arguments to AppleScript ``osascript script.scpt hello world``
       return item 1 of argv & item 2 of argv
     end run
 
+
+Debug UI elements (dirty)::
+
+    #!/usr/bin/osascript
+
+    tell application "Messages"
+	    activate
+    end tell
+
+    tell application "System Events"
+	    get properties
+	    if UI elements enabled then
+		    tell process "Messages"
+			
+			    set t1 to get every UI element
+			    log t1 & "\n"
+			
+			    tell window "Messages"
+				    set t1 to get every UI element
+			        log t1 & "\n"
+			        
+			        tell sheet 1
+			            set t1 to get every UI element
+			            log "get every UI element"
+			            log t1 & "\n"
+			        
+			            tell scroll area 1
+			                set t1 to get every UI element
+			                log "get every UI element"
+			                log t1 & "\n"
+
+                            tell UI element 1
+                                set t1 to get every UI element
+			                    log "get every UI element"
+			                    log t1 & "\n"
+			                    
+			                    tell group 1
+			                        set t1 to get every UI element
+			                        log "get every UI element"
+			                        log t1 & "\n"
+			                        
+			                        tell group 2
+			                            set t1 to get every UI element
+			                            log "get every UI element"
+			                            log t1 & "\n"
+			                            
+			                            tell static text "Apple ID Locked"
+			                            if not (exists) then
+										    log "FALSE"
+									    else
+									        log "TRUE"
+									    end if
+									
+									    end tell
+			                            
+			                        end tell
+			                    
+			                    end tell
+			                                            
+                            end tell
+
+                            set t1 to get every button
+        			        log t1 & ".\n"
+			            end tell
+			            	            
+			            set t1 to get every static text
+				        log t1 & "\n"
+			        end tell
+			        
+				    set t1 to get every button
+				    log t1 & "\n"
+				
+				    set t1 to get properties of every button
+				    log t1 & "\n"
+				
+				    set t1 to get every UI element of every button
+				    log t1 & "\n"
+				
+				    set t1 to get every static text
+				    log t1 & "\n"
+				
+				    set t1 to get properties of every static text
+				    log t1 & "\n"
+				
+				    set t1 to get every UI element of every static text
+				    log t1 & "\n"
+				
+				    set t1 to get every scroll bar
+				    log t1 & "\n"
+				
+				    get properties of every scroll bar
+				    get every UI element of every scroll bar
+				
+				    (*get every UI element ¬
+					    whose class is not button and class is not static text ¬
+					    and class is not scroll bar
+				    get properties of every UI element ¬
+					    whose class is not button and class is not static text ¬
+					    and class is not scroll bar*)
+				
+			    end tell
+			
+		    end tell
+	    else
+		    tell application "System Preferences"
+			    activate
+			    set current pane to pane "com.apple.preference.universalaccess"
+			    display dialog "UI element scripting is not enabled. Check \"Enable access for assistive devices\""
+		    end tell
+	    end if
+    end tell
+    
+    
 
 ::
 

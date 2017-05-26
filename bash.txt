@@ -3,6 +3,21 @@ BASH
 ====
 
 
+http://talk.jpnc.info/bash_lfnw_2017.pdf
+
+
+Bash get last line from a variable::
+
+    echo "${VAR##*$'\n'}"
+
+
+Is file exist::
+
+    if [ ! -f /tmp/foo.txt ]; then
+        echo "File not found!"
+    fi
+
+
 Functions on BASH::
 
     #!/bin/sh
@@ -66,9 +81,6 @@ Multiline file creating::
 	line 2
 	line 3
 	EOF
-
-
-::
 
 
 Make sure only root can run our script::

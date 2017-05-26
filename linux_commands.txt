@@ -2,6 +2,19 @@
 Linux commands
 ==============
 
+Empty pagecache, dentries and inodes::
+
+    # run as root
+    free -h && sync && echo 3 > /proc/sys/vm/drop_caches && free -h
+    
+
+Flush swap::
+
+    # run as root
+    swapoff -a && swapon -a
+    
+
+
 Show count of processes of some user::
 
     ps aux  | awk '{print $1}' | grep <user> | wc -l

@@ -1,0 +1,11 @@
+=======
+OpenVPN
+=======
+
+Configuration
+-------------
+
+Server config::
+
+    # Allow multiple user connections
+    duplicate-cn

@@ -41,6 +41,14 @@ https://www.zabbix.com/documentation/3.0/ru/manual/encryption/using_pre_shared_k
 - Configure host in Zabbix-server to use PSK. Need to wait some time, before Zabbix cache update.
   
     
+Zabbix server 3.2
+-----------------
+
+Configuration
+^^^^^^^^^^^^^
+
+``/usr/share/zabbix/conf/zabbix.conf.php``
+
 
 
 Zabbix agent 3.0

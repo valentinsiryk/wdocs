@@ -2,16 +2,19 @@
 nano
 ====
 
+Find+replace in **nano** press next combination::
+
+    [Ctrl]+[\] 
+    Enter your search term      [return] 
+    Enter your replacement term [return] 
+    [A]                           # to replace all instances 
 
 
-
-Show line nums - CTRL+C (without dynamic change), or::
+Show line nums - ``[CTRL]+[C]`` (without dynamic change), or::
 
     nano -c <file>
     
 
 Thus to display line numbers always when using nano::
 
-    nano ~/.nanorc
-        set const
-
+    echo 'set const' >> ~/.nanorc

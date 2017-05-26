@@ -56,5 +56,7 @@ VMWare command line
     # set VM state to a snapshot
     vmrun revertToSnapshot <path_to.vmx> <snapshot_name>
 
+    # remove a snapshot from a VM
+    vmrun deleteSnapshot <path_to.vmx> <snapshot_name> [andDeleteChildren]
     
     

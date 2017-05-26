@@ -4,6 +4,9 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+
+Delete credentials from GIT repository [rus] - https://the-bosha.ru/2016/07/01/udaliaem-sluchaino-zakomichennye-privatnye-dannye-iz-git-repozitoriia/
+
 Force “git pull” to overwrite local files::
 
     # Downloads the latest from remote without trying to merge or rebase anything
