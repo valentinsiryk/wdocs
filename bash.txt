@@ -5,6 +5,19 @@ BASH
 
 http://talk.jpnc.info/bash_lfnw_2017.pdf
 
+BASH if grep ixists statement::
+
+    if grep --quiet 'text' /path/to/file; then
+      echo exists
+    else
+      echo not found
+    fi
+
+
+Get path to script which run::
+
+    SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 
 Bash get last line from a variable::
 

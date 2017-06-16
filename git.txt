@@ -4,6 +4,11 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+Avoid **Are you sure you want to continue connecting (yes/no)** on connect via ssh keys::
+
+    # bitbucket
+    ssh-keyscan -t rsa bitbucket.org >> ~/.ssh/known_hosts
+
 
 Delete credentials from GIT repository [rus] - https://the-bosha.ru/2016/07/01/udaliaem-sluchaino-zakomichennye-privatnye-dannye-iz-git-repozitoriia/
 

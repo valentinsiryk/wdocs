@@ -1,0 +1,67 @@
+============================
+Create own AMI from instance
+============================
+
+Tested on AWS Ubuntu Xenial ``create-own-ami.sh``::
+
+
+    #!/bin/bash
+
+    set -e
+
+    instance_id=$(ec2metadata --instance-id)
+    instance_name=$(aws ec2 describe-tags --filters Name=resource-id,Values=$instance_id Name=key,Values=Name --query Tags[].Value --output text)
+
+    if [ -z $instance_name ]; then
+	    ami_name="ec2-$instance_id-auto-created"
+    else
+	    ami_name="$instance_name-auto-created"
+    fi
+
+    ami_description="AMI auto created by script from instance $instance_id"
+
+    function delete_snapshots_of_ami() {
+	    array=($(aws ec2 describe-images --filters "Name=image-id,Values=$1" --query Images[0].BlockDeviceMappings[].Ebs.SnapshotId --output text))
+	
+	    for i in "${array[@]}"
+	    do
+		    aws ec2 delete-snapshot --snapshot-id $i
+		    echo 'Deleted snapshot $i'
+	    done
+	
+    }
+
+
+    function delete_ami() {
+	    ami_id=$1
+	
+	    snapshots=($(aws ec2 describe-images --filters "Name=image-id,Values=$ami_id" --query Images[0].BlockDeviceMappings[].Ebs.SnapshotId --output text))
+	
+	    aws ec2 deregister-image --image-id $ami_id
+	    echo "Deregistered AMI $ami_id"	
+	
+	    sleep 5.0
+	
+	    for snap_id in "${snapshots[@]}"
+	    do
+		    aws ec2 delete-snapshot --snapshot-id $snap_id
+		    echo "Deleted snapshot $snap_id"
+	    done
+    }
+
+
+    ami_last_id=$(aws ec2 describe-images --filters "Name=name,Values=$ami_name" --query Images[0].ImageId --output text)
+
+    if [ "$ami_last_id" = "None" ]; then
+	    echo "Not exist previous AMI. Nothing to delete."
+    else
+	    echo "Start deleting previous AMI $ami_name with id $ami_last_id"
+	    delete_ami $ami_last_id
+	
+	    echo "Previous AMI and associated snapshots were deleted."
+    fi
+
+    echo "Start creating AMI $ami_name from $instance_id"
+    ami_new_id=$(aws ec2 create-image --instance-id $instance_id --name "$ami_name" --description "$ami_description" --output text)
+
+    echo "Created new AMI $ami_new_id"

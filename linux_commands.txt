@@ -2,10 +2,20 @@
 Linux commands
 ==============
 
+Sleep for 1 second between each xargs command::
+
+    ps aux | awk '{print $1}' | xargs -I % sh -c '{ echo %; sleep 1; }'
+
+
 Empty pagecache, dentries and inodes::
 
     # run as root
-    free -h && sync && echo 3 > /proc/sys/vm/drop_caches && free -h
+    
+    # pagecache
+    free -h && echo && sync && echo  > /proc/sys/vm/drop_caches && free -h 
+       
+    # (not recomended) pagecache, dentries and inodes
+    free -h && echo && sync && echo 3 > /proc/sys/vm/drop_caches && free -h
     
 
 Flush swap::
@@ -254,6 +264,11 @@ Remove the line which contains string::
     
     # directly modify the file (and create a backup). Will create <file>.bak.
     sed -i.bak '/pattern to match/d' <file>
+
+
+Replace whole line started by::
+
+    sed "s/start_of_line.*/new_line_content/g"
 
 
 Find

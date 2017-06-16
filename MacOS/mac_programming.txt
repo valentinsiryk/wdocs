@@ -9,6 +9,16 @@ https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 
 Loop (repeat) - http://alvinalexander.com/apple/applescript-for-loop-while-loop-examples
 
+Get all UI elements::
+
+    set t1 to get every UI element
+    log "---\nGet every UI element\n---"
+    repeat with i in t1
+         log i
+         log "\n"
+    end repeat
+    log "---\nEnd\n---"
+    
 
 Show all processes of application::
 

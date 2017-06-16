@@ -30,14 +30,49 @@ Rotate received logs to files
 -----------------------------
 
 - http://www.rsyslog.com/doc/v8-stable/configuration/filters.html
-
+- http://www.k-max.name/linux/rsyslog-na-debian-nastrojka-servera/
 
 ``/etc/rsyslog.d/*.conf``::
 
-	:syslogtag, contains, "<tag>" /var/log/<log_name>.log	# tag contains 
-	:syslogtag, isequal, "<tag>" /var/log/<log_name>.log	# tag equal
-	:msg, contains, "<msg>" /var/log/<log_name>.log			# msg contains
-	:msg, isequal, "<msg>" /var/log/<log_name>.log			# msg equal
+	:syslogtag, contains, "<tag>" /var/log/<log_name>.log   # tag contains 
+	:syslogtag, isequal, "<tag>" /var/log/<log_name>.log    # tag equal
+	:msg, contains, "<msg>" /var/log/<log_name>.log         # msg contains
+	:msg, isequal, "<msg>" /var/log/<log_name>.log          # msg equal
+	
+	#########
+	# example
+	$template myFormat,"%timegenerated:::date-hour%:%timegenerated:::date-minute% %fromhost-ip% %msg%\n"	
+    $template logName,"/var/log/my_logs/%syslogtag%.log"
+    
+    :hostname, contains, "msgLoud" ?logName; myFormat
+    & stop # don't save logs also in /var/log/syslog
+    #########
+    
+    # time values
+    %timegenerated:::date-year%
+	%timegenerated:::date-month%
+	%timegenerated:::date-day%
+	%timegenerated:::date-hour%
+	%timegenerated:::date-minute%
+	%timegenerated:::date-second%
+	
+    # properties
+    :hostname - имя хоста\ip из сообщения
+    :fromhost - имя хоста, от которого пришло сообщение
+    :fromhost-ip - адрес хоста, от которого пришло сообщения (127.0.0.1 для локальных сообщений)
+    :syslogtag - имя и номер процесса (" rsyslogd[12125]:"), который выдал сообщение (извлекается из сообщения)
+    :programname - имя процесса, который выдал сообщение (извлекается из сообщения)
+    :pri - источник и приоритет, в виде числа
+    :pri-text - декодированные источник и приоритет (facility.priority, например syslog.emer)
+    :syslogfacility - только источник в виде числа
+    :syslogfacility-text - только декодированный источник ("local0")
+    :syslogseverity - только приоритет в виде числа
+    :syslogseverity-text - только декодированный уровень ("debug")
+    :timegenerated - время получения  (с высоким разрешением)
+    :timereported - время, извлечённое из сообщения
+    :inputname - имя входного модуля
+    $hour, $minute - текущее время
+    $myhostname - имя хоста обработки
 
 
 ::

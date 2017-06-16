@@ -6,14 +6,15 @@ JBOSS EAP
 #
 # RedHat Enterprise Linux server 7.2
 
+::
 
-sudo yum update
-sudo yum install java-1.8.0-openjdk
+    sudo yum update
+    sudo yum install java-1.8.0-openjdk
 
-java -jar jboss-eap-7.0.0-installer.jar -console
+    java -jar jboss-eap-7.0.0-installer.jar -console
 
-# auto install
-# java -jar jboss-eap-7.0.0-installer.jar auto.xml
+    # auto install
+    # java -jar jboss-eap-7.0.0-installer.jar auto.xml
 
 sudo yum install nano
 

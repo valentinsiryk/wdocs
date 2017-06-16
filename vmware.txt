@@ -2,7 +2,49 @@
 VMWare
 ======
 
+VMWare VM configuration
+-----------------------
 
+VM config file::
+
+    # disable VMWare tools time sync
+    tools.syncTime = "FALSE"
+
+    # disable gathering debugging information
+    vmx.buildType = "release"
+        
+    # disable page sharing
+    sched.mem.pshare.enable = "FALSE"
+    
+    # disable memory tremming
+    MemTrimRate = "0"
+    
+    # disable isolation tools (drug and drop, etc)
+    isolation.tools.copy.disable = "TRUE"
+    isolation.tools.dnd.disable = "TRUE"
+    isolation.tools.paste.disable = "TRUE"
+    
+    # enable pass CPU performance countes to guest
+    vpmc.enable = "TRUE"
+
+    # enable virtual machine execution mode to VT-x/EPT or AMD-RVI
+    vhv.enable = "TRUE"
+    
+    # Virtualization engine mode
+    #
+    # Intel VT-x or AMD-V
+    monitor.virtual_mmu = "software"
+    monitor.virtual_exec = "hardware"
+    #
+    # Automatic
+    monitor.virtual_mmu = "automatic"
+    monitor.virtual_exec = "automatic"
+    #
+    # Intel VT-x/EPT or AMD-RVI
+    monitor.virtual_mmu = "hardware"
+    monitor.virtual_exec = "hardware"
+    
+    
 Linux installation
 ------------------
 
@@ -24,6 +66,9 @@ VMWare command line
 -------------------
     
 ::
+
+    # increase virtual disk space (shut down VM, make sure that there are no snapshots)
+    vmware-vdiskmanager -x <VALUE>GB <path_to.vmdk>
 
     # show running VM's
     vmrun list

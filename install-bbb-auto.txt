@@ -2,10 +2,11 @@
 Install BBB auto
 ================
 
-::
+BigBlueButton 0.81 on Debian 7 Wheezy
+-------------------------------------
 
-    #BigBlueButton 0.81 in Debian 7 Wheezy
-    ##
+::
+    
     aptitude install sudo
     echo "deb http://ubuntu.bigbluebutton.org/lucid_dev_081/ bigbluebutton-lucid main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list
     #
@@ -104,7 +105,7 @@ Install BBB auto
     #
     #
     sudo aptitude -f install build-essential libssl-dev libcurl4-openssl-dev libreadline-dev libxslt-dev libxml2-dev libreadline5 libyaml-0-2
-    #----------взято с офф сайта------------
+    #
     wget https://bigbluebutton.googlecode.com/files/ruby1.9.2_1.9.2-p290-1_amd64.deb
     sudo dpkg -i ruby1.9.2_1.9.2-p290-1_amd64.deb
     sudo aptitude -f install

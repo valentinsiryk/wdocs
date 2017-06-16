@@ -6,6 +6,8 @@ awk - команда контекстного поиска и преобразо
 
 cat /proc/*/stat | awk '{print $1 " " $2}'
 
+awk -F '<separator>' '{print $2}'
+
 http://linuxgeeks.ru/awk.htm
 https://ru.wikipedia.org/wiki/AWK
 https://linuxconfig.org/learning-linux-commands-awk

@@ -2,6 +2,30 @@
 Mac OS instructions
 ===================
 
+Turn on performance mode for macOS Server (OS X El Capitan 10.11 and later). Provides extended system limits (maxproc, etc.)::
+
+    # check
+    nvram boot-args
+    
+    # turn on (reboot after turn on)
+    sudo nvram boot-args="serverperfmode=1 $(nvram boot-args 2>/dev/null | cut -f 2-)"
+    
+    
+    # turn off (reboot after turn off)
+    sudo nvram boot-args="$(nvram boot-args 2>/dev/null | sed -e $'s/boot-args\t//;s/serverperfmode=1//')"
+
+
+Delete a local account::
+
+    dscl localhost delete /Local/Default/Users/<user>
+    rm -rf /Users/<user>
+
+
+Show listen ports::
+
+    sudo lsof -PiTCP -sTCP:LISTEN
+
+
 Manipulating OS X login items from command line
 
 - https://hamstergene.github.io/post/editing-osx-login-items-cmdline/
@@ -223,6 +247,11 @@ Install some app::
     
 System limits
 -------------
+
+.. note::
+    
+    To increase system limits turn on performance mode
+
 
 ::
 
