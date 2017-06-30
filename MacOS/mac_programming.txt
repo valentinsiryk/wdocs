@@ -9,15 +9,44 @@ https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 
 Loop (repeat) - http://alvinalexander.com/apple/applescript-for-loop-while-loop-examples
 
+
+Check if static text start with::
+
+    if value of static text 1 of group 2 of group 1 of UI element 1 of scroll area 1 does not start with "Enter the verification code" then
+        error "Expected label does not exist."
+    end if
+
+
+Check multiple elements exists::
+
+    if (static text "bla bla" exists) and (static text "yeah" exists) and (text field 1 exists) then
+        log "true"
+    else
+        log "false"
+    end if
+
+
+Check if button not exists::
+
+    if not exists (button "Verify") then
+        error "Verify buttonl does not exist."
+    end if
+
+
 Get all UI elements::
 
-    set t1 to get every UI element
-    log "---\nGet every UI element\n---"
-    repeat with i in t1
-         log i
-         log "\n"
-    end repeat
-    log "---\nEnd\n---"
+    # my showElements(element, "test")
+    # showElements(element, "test")
+    on showElements(element, id)
+        log "-" & id & "-"
+        tell application "System Events"				
+            set elements to get every UI element of element
+            repeat with el in elements
+                 log el
+            end repeat
+        end tell
+        log "-" & id & "-"
+    end showElements"
     
 
 Show all processes of application::

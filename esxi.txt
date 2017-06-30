@@ -1,0 +1,7 @@
+===========
+VMWARE ESXI
+===========
+
+Storages path **/vmfs/volumes**
+
+

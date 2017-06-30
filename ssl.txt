@@ -8,7 +8,7 @@ Show info::
     openssl x509 -noout -issuer -enddate -in root.pem
     
     # show cert expire time
-    openssl x509 -in /etc/letsencrypt/live/elk.swipe-services.com/fullchain.pem -text -noout | grep -A3 Validity
+    openssl x509 -in /etc/letsencrypt/live/example.com/fullchain.pem -text -noout | grep -A3 Validity
 
 
 Validate the certificate even though the protocol used to communicate with server is not based on HTTP. For example::

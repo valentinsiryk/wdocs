@@ -52,7 +52,7 @@ https://pubs.vmware.com/workstation-12/index.jsp#com.vmware.ws.using.doc/GUID-1F
 
 ::
 
-    sh VMware-Workstation-xxxx-xxxxxxx.architecture.bundle --console --custom
+    sh VMware-Workstation-xxxx-xxxxxxx.architecture.bundle --console --custom --eulas-agreed
     
     # deafults:
     # /var/lib/vmware/Shared VMs

@@ -48,28 +48,39 @@ SWAP in file
 
     
 
-Automated swapfile create
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Automated swapfile creation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run as root::
+::
 
-    #!/bin/sh
+    #!/bin/bash
     
-    # Create SWAP file at root with size 4GB
-    dd if=/dev/zero of=/swapfile bs=1M count=4096
-    chmod 600 /swapfile
-    mkswap /swapfile	
+    set -e
+
+    # SWAP file size in MB
+    SWAP_SIZE="1024"
+
+    # SWAP usage tunning
+    VM_SWAPPINESS="30"
+
+    SWAP_PATH="/swapfile"
+
+
+    # Create SWAP file at root
+    sudo dd if=/dev/zero of=$SWAP_PATH bs=1M count=$SWAP_SIZE
+    sudo chmod 600 $SWAP_PATH
+    sudo mkswap $SWAP_PATH
 
     # Disable all SWAP
-    swapoff -a		
+    sudo swapoff -a
 
     # Connect new SWAP file
-    swapon /swapfile	
+    sudo swapon $SWAP_PATH
 
     # Add new SWAP to fstab (auto mount when system start)
-    sudo echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab
-    
+    sudo echo "$SWAP_PATH swap swap defaults 0 0" | sudo tee -a /etc/fstab
+
     # Tweak system swap usage value
-    sudo sysctl -w vm.swappiness=30
+    sudo sysctl -w vm.swappiness=$VM_SWAPPINESS
     
     

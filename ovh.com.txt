@@ -1,0 +1,5 @@
+=======
+OVH.COM
+=======
+
+Kernel images by OVH **ftp://ftp.ovh.net/made-in-ovh/bzImage/**

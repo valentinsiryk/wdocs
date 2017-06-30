@@ -12,7 +12,7 @@ Empty pagecache, dentries and inodes::
     # run as root
     
     # pagecache
-    free -h && echo && sync && echo  > /proc/sys/vm/drop_caches && free -h 
+    free -h && echo && sync && echo 1 > /proc/sys/vm/drop_caches && free -h 
        
     # (not recomended) pagecache, dentries and inodes
     free -h && echo && sync && echo 3 > /proc/sys/vm/drop_caches && free -h

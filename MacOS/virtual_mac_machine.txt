@@ -5,6 +5,19 @@ Mac OS VM
 
 Important repo https://github.com/kholia/OSX-KVM
 
+Clean up unused VM disk space
+-----------------------------
+
+::
+
+    # on guest with Mac OS
+    cat /dev/zero > zfile; rm zfile
+    
+    # shutdown VM
+    
+    # on host
+    vmware-vdiskmanager -k </path/to/disk.vmdk>
+
 
 Run Sierra on qemu-kvm
 ----------------------

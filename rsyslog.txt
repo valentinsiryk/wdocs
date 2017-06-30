@@ -2,6 +2,9 @@
 rsyslog
 =======
 
+Modern syslog configuration - https://selivan.github.io/2017/02/07/rsyslog-log-forward-save-filename-handle-multi-line-failover.html
+
+
 Rules path::
 
     /etc/rsyslog.d/*.conf	# num-<name>.conf (num < 50-default.conf)
@@ -24,6 +27,27 @@ ON receive logs from UDP ``/etc/rsyslog.conf``::
 ::
 
     sudo service rsyslog restart
+
+
+Configuration
+-------------
+
+File create mode (rights)::
+
+    $umask 0000 
+    *.* /var/log/file-with-0644-default
+
+    $FileCreateMode 0600
+    *.* /var/log/file-with-0600
+
+    $FileCreateMode 0644
+    *.* /var/log/file-with-0644
+
+
+Remote_syslog
+-------------
+
+Read txt files and send logs to syslog remote server - https://github.com/papertrail/remote_syslog2
 
 
 Rotate received logs to files
