@@ -2,6 +2,16 @@
 Mac OS instructions
 ===================
 
+Get System Info on Mac OS::
+
+    hostinfo
+
+
+Get screencapture via terminal::
+
+    screencapture -xr -t gif capture.gif
+    
+
 Turn on performance mode for macOS Server (OS X El Capitan 10.11 and later). Provides extended system limits (maxproc, etc.)::
 
     # check

@@ -19,6 +19,49 @@ Check Debian source list ``sources.list``::
 
 
 
+qemu-system-x86_64
+------------------
+
+Show supported machines types::
+
+    qemu-system-x86_64 -machine help
+    
+
+Networking - http://wiki.qemu.org/Documentation/Networking
+
+
+qemu-img
+--------
+
+Images and snapshots - http://azertech.net/content/kvm-qemu-qcow2-qemu-img-and-snapshots
+
+``qemu-img`` tool::
+
+    # Show information (size, backing files, snapshots)
+    qemu-img info <image.qcow2>
+
+    # Create a simple QCOW2 image file
+    qemu-img create -f qcow2 <image.qcow2> <max_capacity_in_gigabytes>g 
+
+    # Create a QCOW2 image linked with base image
+    qemu-img create -b <base_image> -f qcow2 -l <new_image> 
+
+    # List snapshots
+    qemu-img snapshot -l <imagename> 
+     
+    # Create snapshot
+    qemu-img snapshot -c <snapshot-name> <imagename> 
+
+    # Apply snapshot
+    qemu-img snapshot -a <snapshot-name> <imagename>  
+
+    # Delete snapshot
+    qemu-img snapshot -d <snapshot-name> <imagename> 
+
+    # Clone image
+    qemu-img convert -p -f qcow2 <source_image> -O qcow2 <dest_image> 
+
+
 
 Nested virtualization
 ---------------------
@@ -65,6 +108,88 @@ Install KVM, libvirt
     /etc/libvirt/         # configs
     /etc/libvirt/storage/ # storage configs
     /var/lib/libvirt/     # images, snapshots, etc.
+
+
+Libvirt
+-------
+
+``Domain.xml``::
+
+    # Port forwarding to machine::
+
+    <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+    ...
+    <interface type='network'> -> <interface type='user'>
+    ...    
+    <qemu:commandline>
+       <qemu:arg value='-redir'/>
+       <qemu:arg value='tcp:2222::22'/>
+    </qemu:commandline>
+    
+    # Custom loader::
+
+    <os>
+        <loader readonly='yes' type='pflash'>/path_to/OVMF_CODE-pure-efi.fd</loader>
+        <nvram>/path_to/fedora22_VARS.fd</nvram>
+    </os>
+        
+
+
+Virsh CMD
+---------
+
+::
+
+    # enter in virsh session
+    virsh
+	    help		# список всех команд
+
+	    pool-list --all # список хранилищ (storages)
+	    pool-list	# список активных хранилищ (storages)
+
+	    pool-define-as name_of_storage dir --target /etc/libvirt/images/	# создаем хранилище
+	    pool-autostart name_of_storage	# делаем, чтобы пул запускадся автоматически
+	    pool-start name_of_storage	# стартуем пул
+
+
+    # define domain from XML (without run)
+    virsh define <file.xml>
+        
+    # undefine domain from XML
+    virsh undefine <domain>
+    virsh undefine --nvram <domain> # remove nvram
+             
+    # show domains list
+	virsh list          # run domains
+	virsh list --all    # all domains	    
+
+    # generate xml from domain
+	virsh dumpxml <domain> > <domain>.xml 
+
+    # create domain and start VM
+	virsh create <config.xml>
+
+    # remove domain and stop VM
+	virsh destroy alice
+
+    # shutdown VM
+	virsh shutdown <domain>
+
+    # suspend/resume VM
+	virsh suspend alice
+	virsh resume alice
+
+    # add domain to autostart on host run
+	virsh autostart <domain>
+
+    # get domain info
+	virsh dominfo <domain>
+		
+	# Edit domain xml
+    virsh edit DOMAIN
+
+
+
 
 
 Bridge configuration

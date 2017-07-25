@@ -7,6 +7,11 @@ VMWare VM configuration
 
 VM config file::
 
+	# CD-ROM prefferences
+	sata0:1.present = "TRUE"
+	sata0:1.fileName = "/root/tmp/unlocker-master/tools/darwin.iso"
+	sata0:1.deviceType = "cdrom-image"
+
     # disable VMWare tools time sync
     tools.syncTime = "FALSE"
 
@@ -52,7 +57,8 @@ https://pubs.vmware.com/workstation-12/index.jsp#com.vmware.ws.using.doc/GUID-1F
 
 ::
 
-    sh VMware-Workstation-xxxx-xxxxxxx.architecture.bundle --console --custom --eulas-agreed
+    sh VMware-Workstation.bundle --console --custom --eulas-agreed --set-setting=vmware-workstation serialNumber <SN>
+        --required  # silent installation
     
     # deafults:
     # /var/lib/vmware/Shared VMs

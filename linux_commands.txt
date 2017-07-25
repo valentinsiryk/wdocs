@@ -2,6 +2,12 @@
 Linux commands
 ==============
 
+
+Get first line::
+
+    head -n 1
+
+
 Sleep for 1 second between each xargs command::
 
     ps aux | awk '{print $1}' | xargs -I % sh -c '{ echo %; sleep 1; }'

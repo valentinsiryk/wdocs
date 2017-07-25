@@ -1,0 +1,28 @@
+====
+DASH
+====
+
+Installation
+------------
+
+``dash-install.sh``::
+
+    DASH_VERSION="dash-0.5.9.1"
+    DASH_ARCHIVE="$DASH_VERSION.tar.gz"
+
+    curl -O http://gondor.apana.org.au/~herbert/dash/files/$DASH_ARCHIVE
+    tar -xf $DASH_ARCHIVE
+    rm $DASH_ARCHIVE
+    cd $DASH_VERSION/
+    ./configure
+    make
+    make install
+    echo "$(which dash)" >> /etc/shells
+    cd ..
+    rm -R $DASH_VERSION
+    
+
+::
+
+    chmod +x dash-install.sh
+    ./dash-install.sh

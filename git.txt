@@ -4,6 +4,80 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+Development scheme
+------------------
+
+https://habrahabr.ru/post/106912/
+
+Branches:
+
+``master`` - permanent, stable. With tag
+``develop`` - permanent
+``feature`` - temporary
+``release`` - temporary
+``hotfix`` - temporary
+
+
+**Feature branches**. Can start from ``develop``. Must pull to develop.::
+
+    # Start new feature
+    git checkout -b myfeature develop
+    
+    # End new feature
+    git checkout develop        # change branch
+    git merge --no-ff myfeature # merge branches
+    git branch -d myfeature     # delete feature branch
+    git push origin develop     # push changes to develop
+    
+    
+**Release branches**. Can start from ``develop``. Must pull to develop and master. Can be named alike ``release-*``.::
+
+    # Start release
+    git checkout -b release-1.2 develop
+    ./bump-version.sh 1.2                           # some changes in project
+    git commit -a -m "Bumped version number to 1.2"
+    
+    # End release
+    git checkout master             # change branch
+    git merge --no-ff release-1.2   # merge branches
+    git tag -a 1.2                  # set tag
+    
+    # Keep actual develop branch
+    git checkout develop
+    git merge --no-ff release-1.2
+    
+    # Delete release branch
+    git branch -d release-1.2
+    
+
+**Hotfix branches**. Can start from ``master``. Must pull to develop and master. Can be named alike ``hotfix-*``.::
+    
+    # Start hotfix
+    git checkout -b hotfix-1.2.1 master
+    ./bump-version.sh 1.2.1             # some fixes in project
+    git commit -a -m "Bumped version number to 1.2.1"
+
+    git commit -m "Fixed severe production problem"
+    
+    # End hotfix
+    git checkout master
+    git merge --no-ff hotfix-1.2.1
+    git tag -a 1.2.1
+    
+    # Keep actual develop branch
+    git checkout develop
+    git merge --no-ff hotfix-1.2.1
+    
+    # Delete hotfix branch
+    git branch -d hotfix-1.2.1
+
+
+
+    
+
+Git tips and tricks
+-------------------
+
 Avoid **Are you sure you want to continue connecting (yes/no)** on connect via ssh keys::
 
     # bitbucket
