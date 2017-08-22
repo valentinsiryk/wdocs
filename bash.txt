@@ -5,6 +5,33 @@ BASH
 
 http://talk.jpnc.info/bash_lfnw_2017.pdf
 
+Operators::
+
+    let "var += 5"
+    let "var = 5 - 3"    
+
+
+Asynchronous bash script::
+
+    mycommand &
+    child_pid=$!
+
+    while kill -0 $child_pid >/dev/null 2>&1; do
+        echo "Child process is still running"
+        sleep 1
+    done
+
+    echo "Child process has finished"
+
+
+Check is program exists::
+
+    if hash <program> 2>/dev/null; then
+        echo "exists"
+    else
+        echo "not exists"
+    fi
+
 
 Add zeros before number::
 

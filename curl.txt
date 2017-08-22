@@ -3,6 +3,10 @@ curl
 ====
 
 
+Download a tarball from GitHub::
+    curl -L https://github.com/pinard/Pymacs/tarball/v0.24-beta2 | tar zx
+    
+
 Hide output::
 
     curl -s 'http://example.com' > /dev/null

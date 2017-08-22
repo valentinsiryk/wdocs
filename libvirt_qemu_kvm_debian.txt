@@ -27,6 +27,9 @@ Show supported machines types::
     qemu-system-x86_64 -machine help
     
 
+QEMU config file - ``/etc/libvirt/qemu.conf``. VNC, SPICE, etc. configuration.
+    
+
 Networking - http://wiki.qemu.org/Documentation/Networking
 
 
@@ -113,10 +116,15 @@ Install KVM, libvirt
 Libvirt
 -------
 
+``/var/lib/libvirt/dnsmasq/virbr0.status`` - MAC/IP/hostname of domains
+
+
 ``Domain.xml``::
 
-    # Port forwarding to machine::
-
+    #
+    # Port forwarding to machine
+    #
+    
     <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
     ...
     <interface type='network'> -> <interface type='user'>
@@ -126,38 +134,63 @@ Libvirt
        <qemu:arg value='tcp:2222::22'/>
     </qemu:commandline>
     
+    #
     # Custom loader::
-
+    #
+    
     <os>
         <loader readonly='yes' type='pflash'>/path_to/OVMF_CODE-pure-efi.fd</loader>
         <nvram>/path_to/fedora22_VARS.fd</nvram>
     </os>
+    
+    #
+    # Network
+    #
+    
+    <interface type="network">
+       <source network="default"/>
+    </interface>
+    
         
+Virt-viewer
+-----------
+
+::
+    
+    # connect via VNC
+    virt-viewer --connect qemu+ssh://<user>@<host>/system <domain>
 
 
 Virsh CMD
 ---------
 
-::
+Snapshots::
 
-    # enter in virsh session
-    virsh
-	    help		# список всех команд
+    # get list of snapshot
+    virsh snapshot-list <domain>
+    
+    # get snapshot info
+    virsh snapshot-info --domain <domain> --snapshotname <snapshot>
+    
+    # create snapshot
+    virsh snapshot-create-as <domain> --name <snap_name> --description <snap_description>
+    
+    # delete snapshot
+    virsh snapshot-delete --domain <domain> --snapshotname <snap_name>
+    
+    # revert to snapshot
+    virsh snapshot-revert <domain> --snapshotname <snap_name>
+    
 
-	    pool-list --all # список хранилищ (storages)
-	    pool-list	# список активных хранилищ (storages)
-
-	    pool-define-as name_of_storage dir --target /etc/libvirt/images/	# создаем хранилище
-	    pool-autostart name_of_storage	# делаем, чтобы пул запускадся автоматически
-	    pool-start name_of_storage	# стартуем пул
-
+Domains management::
 
     # define domain from XML (without run)
     virsh define <file.xml>
         
     # undefine domain from XML
     virsh undefine <domain>
-    virsh undefine --nvram <domain> # remove nvram
+    virsh undefine --nvram <domain>                 # also remove nvram
+    virsh undefine --remove-all-storage <domain>    # also remove storages
              
     # show domains list
 	virsh list          # run domains
@@ -169,7 +202,7 @@ Virsh CMD
     # create domain and start VM
 	virsh create <config.xml>
 
-    # remove domain and stop VM
+    # forcefully shutdown VM
 	virsh destroy alice
 
     # shutdown VM
@@ -185,11 +218,45 @@ Virsh CMD
     # get domain info
 	virsh dominfo <domain>
 		
-	# Edit domain xml
-    virsh edit DOMAIN
+	# edit domain xml
+    virsh edit <domain>
+    
+    # get VNC port of domain
+    virsh vncdisplay <domain>
 
 
+Pool management::
 
+    # show pools (storages) list
+	virsh pool-list         # active polls
+    virsh pool-list --all   # all pools
+
+	virsh pool-define-as <name_of_storage> dir --target /etc/libvirt/images/    # create pool
+	virsh pool-autostart <name_of_storage>	# add pool to autostart
+	virsh pool-start <name_of_storage>      # start pool
+
+    virsh pool-destroy <pool>
+    virsh pool-undefine <pool>
+
+
+Clonning::
+
+    virt-clone -o <from_domain> -n <to_domain> --auto-clone --original-xml <from_domain_xml>
+
+
+Network::
+
+    # show all networks
+    virsh net-list
+    
+    # get network info
+    virsh net-info <network>
+
+    # print lease info for a given network
+    net-dhcp-leases <network>
+    
+    # print networks of domain (MAC, type, etc.)
+    virsh domiflist <domain>
 
 
 Bridge configuration
@@ -258,6 +325,16 @@ Install latest version::
 
     # config file virt-manager
     ~/.gconf/apps/virt-manager/
+    
+    
+    
+Install latest version from GIT (prefer mode) [Ubuntu 16.04 - OK]::
+   
+    git clone https://github.com/virt-manager/virt-manager.git
+    cd virt-manager/
+    sudo apt-get install -y gobject-introspection gir1.2-libosinfo-1.0 intltool-debian intltool
+    sudo python setup.py install -v
+
 
 
 

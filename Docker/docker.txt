@@ -55,7 +55,10 @@ The TERM environment variable is unset!::
 
                 --log-driver=syslog
                 --log-opt syslog-address=udp://<address>:514
-                --log-opt tag="some_tag"
+                          tag="some_tag"
+                          max-file=2
+                          max-size=2k
+                          syslog-facility=daemon
 
 
     docker images                   # show local images

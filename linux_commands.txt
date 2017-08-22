@@ -228,8 +228,6 @@ Decrease ``*.vdi`` size::
     
 ::
 
-    # extract archive at current dir
-    tar -xf archive.tar.gz
     
     # run command as another user
     sudo -u lee <command>
@@ -314,9 +312,20 @@ Delete old files
         -f                  # ignore if empty
 
 
-::
+Create backup tar(tar.gz) archive::
 
-    tar -czpf $CONFIGBACKUPDIR/$CONFIGBK --directory=$CONFIGDIR --exclude=$CONFIGBACKUPDIR .
+    tar -cvpzf backup.tar.gz [dir1] [dir2]
+        -c  # create
+        -v  # verbose mode
+        -p  # preserving files and directory permissions.
+        -z  # compress (tar.gz)
+        -f <filename>
+        --exclude=<file_or_dir>
+        
+        
+Extract archive at current dir::
+
+    tar -xf <archive.tar.gz>
 
 
 PASSWORD GENERATE::

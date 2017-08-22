@@ -9,6 +9,15 @@ https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 
 Loop (repeat) - http://alvinalexander.com/apple/applescript-for-loop-while-loop-examples
 
+Activate application::
+
+    tell application "Terminal"
+        activate
+    end tell
+    
+    # using osascript
+    osascript -e 'tell application "Terminal" to activate'
+
 
 Check if static text start with::
 

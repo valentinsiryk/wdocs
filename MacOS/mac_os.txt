@@ -260,7 +260,9 @@ System limits
 
 .. note::
     
-    To increase system limits turn on performance mode
+    To increase system limits turn on performance mode. Mac OS Sierra::
+    
+        sudo nvram boot-args="serverperfmode=1 $(nvram boot-args 2>/dev/null | cut -f 2-)"
 
 
 ::
@@ -305,8 +307,8 @@ Create file (owner: root:wheel, mode: 0644) ``/Library/LaunchDaemons/limit.maxfi
               <string>launchctl</string>
               <string>limit</string>
               <string>maxfiles</string>
-              <string>65536</string>
-              <string>65536</string>
+              <string>524288</string>
+              <string>524288</string>
             </array>
            <key>RunAtLoad</key>
             <true/>
