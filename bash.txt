@@ -5,6 +5,54 @@ BASH
 
 http://talk.jpnc.info/bash_lfnw_2017.pdf
 
+
+
+Functions boolean returns::
+
+    # 1st variant
+    isdirectory() {
+      if [ -d "$1" ]; then
+        return 0 
+      else
+        return 1
+      fi
+    }
+
+    # 2nd variant
+    isdirectory() {
+      if [ -d "$1" ]; then
+        true
+      else
+        false
+      fi
+    }
+
+    # 3rd variant
+    isdirectory() {
+      [ -d "$1" ]
+    }
+
+    # USING
+    if isdirectory $1; then
+        echo "is directory"
+    else
+        echo "nopes"
+    fi
+
+
+Multiple arguments passing::
+
+    ARGS=$@
+    # ./script.sh "one two three"
+    # 1. one
+    # 2. two
+    # 3. three
+
+    ARGS="$@"
+    # ./script.sh "one two three"
+    # 1. one two three
+
+
 Operators::
 
     let "var += 5"
@@ -22,6 +70,41 @@ Asynchronous bash script::
     done
 
     echo "Child process has finished"
+
+
+Async/sync mode. Add 'async=true' before run script::
+
+    COMMAND="uptime"
+    SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    VMS_IPS="192.168.1.1 192.168.1.2"
+    CHILD_PIDS=""
+    
+    VM_NUM=0
+
+    for VM_IP in $VMS_IPS; do
+    
+            (( VM_NUM++ ))
+
+            if [ "$async" == "true" ]; then
+                    ssh root@$VM_IP "$COMMAND" >> $SCRIPT_PATH/temp.$VM_NUM 2>&1 &
+                    CHILD_PIDS="$CHILD_PIDS $!"
+            else
+                    ssh $SSH_USER@$VM_IP "$COMMAND"
+            fi
+    done
+
+    if [ "$async" == "true" ]; then
+            for CHILD_PID in $CHILD_PIDS; do
+                    while kill -0 $CHILD_PID >/dev/null 2>&1; do
+                            echo "Processing in asynchronous mode..."
+                            sleep 5.0
+                    done
+            done
+
+            cat $(ls -v temp.*)
+            rm temp.*
+    fi
+
 
 
 Check is program exists::
@@ -124,12 +207,17 @@ For in bash::
 
 Multiline file creating::
 
-	cat > file <<EOF
+	cat > /path/to/file <<EOF
 	line 1
 	line 2
-	line 3
 	EOF
 
+    # with sudo
+    sudo bash -c "cat > /path/to/file" << EOF
+    line1
+    line2
+    EOF
+    
 
 Make sure only root can run our script::
 
@@ -139,48 +227,48 @@ Make sure only root can run our script::
     fi
 
 
-    # оба потока будут перенаправлены в файл
-    # ls *.txt *.err >file 2>&1
-	    >file	# перенаправить стандартный поток вывода (stdout) в файл c именем file
-	    2>&1	# перенаправить стандартный поток ошибок (2) в стандартный поток вывода (1).
-			    Но, так как стандартный поток вывода уже перенаправлен в файл, то и стандартный поток ошибок перенаправляется туда же.
+Stdout/stderr redirects::
+
+    # Both threads (stdout/stderr) will be redirected to a file
+    <command> >file 2>&1
+
+    # Stdout to file. Stderr to terminal
+    <command> 2>&1 >file
 
 
-    # поток вывода будет направлен в файл, а поток ошибок — в терминал
-    # ls *.txt *.err 2>&1 >file
-	    2>&1	# перенаправить стандартный поток ошибок в стандартный поток вывода.
-			    На этот момент поток вывода (1) направляется в терминал, а значит, что поток ошибок тоже перенаправится в терминал.
-	    >file	# перенаправить стандартный поток вывода (stdout) в файл c именем file
+Logical operators for **if-then-else-fi** construction::
 
+    -z $VAR         # string is empty
+    -n $VAR         # string isn't empty
+    
+    $VAR =/== $VAR  # strings are equal
+    $VAR != $VAR    # strings aren't equal
+    
+    -eq             # equal
+    -ne             # not equal
+    
+    -lt(<)          # less
+    -le(<=)         # less or equal
+    
+    -gt(>)          # more
+    -ge(>=)         # more or equal
+    
+    !               # logical not
+    -a(&&)          # logical and
+    -o(||)          # logical or
 
-    # потоки вывода stderr и stdout как будто меняются местами — поток 1 идет в stderr, а поток 2 идет в stdout
-    # cat file 3>&2 2>&1 1>&3
-	    3>&2	# поток вывода 3 перенаправить туда же, куда выводится поток вывода 2 — в stderr
-	    2>&1	# поток вывода 2 перенаправить туда же, куда выводится поток 1 — в stdout
-	    1>&3	# поток вывода 1 перенаправить туда же, куда выводится поток 3 — в stderr
-
-
-Прведу список логических операторв, которые используются для конструкции if-then-else-fi::
-
-    -z # строка пуста
-    -n # строка не пуста
-    =, (==) # строки равны
-    != # строки неравны
-    -eq # равно
-    -ne # неравно
-    -lt,(< ) # меньше
-    -le,(<=) # меньше или равно
-    -gt,(>) #больше
-    -ge,(>=) #больше или равно
-    ! #отрицание логического выражения
-    -a,(&&) #логическое «И»
-    -o,(||) # логическое «ИЛИ»
+    -e <file>       # file exists
+    -d <file>       # file exists and is a directory
+    -f <file>       # is a regular file (not a directory or device file)
+    -b <file>       # file is a block device
+    -w <file>	    # file exists and the write permission is granted
+    -x <file>	    # file exists and the execute permission is granted
+    -r <file>	    # file exists and the read permission is granted
+    -s <file>	    # file exists and it's size is greater than zero (ie. it is not empty)
 
 
 http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html
 
--e file	# True if file exists.
--d file	# True if file exists and is a directory.
 
 
 

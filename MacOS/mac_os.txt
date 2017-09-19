@@ -2,6 +2,11 @@
 Mac OS instructions
 ===================
 
+
+
+On boot, hold ``Command`` + ``Option`` + ``P`` and ``R`` keys to clear NVRAM.
+
+
 Get System Info on Mac OS::
 
     hostinfo

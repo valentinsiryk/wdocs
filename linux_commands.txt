@@ -3,6 +3,51 @@ Linux commands
 ==============
 
 
+**uniq**::
+
+    uniq            # if lines are repeated - show only one of several these lines
+        -c          # in start of all lines show repeats number and space
+        -d          # show only repeatable lines
+        -f <num>    # ignore first num words (word include only not spaces)
+        -s <num>    # ignore first num chars
+        -u          # show only uniq lines
+        -i          # case-insensitive matching
+
+
+**case** (all of syntax from example are true)::
+
+    case "test1" in
+       "apple" | "test" ) echo "Apple pie is quite tasty." ;;
+       "kiwi") echo "New Zealand is famous for kiwi."
+            ;;
+       "test"*) echo "test* match"
+            ;;
+       *) echo "matches not found"
+            ;;
+    esac
+    
+    # Output:
+    # test* match
+
+
+**expr**::
+
+    expr ( 2 + 3 )      # error
+    expr 2+3            # 2+3
+    expr 2 + 3          # 5
+    expr '2 + 3'        # 2 + 3
+    expr "2 + 3"        # 2 + 3
+    expr 6 % 3          # 0
+    expr 6 / 3          # 2
+    expr 6 / 3.5        # error
+    expr 6 \* 3         # 18
+    expr 3 \> 3         # 0
+    expr 3 \>= 3        # 1
+    expr tt = t         # 0
+    expr length test    # 4
+    expr index test e   # 2      
+    
+
 Get first line::
 
     head -n 1

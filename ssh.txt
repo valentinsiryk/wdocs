@@ -13,6 +13,9 @@ SSH
         
     # remove existing entry    
     ssh-keygen -R "hostname"
+    
+    # change connection timeout limit (seconds)
+    ssh -o ConnectTimeout=10  <hostName>
 
 
 X11 application

@@ -9,6 +9,14 @@ https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 
 Loop (repeat) - http://alvinalexander.com/apple/applescript-for-loop-while-loop-examples
 
+
+Check is application running::
+
+    if application "Messages" is running then
+        log "is running"
+    end if
+
+
 Activate application::
 
     tell application "Terminal"
@@ -55,7 +63,7 @@ Get all UI elements::
             end repeat
         end tell
         log "-" & id & "-"
-    end showElements"
+    end showElements
     
 
 Show all processes of application::

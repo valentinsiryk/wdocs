@@ -78,6 +78,15 @@ Branches:
 Git tips and tricks
 -------------------
 
+Push current changes to new branch (auto create it on remote and local)::
+
+    # done some changes
+    git checkout -b <new-branch>
+    git add .
+    git commit -m "added feature"
+    git push origin <new-branch>
+
+
 Avoid **Are you sure you want to continue connecting (yes/no)** on connect via ssh keys::
 
     # bitbucket
