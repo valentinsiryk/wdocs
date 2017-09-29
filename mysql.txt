@@ -36,6 +36,9 @@ Backup/restore dump::
 
 ::
 
+    # Show slow queries
+    select * from mysql.slow_log\G
+    
     mysqladmin -u root password NEWPASSWORD	# set new password for user (if not set)
 
     mysqlshow -p	# show dbs

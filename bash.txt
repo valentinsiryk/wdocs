@@ -6,6 +6,14 @@ BASH
 http://talk.jpnc.info/bash_lfnw_2017.pdf
 
 
+Do something on exit (even if error)::
+
+    function cleanup() {
+            # do something
+    }
+
+    trap cleanup EXIT
+
 
 Functions boolean returns::
 
@@ -70,6 +78,45 @@ Asynchronous bash script::
     done
 
     echo "Child process has finished"
+
+
+Parsing script arguments::
+
+    #!/bin/sh
+    # Keeping options in alphabetical order makes it easy to add more.
+
+    while :
+    do
+        case "$1" in
+          -f | --file)
+	      file="$2"     # You may want to check validity of $2
+	      shift 2
+	      ;;
+	      
+          -h | --help)
+	      display_help  # Call your function
+	      exit 0
+	      ;;
+	      
+          -v | --verbose)
+	      verbose="verbose"
+	      shift
+	      ;;
+	      
+          --)           # End of all options
+	      shift
+	      break;
+	      
+          -*)
+	      echo "Error: Unknown option: $1" >&2
+	      exit 1
+	      ;;
+	      
+          *)            # No more options
+	      break
+	      ;;
+        esac
+    done
 
 
 Async/sync mode. Add 'async=true' before run script::
@@ -269,13 +316,17 @@ Logical operators for **if-then-else-fi** construction::
 
 http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_07_01.html
 
-
-
-
 https://www.opennet.ru/docs/RUS/bash/bash-4.html
 
 
+**Positional parameters**
 
+==== =======================
+$*	 $1 $2 $3 … ${N}
+$@	 $1 $2 $3 … ${N}
+"$*" "$1c$2c$3c…c${N}"
+"$@" "$1" "$2" "$3" … "${N}"
+==== =======================
 
 
 set

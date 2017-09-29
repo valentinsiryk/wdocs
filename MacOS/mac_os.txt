@@ -7,6 +7,22 @@ Mac OS instructions
 On boot, hold ``Command`` + ``Option`` + ``P`` and ``R`` keys to clear NVRAM.
 
 
+Get username of user that currently uses GUI of WindowServer::
+
+    stat -f '%Su' /dev/console
+    # or
+    ls -l /dev/console | cut -d " " -f4
+
+
+Converting plist/xml::
+
+    # convert from binary PLIST to XML
+    plutil -convert xml1 <binary.plist>
+
+    # convert from XML to binary PLIST 
+    plutil -convert binary1 <xml.plist>
+
+
 Get System Info on Mac OS::
 
     hostinfo
