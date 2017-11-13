@@ -4,6 +4,19 @@ Mac OS instructions
 
 
 
+Get CPU Information::
+
+    sysctl -n machdep.cpu.brand_string
+    
+    system_profiler | grep Processor
+    
+    sysctl -a | grep machdep.cpu
+    
+    # CPU instructions
+    sysctl -a | grep machdep.cpu.features
+    sysctl -a | grep machdep.cpu.leaf7_features
+
+
 On boot, hold ``Command`` + ``Option`` + ``P`` and ``R`` keys to clear NVRAM.
 
 

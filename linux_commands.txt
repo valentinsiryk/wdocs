@@ -2,6 +2,11 @@
 Linux commands
 ==============
 
+Append line in file if not exist::
+
+    LINE='test'
+    FILE=/path/to/file
+    grep -q -F -E "(^$LINE)" $FILE || echo "$LINE" >> $FILE
 
 **uniq**::
 

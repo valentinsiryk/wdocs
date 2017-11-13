@@ -1,0 +1,19 @@
+====
+NVME
+====
+
+http://www.nvmexpress.org/wp-content/uploads/NVM_Express_1_2b_Gold_20160603.pdf
+
+To get information about the NVMe devices installed::
+
+    nvme list
+    
+
+To get SMART information::
+
+    nvme smart-log /dev/nvme0
+    
+
+To get additional SMART information (not all devices support it)::
+
+    nvme smart-log-add /dev/nvme0

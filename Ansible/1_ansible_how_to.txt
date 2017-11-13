@@ -8,6 +8,30 @@ Installation
 http://docs.ansible.com/ansible/intro_installation.html#installation
 
 
+Ansible Vault
+-------------
+
+Create a new encrypted data file::
+
+    $EDITOR=nano ansible-vault create foo.yml
+
+
+Edit encrypted file::
+    
+    $EDITOR=nano ansible-vault edit foo.yml
+    
+
+Change your password on a vault-encrypted file or files::
+
+    ansible-vault rekey foo.yml bar.yml baz.yml
+    
+
+Encrypt/Decrypt files::
+
+    ansible-vault encrypt [--vault-password-file <path_to_file>] foo.yml bar.yml baz.yml
+    ansible-vault decrypt [--vault-password-file <path_to_file>] foo.yml bar.yml baz.yml
+
+
 Instruction
 -----------
 

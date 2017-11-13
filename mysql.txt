@@ -1,6 +1,6 @@
-=====
-MySQL
-=====
+==============
+MySQL / SQLite
+==============
 
 ::
 
@@ -24,7 +24,7 @@ MySQL
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-Backup/restore dump::
+Backup/restore mysql dump::
 
     # create dump
     mysqldump -u USER -pPASSWORD DATABASE > dump.sql
@@ -33,22 +33,26 @@ Backup/restore dump::
     mysql -u USER -p DATABASE < dump.sql
 
 
+New ROOT password (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x86_64) using readline 5.1)::
 
+    mysqladmin -p -u root password
+    mysqladmin -u root password NEWPASSWORD
+    
+    
 ::
 
-    # Show slow queries
+    # show slow queries
     select * from mysql.slow_log\G
     
-    mysqladmin -u root password NEWPASSWORD	# set new password for user (if not set)
+    # show databases
+    mysqlshow -p	
 
-    mysqlshow -p	# show dbs
-
+    # connect to remote DB
     mysql -u <user>
 	      -p		# connect with pass
 	      -h <ip>
  
-
-
+    # create DB
     CREATE DATABASE users;
 
     CONNECT mysqldb;	# connect to db
@@ -79,16 +83,12 @@ Create user and add privileges::
     SHOW GRANTS FOR 'root'@'localhost';
 
 
+Delete mysql user::
 
-    # delete user
     DROP USER ‘demo’@‘localhost’;
 
-New ROOT password (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x86_64) using readline 5.1)::
 
-    mysqladmin -p -u root password
-
-
-::
+Update table cell::
 
     UPDATE <table> SET <key>='<value>' WHERE <key>='<value>';
 
@@ -115,8 +115,13 @@ Rename table::
         [, tbl_name2 TO new_tbl_name2] ...
 
 
+SQLite
+------
 
+Show all tables::
 
+    "SELECT name FROM sqlite_master WHERE type='table'"
+    
 
 
 

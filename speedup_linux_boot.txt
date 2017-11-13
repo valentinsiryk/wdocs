@@ -1,0 +1,17 @@
+=======================
+Speedup Linux boot time
+=======================
+
+Check time of running services::
+
+    systemd-analyze blame
+    
+    # also in visual view
+    systemd-analyze plot > graph.svf
+    
+
+Disable not needed services::
+
+    sudo systemctl stop <service_name>
+    sudo systemctl disable <service_name>
+    sudo systemctl daemon-reload

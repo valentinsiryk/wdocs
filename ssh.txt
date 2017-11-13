@@ -2,6 +2,24 @@
 SSH
 ===
 
+
+Disable SSH host key checking
+-----------------------------
+
+**The authenticity of host '192.168.0.100 (192.168.0.100)' can't be established.
+RSA key fingerprint is 3f:1b:f4:bd:c5:aa:c1:1f:bf:4e:2e:cf:53:fa:d8:59.
+Are you sure you want to continue connecting (yes/no)?**
+
+Add following lines in ssh config::
+
+    Host 192.168.0.*
+        StrictHostKeyChecking no
+        UserKnownHostsFile=/dev/null
+
+
+SSH options anf features
+------------------------
+
 ::
 
     ssh [options] <user>@<host>

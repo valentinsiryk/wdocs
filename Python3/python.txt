@@ -6,7 +6,7 @@ str(number)	# convert to string
 test = 10	# init new var
 test = True	# case sensitive
 test = False
-test = None	# analog 'null' (functions returns None if not return any)
+test_one = None	# analog 'null' (functions returns None if not return any)
 
 print(10 == 10)	# True
 == != <= >= < >
@@ -69,15 +69,20 @@ while i <= 5:
 for test in range(15):
     print(test)
 
-##############################################
-# LISTS
-test = [1, 2, 3, [4, 5, 6]]
-print(test[3][0])	# 4
-print(test[0:2])	# 1, 2
-print(test[:2])		# 1, 2
-print(test[2:])		# 3, [4, 5, 6]
-print(test[::2])	# all with step 2
-test[start:to:step]
+
+LISTS
+-----
+
+::
+
+    test = [1, 2, 3, [4, 5, 6]]
+
+    print(test[3][0])   # 4
+    print(test[0:2])    # 1, 2
+    print(test[:2])     # 1, 2
+    print(test[2:])     # 3, [4, 5, 6]
+    print(test[::2])    # all with step 2
+    test[start:to:step]
 
 test = [1, 2, 3]
 print(test * 2)	# [1, 2, 3, 1, 2, 3]
@@ -116,15 +121,17 @@ for element in test:
     print(element)	# all elements
 
 	
-##############################################
-# TUPLES (Кортежи - менее ресурсоемкостные чем списки)
+
+TUPLES (Кортежи - менее ресурсоемкостные чем списки)
+------
 names = ("Make", "James")	# elements can't be change	
 names = "Make", "James"		# elements can't be change
 print(names[0])
 
 
-##############################################
-# DICTIONARY
+Dictionary
+----------
+
 test = {
 	"key" : "value",	# key == only simple types
 	"key2" : "value2"
@@ -141,8 +148,9 @@ if 'key' not in test:
 	
 
 	
-##############################################	
-# FUNCTIONS		
+Functions
+---------
+		
 def sum(a, b):		# DEFINE ONLY BEFORE USE
 	"""On line documentation"""
     return a + b
@@ -177,150 +185,193 @@ def fun(text):
     print(text)
 fun('')	# AssertionError: text could be no blank!
 
-##############################################
-# MODULES
-# https://pypi.python.org/pypi
-# http://pypi-ranking.info/alltime
 
-import random	# import module
-a = random.randint(0, 10)
+Modules
+-------
 
-from random import randint	# import function from module
-from math import sqrt, pi
-a = randint(0, 10)
+**https://pypi.python.org/pypi**
+**http://pypi-ranking.info/alltime**
 
-from random import *	# import all function from module
+::
 
-from math import sqrt as my_sqrt	# rename import function
-my_sqrt(25)
+    # import module
+    import random
+    
+    a = random.randint(0, 10)
 
-##############################################
-# EXCEPTIONS
+    # import function from module
+    from random import randint
+    from math import sqrt, pi
+    
+    a = randint(0, 10)
+    
+    # import all function from module
+    from random import *
 
-try:
-    print(4 / 0)
-except ZeroDivisionError:
-    print("oh no =(")
+    # rename import function
+    from math import sqrt as my_sqrt	
+    my_sqrt(25)
 
-try:
-    print(4 / 0)
-except:					# catch all exceptions
-    print("oh no =(")
+
+Exceptions
+----------
+
+Catch all exceptions::
+
+    try:
+        print(4 / 0)
+        
+    except:
+        print("oh no =(")
+	    raise	# show exception, exit programm
+
+
+ZeroDivisionError::
+
+    try:
+        print(4 / 0)
+        
+    except ZeroDivisionError:
+        print("Error")
+
+
+Different exceptions catching::
+
+    try:
+	    print(4 / 0)
+	    
+    except ZeroDivisionError:
+	    print('zero division err')
+	    
+    except NameError:
+	    print('var not defined')
+	    
+    except SyntaxError:
+	    print('syntax err')	# no catch syntax err
+	    
+    except:
+	    print('some err')
 	
-try:
-    print(4 / 0)
-except ZeroDivisionError:
-    pass	# pass en go next
-	
-try:
-	print(4 / 0)
-except ZeroDivisionError:
-	print('zero division err')
-except NameError:
-	print('var not defined')
-except SyntaxError:
-	print('syntax err')	# no catch syntax err
-except:
-	print('some err')
-	
-try:
-	eval('<some code>')
-except SyntaxError:
-	print('syntax err!')	# catch syntax err
 
-try:
-	print(4 / 0)
-except (ZeroDivisionError, NameError, ValueError):
-	print("catch some errors")
+Syntax error::
+
+    try:
+    	eval('<some code>')
+
+    except SyntaxError:
+    	print('Syntax error')
+
+
+Finnaly::
 	
-try:
-	code
-except:
-	code
-finally:
-	code	# run always (if catch or no catch)
-	
-try:
+    try:
+	    <code>
+
+    except:
+	    <code>
+
+    finally:
+	    <code>	# run always (if catch or no catch)
+
+
+Override error::
+
+    try:
+        a = 1
+        if a == 1:
+            raise ZeroDivisionError	
+
+    except ZeroDivisionError:
+        print("zero division err")	
+
+
+::
+
     a = 1
     if a == 1:
-        raise ZeroDivisionError		# own err
-except ZeroDivisionError:
-    print("zero division err")	
+       raise ZeroDivisionError('some text')		# ZeroDivisionError: some text
+       
 
-a = 1
-if a == 1:
-   raise ZeroDivisionError('some text')		# ZeroDivisionError: some text
-	
-try:
-	code
-except:
-    print("error")	# run some command
-	raise			# show exception
-	
-# own exceptions
-class MyError(Exception):
-    print('hm')
+Own exceptions::
 
-raise MyError('TEST')	
+    class MyError(Exception):
+        print('hm')
+
+    raise MyError('TEST')	
 	
 
-##############################################
-# FILES	
-# r - read
-# w - write (create if not exist, rewrite if exist)
-# a - append
-#
-# b - binary mode (rb wb ab)
-
-file = open('file.txt', 'r')    
-print(file.read())
-file.close()
-
-file.read(1)	# read 1 byte
-
-file = open('file.txt', 'w')
-file.write('hello')
-file.close()
-
-file = open('file.txt', 'a')	# append
-file.write('hello')
-file.close()
-
-file.readlines()	# returns list of lines
-
-with open('file', 'r') as f:	# file descriptor close automatically
-	print(f.read())
-
-##############################################
-# COMMENTS
-# this is a comment
-print('hello')	# this is a comment
-
-'''Multi 
-lines
-comment'''
-
-"""Multi 
-lines
-comment"""
+Files
+-----
 	
-##############################################
-# RESERVED VARS
-foo
-bar
+**r - read**
+**w - write** (create if not exist, rewrite if exist)
+**a - append**
+
+**b - binary mode** (rb wb ab)
+
+::
+
+    file = open('file.txt', 'r')    
+    print(file.read())
+    file.close()
+
+    # read 1 byte
+    file.read(1)
+
+    file = open('file.txt', 'w')
+    file.write('hello')
+    file.close()
+
+	# append
+    file = open('file.txt', 'a')
+    file.write('hello')
+    file.close()
+
+    # get list of lines
+    file.readlines()
+     
+	# close file descriptor automatically
+    with open('file', 'r') as f:
+	    print(f.read())
 
 
-##############################################
-# ERROR in Python
-a++
-a--
+COMMENTS
+--------
+
+::
+
+    # this is a comment
+    print('hello')	# this is a comment
+
+    '''Multi 
+    lines
+    comment'''
+
+    """Multi 
+    lines
+    comment"""
+	
 
 
-##############################################
-# CLASSES
-# all classes is an object of class metaclass - 'type'
+RESERVED VARS
+-------------
 
-class MyClass:
-    pass
+**foo**
+**bar**
 
-obj = MyClass()	# new object of class
+
+
+CLASSES
+-------
+
+**All classes is an object of class metaclass - 'type'.**
+
+::
+
+    class MyClass:
+        pass        # pass do nothing
+
+    # new object of class
+    obj = MyClass()	
+
+

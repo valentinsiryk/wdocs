@@ -4,7 +4,7 @@ libvirt + QEMU + KVM + Debian
 
 Check cpu virtualization access::
 
-    # sudo virt-host-validate
+    sudo virt-host-validate
 
     egrep -c '(vmx|svm)' /proc/cpuinfo
     
@@ -17,6 +17,17 @@ Check Debian source list ``sources.list``::
     deb http://ftp.de.debian.org/debian jessie main non-free
     deb-src http://ftp.de.debian.org/debian jessie main non-free
 
+
+Free up not used space on a qcow2-image-file::
+
+    # zero fill on guest
+    dd if=/dev/zero of=/some/file
+    rm /some/file
+    
+    # shut down the VM
+
+    # on host
+    qemu-img convert -O qcow2 original_image.qcow2 deduplicated_image.qcow2
 
 
 qemu-system-x86_64
