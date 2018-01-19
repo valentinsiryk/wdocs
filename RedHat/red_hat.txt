@@ -1,0 +1,70 @@
+======
+RedHat
+======
+
+RHEL subscription::
+
+    sudo subscription-manager register 
+    sudo subscription-manager attach
+    sudo yum update
+
+
+YUM::
+
+    yum update              # update packets
+        install <packet>    # install packet
+            -y              # yes for all ansvers
+        search <packet>     # search packet
+        info htop           # show info
+
+
+yum install epel-release
+yum install htop
+
+
+===============
+CentOS yum
+===============
+
+yum install epel-release
+yum install htop
+
+
+CentOS yum via proxy::
+
+    /etc/yum.conf.
+        proxy=http://192.168.35.10:8080
+        proxy_username=proxyname
+        proxy_password=proxypass
+
+===============
+RedHat firewall
+===============
+
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html
+
+# start/stop firewall
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+sudo systemctl status firewalld
+
+
+cat /etc/redhat-release	# show version of redhat	
+
+ip addr					# analog ifconfig'a
+yum install net-tools	# install ifconfig
+
+
+# start/stop firewall
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
+sudo systemctl status firewalld
+
+
+# Change timezone
+sudo mv /etc/localtime /etc/localtime.old
+sudo ln -s /usr/share/zoneinfo/Europe/Kiev /etc/localtime
+
+
+# login at another user
+su - <username>

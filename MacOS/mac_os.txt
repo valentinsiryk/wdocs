@@ -4,6 +4,22 @@ Mac OS instructions
 
 
 
+Show partition information::
+
+    diskutil list
+
+
+Check resize partition restrictions::
+
+    diskutil list
+    diskutil resizeVolume <disk> limits
+
+
+Resize Mac OS partition::
+
+    sudo diskutil resizeVolume <disk> <size>GB
+    
+
 Get CPU Information::
 
     sysctl -n machdep.cpu.brand_string

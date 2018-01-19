@@ -120,7 +120,12 @@ SQLite
 
 Show all tables::
 
-    "SELECT name FROM sqlite_master WHERE type='table'"
+    SELECT name FROM sqlite_master WHERE type='table'
+    
+    
+Show column list of the table::
+
+    PRAGMA table_info(table_name);
     
 
 

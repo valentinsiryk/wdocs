@@ -1,8 +1,0 @@
-====================
-CentOS yum via proxy
-====================
-
-/etc/yum.conf.
-	proxy=http://192.168.35.10:8080
-	proxy_username=proxyname
-	proxy_password=proxypass

@@ -1,6 +1,0 @@
-===============
-CentOS yum
-===============
-
-yum install epel-release
-yum install htop

@@ -1,0 +1,36 @@
+========
+Makefile
+========
+
+https://www.gnu.org/software/make/manual/make.html
+http://opensourceforu.com/2012/06/gnu-make-in-detail-for-beginners/
+
+Syntax
+------
+
+The general syntax of a Makefile rule is as follows::
+
+    target: dependency1 dependency2 ...
+    [TAB] action1
+    [TAB] action2
+        ...
+
+    # Example of Makefile. Run: make default
+    MESSAGE ?= Hi all
+
+    start:
+            @echo ${MESSAGE}
+
+    default: start
+
+
+
+@ (at) suppresses the standard print-action-to-standard-output behaviour of make, for the action/command that is prefixed with @. For example, to echo a custom message to standard output, we want only the output of the echo command, and don’t want to print the echo command line itself. @echo Message will print “Message” without the echo command line being printed.
+
+
+By convention, all variable names used in a Makefile are in upper-case. A common variable assignment in a Makefile is CC = gcc, which can then be used later on as ${CC} or $(CC). Makefiles use # as the comment-start marker, just like in shell scripts.
+
+?= - conditional assignment statements assign the given value to the variable only if the variable does not yet have a value.
+
+
+    

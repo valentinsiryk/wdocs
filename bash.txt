@@ -5,6 +5,10 @@ BASH
 
 http://talk.jpnc.info/bash_lfnw_2017.pdf
 
+Make newlines the only separator::
+
+    IFS=$'\n'
+
 
 Do something on exit (even if error)::
 
