@@ -1,0 +1,368 @@
+====
+RUBY
+====
+
+Basics::
+
+    load "second.rb"    # Load code from another file
+
+    # One line comment
+
+    =begin
+    Multiline comment
+    =end
+
+    print "Enter"           # print on the stdout
+    first_num = gets.to_i   # get from stdin
+
+    print "second"
+    second_num = gets.to_i
+
+    # + - / % *
+    puts first_num.to_s + " + " + second_num.to_s + " = " + (first_num + second_num).to_s
+    
+    # show class of object
+    puts 1.class
+    puts 1.2.class
+    puts "str".class
+    
+    A_CONSTANT = 23 # constant
+
+    num_1 = 1.000
+    num_2 = 0.999
+
+    puts (num_1 - num_2).to_s
+
+
+Conditions, comparisons::
+
+    puts "enter your age:"
+    age = gets.to_i
+
+    # Comparison: == != < > <= >=
+    # Logical: && || ! and or not
+
+    if (age >= 5) && (age <= 7)
+      puts "hm"
+    elsif (age >= 7) && (age <=13)
+      puts "ahh"
+    else
+      puts "hah"
+    end
+
+    age = 30
+    puts (age >= 50) ? "Old" : "Young"
+
+    print "Enter:"  # no new line after stdout
+    res = gets.chomp    # chomp - remove new lines from the string
+
+    case res
+    when "1", "2"
+      puts "small"
+      exit  # exit from the program
+    when "3", "4"
+      puts "medium"
+      exit
+    else
+      puts "big"
+    end
+
+    age = 12
+    puts "You're Young" if age < 30
+
+    age = 3
+    unless age > 4  # if not
+      puts "hm"
+    else
+      puts "hah"
+    end
+    # hm
+
+    puts (true and false).to_s
+
+
+Files::
+
+    write_handler = File.new("test.out", "w")
+    write_handler.puts("test").to_s
+    write_handler.close
+    data_from_file = File.read("test.out")
+    puts "data: " + data_from_file
+
+
+Loops::
+
+    a = 1
+    until a >= 10
+      a += 1
+      next unless (a % 2) == 0
+      puts a
+    end
+
+    y = 1
+    while y <= 10
+      y += 1
+      next unless (y % 2) == 0
+      puts y
+    end
+
+    x = 1
+    loop do
+      x += 1
+      next unless (x % 2) == 0  # next is like contionue in other language
+      puts x
+      break if x >= 10  # end of loop
+    end
+
+
+Each, For::
+
+    (0..8).each do |i|  # (0..8) is a range
+      puts "- #{i}"
+    end
+
+    g = ["a","b","c"]
+    g.each do |f|
+      puts "Ehhuuu: #{f}"
+    end
+
+    numbers = [1,2,3,4,5]
+    for number in numbers
+      # here are two equal methods:
+      print number.to_s + ", "
+      print "#{number}, "
+    end
+
+
+Functios::
+
+    def add_nums(a, b)
+      return a.to_i + b.to_i
+    end
+
+    puts add_nums(3,4)
+
+
+Exceptions::
+
+    #
+    age = 12
+
+    def check(age)
+      raise ArgumentError, "Enter positive num" unless age > 0
+    end
+
+    begin
+      check(-1)
+    rescue
+      puts "Bad!"
+    end
+
+    #
+    print "Enter num: "
+    a = gets.to_i
+    print "Enter num2: "
+    b = gets.to_i
+
+    begin
+      res = a / b
+    rescue
+      puts "Devide by zero!"
+      exit
+    end
+
+    puts "#{a} / #{b} = #{res}"
+
+
+Multiline string::
+
+    multiline = <<EOF
+    line1
+
+        line2
+    #{4 + 5} \n\n
+    EOF
+
+    puts multiline
+
+
+Strings::
+
+    test = "   Yeallow green blue"
+    puts test.include?("green") # stdout: true
+    puts test.size              # stdout: 18 (numbers of characters)
+    puts "count of 'e': #{test.count("e").to_s}"
+    puts "except the 'e': #{test.count("^e").to_s}"
+    puts test.start_with?("y")  # stdout: true
+    puts "index of blue: #{test.index("blue").to_s}"    # index of first string
+
+    puts test.equal?test    # compare two OBJECTS (true)
+    puts "a".equal?"a"      # false (different OBJECTS)
+
+    puts "upcase: " + test.upcase
+    puts "downcase: " + test.downcase
+    puts "swapcase: " + test.swapcase   # yEALLOW GREEN BLUE
+
+    # spaces stripping
+    puts "lstrip: " + test.lstrip
+    puts "rstrip: " + test.rstrip
+    puts "strip: " + test.strip
+
+    puts "rjust: " + test.rjust(50, '.')
+    puts "ljust: " + test.ljust(50, '.')
+    puts "center: " + test.center(50, '.')  # .............   Yeallow green blue   .............
+
+    puts "chop: " + test.chop   # remove last char
+    puts "chomp: " + test.chomp('ue')    # Yeallow green bl (remove from end)
+
+    puts "delete: " + test.delete('e')  # delete chars
+    puts test.split(/ /)    # split to array by spaces
+
+
+Arrays::
+
+    puts Array.new              # empty
+    puts Array.new(5)           # empty
+    puts Array.new(5, "empty")  # empty
+
+    arr =  [1, "two", 3, 5.5]
+
+    puts arr[2]                 # 3
+    puts arr[2,2].join(", ")    # 3, 5.5
+    puts arr.values_at(0,1,3).join(", ")    # 1, two, 5.5
+
+
+Hashes::
+
+    h = {"key" => 1.2,
+         "key2" => "hi"}
+
+    puts h["key2"]
+
+    h.each do |key, value|
+      puts key.to_s + " : " + value.to_s
+    end
+
+
+Symbols::
+
+    # Simpler that String, doesn't create new object for same string
+    :derek
+    puts :derek.to_s
+
+
+Modules
+-------
+
+human.rb::
+
+    module Human
+      attr_accessor :name, :height, :weight
+      
+      def run
+        puts self.name + " runs"
+      end
+    end
+
+
+smart.rb::
+
+    module Smart
+      def act_smart
+        return "E = mc2"
+      end
+    end
+
+
+base.rb::
+
+    require_relative "human"
+    require_relative "smart"
+
+    module Animal2
+      def make_sound
+        puts "Grrr"
+      end
+    end
+
+    class Dog
+      include Animal2
+    end
+
+    rover = Dog.new
+    rover.make_sound
+
+
+Objects and Classes
+-------------------
+
+Class 1::
+
+    class Animal
+      def initialize
+        puts "Creating a new animal"
+      end
+      
+      # Getters and setters
+      def set_name(new_name)
+        @name = new_name
+      end
+      
+      def get_name
+        @name
+      end
+      
+      def name
+        @name
+      end
+      
+      def name=(new_name)
+        if new_name.is_a?(Numeric)
+          puts "Name can't be a number"
+        else
+          @name = new_name
+        end
+      end
+    end
+
+    cat = Animal.new
+    cat.set_name("Bob")
+
+    puts cat.get_name
+    puts cat.name
+    cat.name = "Chaffie"
+    puts cat.name
+
+
+Class 2::
+
+    class Dog
+      # Create getter functions automatically
+      attr_reader :name, :height, :weight
+      # Create setter functions automatically
+      attr_writer :name, :height, :weight
+      # Create getter and setter functions automatically
+      attr_accessor :name, :height, :weight
+      
+      def bark
+        return "Generic Bark"
+      end
+    end
+
+    rover = Dog.new
+    rover.name = "Mike"
+    puts rover.name
+    puts rover.bark
+
+
+Class 3::
+
+    class GermanShepard < Dog   # child class
+      def bark
+        return "Lud Bark"
+      end
+    end
+
+    max = GermanShepard.new
+    max.name = "Max"
+    printf "%s - %s", max.name, max.bark    # Max - Lud Barktrue
