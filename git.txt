@@ -4,6 +4,22 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+
+Credentials store
+-----------------
+
+Store credentials for current git::
+
+    git config credential.helper store
+    
+    # or add in ./git/config
+    [credential]
+        helper = store
+    
+    # default credentials file location
+    ~/.git-credentials
+
+
 Development scheme
 ------------------
 

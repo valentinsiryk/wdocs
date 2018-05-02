@@ -3,6 +3,21 @@ Mac OS instructions
 ===================
 
 
+Add to user administrator privileges and all access abilities::
+
+    dscl . -append /groups/admin GroupMembership <USERNAME>
+
+    # confirm
+    dscl . -read /groups/admin GroupMembership
+
+
+Download and install DMG from commandline::
+
+    curl -O https://site.com/<file.dmg>
+    sudo hdiutil attach <file.dmg> 
+    sudo installer -package /Volumes/<volume>/<app_name.pkg> -target /
+    sudo hdiutil detach /Volumes/<volume>
+  
 
 Show partition information::
 

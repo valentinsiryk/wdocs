@@ -3,9 +3,22 @@ Elasticsearch
 =============
 
 
-Clear index::
+Clear all indexes::
 
     curl -XDELETE localhost:9200/*
+
+
+Delete index::
+
+    curl -XDELETE localhost:9200/<index>
+    
+
+Get all indexes and their sizes::
+
+    curl localhost:9200/_cat/indices?v
+        ?v          - show headers
+        ?h=index    - show only indexes
+
     
     
 Start/restart Elasticsearch::

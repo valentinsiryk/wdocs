@@ -135,3 +135,19 @@ Add CRON tasks (auto renew, with reload nginx)::
     
     # Check or renew certs twice per day
     0 12,18 * * * certbot renew --post-hook "systemctl reload nginx"
+
+
+Cerbot - Docker
+^^^^^^^^^^^^^^^
+
+::
+
+    # Get certs (will be saved at /etc/letsencrypt/live)
+    docker run -p 80:80 -it --rm --name certbot -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/lib/letsencrypt:/var/lib/letsencrypt" certbot/certbot certonly --standalone --preferred-challenges http -d <dns> -d <www.dns> --email <email@example.com> --non-interactive --agree-tos
+    
+    # --test-cert   - staging certs
+    
+    # Delete certs (staging for example)
+    docker run -p 80:80 -it --rm --name certbot -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/lib/letsencrypt:/var/lib/letsencrypt" certbot/certbot delete --cert-name <dns>
+    
+
