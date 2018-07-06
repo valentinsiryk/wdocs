@@ -4,36 +4,40 @@ Consul
 
 ::
 
-    consul agent -dev			# run agent
+    consul agent -dev           # run agent
 
     consul members              # show members
                     -detailed   # show additional details
 
     consul join <ip>            # join member to server (on server: client ip;  on client: server ip)
 
-    curl localhost:8500/v1/catalog/nodes			# check nodes
+    curl localhost:8500/v1/catalog/nodes            # check nodes
     curl localhost:8500/v1/catalog/service/web
-    curl localhost:8500/v1/health/state/critical	# check health cheks
+    curl localhost:8500/v1/health/state/critical    # check health cheks
 
 
 
 Consul agent options::
 
     consul agent 
-        -server						# act node at server mode
-        -bootstrap-expect=1			# hints to the Consul server the number of additional server nodes we are expecting to join
+        -server                     # act node at server mode
+        -bootstrap-expect=1         # hints to the Consul server the number of additional server nodes we are expecting to join
         -data-dir=/tmp/consul
-        -node=<name>				# override unique name of node. By default, Consul uses the hostname 
-        -bind=<ip>					# address that Consul listens on. It must be accessible by all other nodes in the cluster
-        -config-dir=/etc/consul.d	# marking where service and check definitions can be found
-        -join=<ip>					# auto join in cluster (connect to server)
-        -ui							# enable web ui (port:8500)
-        -client=0.0.0.0				# listen ip
-        -http-port=<port>			# http port (default:8500)
+        -node=<name>                # override unique name of node. By default, Consul uses the hostname 
+        -bind=<ip>                  # address that Consul listens on. It must be accessible by all other nodes in the cluster
+        -config-dir=/etc/consul.d   # marking where service and check definitions can be found
+        -join=<ip>                  # auto join in cluster (connect to server)
+        -ui                         # enable web ui (port:8500)
+        -client=0.0.0.0             # listen ip
+        -http-port=<port>           # http port (default:8500)
 
 
 Example
 -------
+
+Consul Server::
+
+    ./consul agent -ui -server -bootstrap-expect=1 -enable-script-checks=true -data-dir=/tmp/consul -client 0.0.0.0 -config-dir=consul.d -bind=<public_ip> -datacenter=dc1
 
 NODE_1::
 
@@ -54,26 +58,26 @@ NODE_2::
 
     # Definition files in the Consul configuration directory (restart agent after add definition)    
     sudo nano /etc/consul.d/ping.json
-	    {
-		    "check": {
-			    "name": "ping",
-			    "script": "ping -c1 google.com >/dev/null",
-			    "interval": "30s"
-		    }
-	    }
+        {
+            "check": {
+                "name": "ping",
+                "script": "ping -c1 google.com >/dev/null",
+                "interval": "30s"
+            }
+        }
 
     sudo nano /etc/consul.d/web.json
-	    {
-		    "service": {
-			    "name": "web",
-			    "tags": ["rails"],
-			    "port": 80,
-			    "check": {
-				    "script": "curl localhost >/dev/null 2>&1",
-				    "interval": "10s"
-			    }
-		    }
-	    }
+        {
+            "service": {
+                "name": "web",
+                "tags": ["rails"],
+                "port": 80,
+                "check": {
+                    "script": "curl localhost >/dev/null 2>&1",
+                    "interval": "10s"
+                }
+            }
+        }
 
     dig @127.0.0.1 -p 8600 web.service.consul
 

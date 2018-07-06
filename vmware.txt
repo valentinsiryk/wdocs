@@ -32,7 +32,7 @@ VM config file::
     # enable pass CPU performance countes to guest
     vpmc.enable = "TRUE"
 
-    # enable virtual machine execution mode to VT-x/EPT or AMD-RVI
+    # enable virtual machine execution mode to VT-x/EPT or AMD-RVI (run virtual machines virtual machine - allow nested virtualization)
     vhv.enable = "TRUE"
     
     # Virtualization engine mode

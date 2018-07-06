@@ -94,6 +94,11 @@ Branches:
 Git tips and tricks
 -------------------
 
+See all of the changes from latest pull::
+
+    git diff master@{1} master
+
+
 Push current changes to new branch (auto create it on remote and local)::
 
     # done some changes

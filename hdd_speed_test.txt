@@ -7,7 +7,7 @@ Write speed (dd)
 
 ::
 
-    sync; dd if=/dev/zero of=tempfile bs=1M count=1024; sync
+    sync; dd if=/dev/zero of=tempfile bs=1024k count=1024; sync
     
     # 1024+0 records in
     # 1024+0 records out

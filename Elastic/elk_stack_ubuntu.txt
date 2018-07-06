@@ -296,6 +296,7 @@ Create config for certs generating ``/etc/logstash/ssl/ssl.conf``::
 
     [ alt_names ]
     DNS.1 = <HOST_DNS>
+    # IP.1 = 127.0.0.1 # example for IP
 
 
 ``HOST_DNS`` - elk.my-company.com, etc. (Host, where logstash is installed and listen input connections)

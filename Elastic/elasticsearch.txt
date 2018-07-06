@@ -2,6 +2,15 @@
 Elasticsearch
 =============
 
+Templates:
+
+    # get
+    curl localhost:9200/_cat/templates?v
+    # check if the template exists
+    curl localhost:9200 -XHEAD _template/<template>
+    # delete
+    curl localhost:9200 -XDELETE /_template/<template>
+
 
 Clear all indexes::
 
