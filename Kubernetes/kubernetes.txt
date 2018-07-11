@@ -2,129 +2,131 @@
 Kubernetes
 ==========
 
-#####################################
-# MINIKUBE install on local machine #
-#####################################
+MINIKUBE install on local machine
+---------------------------------
 
 https://github.com/kubernetes/minikube/blob/v0.9.0/README.md
 http://kubernetes.io/docs/getting-started-guides/minikube/
 
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.9.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+::
 
-curl -Lo kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-	# where v1.3.6 - last version of kubernetes
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.9.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 
-minikube start			# start kubernetes
-		 stop			# stop kubernetes
-		 dashboard		# open web-interface
-		 ip				# show dashboard ip
-		 service NAME	# open ip in browser
+    curl -Lo kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.6/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+    # where v1.3.6 - last version of kubernetes
 
-curl $(minikube service hello-minikube --url)	# show ip
+    minikube start      # start kubernetes
+        stop            # stop kubernetes
+        dashboard       # open web-interface
+        ip              # show dashboard ip
+        service NAME    # open ip in browser
 
-###########
-# KUBECTL #
-###########
-
-####################
-
-pod - один или группа контейнеров, обьеденных для общей цели (запускаются как единое целое)
-
-####################
-
-$HOME/.kube/config	# config
-
-kubectl get pods --all-namespaces
-			pod
-				-o wide			# show ip and nodes (gcloud compute ssh <NODE>	# ssh logout)
-			deployments
-			nodes				# show nodes
-			services <service>	# show ip and ports
-			rc					# show replication controllers
-			events				# show events
-
-kubectl config view				# show config
-
-kubectl set image deployment/test2 test2=eu.gcr.io/vsiryk-test/php7-apache:latest	# update source image
-
-kubectl describe pod <NAME>
-				 services <NAME>
-
-kubectl cluster-info
+    curl $(minikube service hello-minikube --url)    # show ip
 
 
-##############
-# DEPLOYMENT #
-##############
+KUBECTL
+-------
 
+**POD** - one or group of containers, combined for common goals (launch as a single unit)
 
-kubectl run <NAME> --image=<image_hub>										# create pod, create deployment object
-										[--env="key=value"]
-										[--port=port]
-										[--replicas=replicas]
-										[--dry-run=bool]
-										[--overrides=inline-json]
-										[--command] -- [COMMAND] [args...]
+::
 
+    $HOME/.kube/config    # config
 
-kubectl expose (-f FILENAME | TYPE NAME)
-										[--port=port]
-										[--protocol=TCP|UDP]
-										[--target-port=number-or-name]
-										[--name=name]
-										[--external-ip=external-ip-of-service]
-										[--type=type]
-											--type="LoadBalancer"	# for expose external ip
+    kubectl get pods --all-namespaces
+            pod
+                -o wide             # show ip and nodes (gcloud compute ssh <NODE>    # ssh logout)
+            deployments
+            nodes                   # show nodes
+            services <service>      # show ip and ports
+            rc                      # show replication controllers
+            events                  # show events
 
-kubectl scale deployment <deployment_name> --replicas=4
-kubectl autoscale deploymeent <deployment_name> --min=1 --max=3
+    kubectl config view             # show config
 
-kubectl proxy --port=8001 &				# connect to proxy (& - backround)
-# http://localhost:8001/ui
+    kubectl set image deployment/test2 test2=eu.gcr.io/test/php7-apache:latest    # update source image
 
+    kubectl describe pod <NAME>
+                     services <NAME>
 
-kubectl create -f ./<deployment>.yaml	# create deployment
-kubectl create -f ./<service>.yaml		# create service
-
-kubectl apply -f <file>.yaml	# compare the version of the configuration with the previous version and apply the changes, 
-								  without overwriting any automated changes to properties you haven’t specified.
-
-
-kubectl delete pod,service <name> <name> ...
-			   deployment  <name> <name> ...
-
-kubectl logs <POD-NAME>
-
-kubectl exec <pod-name> date
-			 <pod-name> -c <container-name> date
-
-$ kubectl exec -ti <pod-name> /bin/bash	# Get an interactive TTY and run /bin/bash from pod <pod-name>. By default, output is from the first container.
+    kubectl cluster-info
 
 
 
-   * componentstatuses			cs
-   * daemonsets					ds
-   * events						ev
-   * endpoints					ep
-   * horizontalpodautoscalers	hpa
-   * ingress					ing
-   * limitranges				limits
-   * nodes						no
-   * namespaces					ns
-   * pods						po
-   * persistentvolumes			pv
-   * persistentvolumeclaims		pvc
-   * resourcequotas				quota
-   * replicasets				rs
-   * replicationcontrollers		rc
-   * serviceaccounts			sa
-   * services					svc
+Deployment
+----------
+
+::
+
+    kubectl run <NAME> --image=<image_hub>                                  # create pod, create deployment object
+                                        [--env="key=value"]
+                                        [--port=port]
+                                        [--replicas=replicas]
+                                        [--dry-run=bool]
+                                        [--overrides=inline-json]
+                                        [--command] -- [COMMAND] [args...]
+
+
+    kubectl expose (-f FILENAME | TYPE NAME)
+                                        [--port=port]
+                                        [--protocol=TCP|UDP]
+                                        [--target-port=number-or-name]
+                                        [--name=name]
+                                        [--external-ip=external-ip-of-service]
+                                        [--type=type]
+                                            --type="LoadBalancer"    # for expose external ip
+
+    kubectl scale deployment <deployment_name> --replicas=4
+    kubectl autoscale deploymeent <deployment_name> --min=1 --max=3
+
+    kubectl proxy --port=8001 &                 # connect to proxy (& - backround)
+    # http://localhost:8001/ui
+
+
+    kubectl create -f ./<deployment>.yaml       # create deployment
+    kubectl create -f ./<service>.yaml          # create service
+
+    kubectl apply -f <file>.yaml                # compare the version of the configuration with the previous version and apply the changes,
+                                                # without overwriting any automated changes to properties you haven’t specified.
+
+    kubectl delete pod,service <name> <name> ...
+                   deployment  <name> <name> ...
+
+    kubectl logs <POD-NAME>
+
+    kubectl exec <pod-name> date
+                 <pod-name> -c <container-name> date
+
+    kubectl exec -ti <pod-name> /bin/bash    # Get an interactive TTY and run /bin/bash from pod <pod-name>. By default, output is from the first container.
+
+
+Abbreviation
+------------
+
+   * componentstatuses          - cs
+   * daemonsets                 - ds
+   * events                     - ev
+   * endpoints                  - ep
+   * horizontalpodautoscalers   - hpa
+   * ingress                    - ing
+   * limitranges                - limits
+   * nodes                      - no
+   * namespaces                 - ns
+   * pods                       - po
+   * persistentvolumes          - pv
+   * persistentvolumeclaims     - pvc
+   * resourcequotas             - quota
+   * replicasets                - rs
+   * replicationcontrollers     - rc
+   * serviceaccounts            - sa
+   * services                   - svc
 
 
 Example
 -------
 
 ::
+
     apiVersion: v1
     kind: Service
     metadata:

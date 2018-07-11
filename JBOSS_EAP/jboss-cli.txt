@@ -2,51 +2,43 @@
 JBOSS CLI
 =========
 
-EAP_HOME/bin/jboss-cli.sh
+Examples::
 
+    EAP_HOME/bin/jboss-cli.sh
 
-jboss-cli.sh --connect
-jboss-cli.sh --connect	controller=controller-host.net[:PORT]
-						controller=remote://controller-host.net:1234
-						controller=http-remoting://controller-host.net:1234
+    jboss-cli.sh --connect
+    jboss-cli.sh --connect  controller=controller-host.net[:PORT]
+                            controller=remote://controller-host.net:1234
+                            controller=http-remoting://controller-host.net:1234
 
+    reload --host=<hostname>    # reload host
 
-reload --host=<hostname>	# reload host
+    /core-service=platform-mbean/type=runtime:read-attribute(name=system-properties)
+    /system-property=foo:add(value=bar)
 
-/core-service=platform-mbean/type=runtime:read-attribute(name=system-properties)
-/system-property=foo:add(value=bar)
+    :read-resource 
+    :read-resource(recursive=true)
 
-:read-resource 
-:read-resource(recursive=true)
+    /host=<HOST_NAME>:read-resource
 
+    /host=<HOST_NAME>/server=<SERVER_NAME>:read-resource
 
+    cd host=<HOST_NAME>
 
-/host=<HOST_NAME>:read-resource
+    cd /profile=default/subsystem=datasources/data-source=ExampleDS
+    :read-attribute(name=min-pool-size)
+    :write-attribute(name=min-pool-size,value=<VALUE>)
 
-/host=<HOST_NAME>/server=<SERVER_NAME>:read-resource
+    # Add new group
+    /server-group=<NEW_GROUP_NAME>:add(profile=ha, socket-binding-group=ha-sockets)
 
-cd host=<HOST_NAME>
+    /server-group=<GROUP_NAME>/jvm=default:add(heap-size=<VALUE>,max-heap-size=<VALUE>)
 
-cd /profile=default/subsystem=datasources/data-source=ExampleDS
-:read-attribute(name=min-pool-size)
-:write-attribute(name=min-pool-size,value=<VALUE>)
+    /host=master/interface=management:write-attribute(name=inet-address, value="${jboss.bind.address.management:0.0.0.0}")
 
+    /server-group=<GROUP_NAME>:read-resource
 
-# Add new group
-/server-group=<NEW_GROUP_NAME>:add(profile=ha, socket-binding-group=ha-sockets)
+    /host=slave1/interface=public:write-attribute(name=inet-address,value=127.0.0.1)
 
-/server-group=<GROUP_NAME>/jvm=default:add(heap-size=<VALUE>,max-heap-size=<VALUE>)
-
-
-
-/host=master/interface=management:write-attribute(name=inet-address, value="${jboss.bind.address.management:0.0.0.0}")
-
-
-/server-group=<GROUP_NAME>:read-resource
-
-
-/host=slave1/interface=public:write-attribute(name=inet-address,value=127.0.0.1)
-
-
-/server-group=qa-group:remove()
+    /server-group=qa-group:remove()
 

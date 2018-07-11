@@ -2,46 +2,47 @@
 Terraform
 =========
 
-# Examples
-#
-# https://github.com/hashicorp/terraform/tree/master/examples
+Examples - https://github.com/hashicorp/terraform/tree/master/examples
+
+::
+
+    *.tf    # configuration
+
+::
+
+    terraform plan                          # show plan, check config
+                    -out=<file>             # save plan in file
+                    -destroy                # show what will be destroyed
+                    -var '<key>=<val>'      # add var
+                    -var-file="v.tfvars"    # add file with vars. File 'terraform.tfvars' load auto
+
+VARS::
+
+    # file v.tfvars content
+    access_key = "foo"
+    secret_key = "bar"
 
 
-*.tf	# configuration
+::
+
+    terraform apply     # run
+    terraform destroy   # destroy resources
+
+    terraform show      # inspect the state
+
+    terraform output    # show only output (after apply)
+
+    terraform get       # get the modules (before apply). Download the modules. By default, the command will not check for updates.
+                 -u     # check and download updates
 
 
-terraform plan							# show plan, check config
-				-out=<file>				# save plan in file
-				-destroy				# show what will be destroyed
-				-var '<key>=<val>'		# add var
-				-var-file="v.tfvars"	# add file with vars. File 'terraform.tfvars' load auto
+::
+
+    terraform init github.com/hashicorp/terraform/examples/aws-two-tier
 
 
-v.tfvars
-	access_key = "foo"
-	secret_key = "bar"
+Create graph of dependencies::
 
-
-terraform apply		# run
-terraform destroy	# destroy resources
-
-terraform show		# inspect the state
-
-terraform output	# show only output (after apply)
-
-terraform get		# get the modules (before apply). Download the modules. By default, the command will not check for updates.
-				-u 	# check and download updates
-
-
-terraform init github.com/hashicorp/terraform/examples/aws-two-tier
-
-
-# Create graph of dependencies
-#
-sudo apt-get install graphviz
-terraform graph | dot -Tpng > graph.png
-
-
-
-
+    sudo apt-get install graphviz
+    terraform graph | dot -Tpng > graph.png
 

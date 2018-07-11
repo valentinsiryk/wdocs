@@ -15,7 +15,6 @@ Boxes-hub::
     vagrant box update
     
     vagrant init [box_name]             # create vagrantfile with 'base' box
-			     hashicorp/precise64    # create vagrantfile with 'hashicorp/precise64' box
 		    up                          # start vm, starts and provisions the vagrant environment
 		    reload                      # restarts vagrant machine, loads new Vagrantfile configuration
 		    ssh                         # connect to machine
@@ -23,11 +22,11 @@ Boxes-hub::
 		    reload --provision          # enable provision
 		    global-status               # status of all machines
     
-    vagrant destroy # terminate vm (not remove downloaded box)
+    vagrant destroy     # terminate vm (not remove downloaded box)
 
 
 Remove old box versions
-------
+-----------------------
 
 https://github.com/swisnl/vagrant-remove-old-box-versions
 
@@ -45,6 +44,7 @@ https://github.com/swisnl/vagrant-remove-old-box-versions
 
 Create own box
 --------------
+
 ::
 
     http://sysadm.pp.ua/linux/sistemy-virtualizacii/vagrant-box-creation.html

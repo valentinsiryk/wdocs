@@ -2,93 +2,97 @@
 Vault
 =====
 
-vault init -key-shares=1 -key-threshold=1	# Initialize Vault with 1 unseal key	
+Instructions
+------------
 
-vault seal									# seal vault
-vault unseal <key>							# unseal vault
+::
 
-vault auth <root token>						# Authorize with a client token
+    vault init -key-shares=1 -key-threshold=1   # Initialize Vault with 1 unseal key    
 
+    vault seal                                  # seal vault
+    vault unseal <key>                          # unseal vault
 
-vault write secret/<path> <key>=<value>
+    vault auth <root token>                     # authorize with a client token
 
-vault read 		secret/<path>
-			-format=json	# json output
+    vault write secret/<path> <key>=<value>
+    vault read -format=json secret/<path>
+    vault delete secret/<path>
 
-vault delete secret/<path>
+    # examples
+    vault write secret/hello value=world excited=yes
+    vault read -format=json secret/hello | jq -r .data.excited
 
-vault write secret/hello value=world excited=yes
-vault read -format=json secret/hello | jq -r .data.excited
+    vault mount generic                         # mount generic backend
+                aws                             # mount aws backend
+                -path=<path>
 
+    vault unmount generic/
 
+    vault mounts                                # show mounts
 
-vault mount 	generic		# mount generic backend
-				aws			# mount aws backend
-			-path=<path>
-
-vault unmount generic/
-
-vault mounts			# show mounts
-
-vault path-help aws		# show help paths
-vault path-help aws/creds/operator
-
-############################
-# Tokens
+    vault path-help aws                         # show help paths
+    vault path-help aws/creds/operator
 
 
-vault token-create
-vault token-revoke <token_id>
-vault auth <token_id>
+Tokens
+------
 
-# Auth backend
-https://www.vaultproject.io/intro/getting-started/authentication.html
+::
 
-############################
-# AWS
-#
-
-vault mount aws
-
-vault write aws/config/root access_key=<ACCESS_KEY> secret_key=<SECRET_KEY>
-
-nano policy.json
-	{
-	  "Version": "2012-10-17",
-	  "Statement": [
-		{
-		  "Sid": "Stmt1426528957000",
-		  "Effect": "Allow",
-		  "Action": [
-		    "ec2:*"
-		  ],
-		  "Resource": [
-		    "*"
-		  ]
-		}
-	  ]
-	}
-
-vault write aws/roles/deploy policy=@policy.json
-
-# Generate credentials 
-vault read aws/creds/deploy	# create IAM user with policy (show credentials)
-
-vault revoke <lease_id>		# purge access
+    vault token-create
+    vault token-revoke <token_id>
+    vault auth <token_id>
 
 
-##############################################
+Auth backend - https://www.vaultproject.io/intro/getting-started/authentication.html
 
-# Docker:
+
+AWS
+---
+
+::
+
+    vault mount aws
+
+    vault write aws/config/root access_key=<ACCESS_KEY> secret_key=<SECRET_KEY>
+
+    # file policy.json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "Stmt1426528957000",
+          "Effect": "Allow",
+          "Action": [
+            "ec2:*"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ]
+    }
+
+    vault write aws/roles/deploy policy=@policy.json
+
+    # generate credentials 
+    vault read aws/creds/deploy    # create IAM user with policy (show credentials)
+
+    vault revoke <lease_id>        # purge access
+
+
+Docker
+------
+
 https://hub.docker.com/_/vault/
 
+::
 
-# host1
-vault server -dev
+    # host1
+    vault server -dev
 
-
-# host2
-export VAULT_ADDR='http://127.0.0.1:8200'
+    # host2
+    export VAULT_ADDR='http://127.0.0.1:8200'
 
 
 Example policy
@@ -96,18 +100,19 @@ Example policy
 
 **policy.json**::
 
-	{
-	  "Version": "2012-10-17",
-	  "Statement": [
-		{
-		  "Sid": "Stmt1426528957000",
-		  "Effect": "Allow",
-		  "Action": [
-		    "ec2:*"
-		  ],
-		  "Resource": [
-		    "*"
-		  ]
-		}
-	  ]
-	}
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "Stmt1426528957000",
+          "Effect": "Allow",
+          "Action": [
+            "ec2:*"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ]
+    }
+
