@@ -2,6 +2,9 @@
 Consul
 ======
 
+
+Config options with comments - https://gowalker.org/github.com/hashicorp/consul/agent/config
+
 ::
 
     consul agent -dev           # run agent

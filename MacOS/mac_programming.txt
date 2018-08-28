@@ -10,6 +10,32 @@ https://en.wikibooks.org/wiki/AppleScript_Programming/System_Events
 Loop (repeat) - http://alvinalexander.com/apple/applescript-for-loop-while-loop-examples
 
 
+Get applescript script filename function::
+
+    on getScriptFileName()
+        set myPath to path to me as text
+
+        if myPath ends with ":" then
+            set n to -2
+        else
+            set n to -1
+        end if
+
+        set AppleScript's text item delimiters to ":"
+
+        return text item n of myPath
+    end getScriptFileName
+    # Will return '<name>.<extension>'
+    
+    # Using System Events
+    on getScriptFileName()
+        tell application "System Events"
+            return name of (path to me)
+        end tell
+    end getScriptFileName
+    # Will return '<name>.<extension>'
+
+
 Check is application running::
 
     if application "Messages" is running then

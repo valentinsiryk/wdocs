@@ -1,0 +1,38 @@
+===================
+Kernels and modules
+===================
+
+The file **/etc/modules** configures which loadable modules are automatically loaded. Here is a sample:
+
+To view a list of loadable kernel modules on a system, as well as their status, run::
+
+    lsmod
+    # or
+    cat /proc/modules
+
+
+To see a list of the module files:
+
+    modprobe --list
+    # or
+    find /lib/modules/`uname -r` -type f -name "*.ko"
+
+
+To load a module, and any modules that it depends on, use modprobe::
+
+    modprobe <module>
+
+
+Remove a module from the Linux Kernel::
+
+    rmmod <module>
+
+
+Finding more info about any module or driver::
+
+    modinfo <module|driver>
+
+
+Install the lastest kernel headers::
+
+    apt-get install linux-headers-`uname -r`

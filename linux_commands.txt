@@ -80,6 +80,11 @@ Flush swap::
     swapoff -a && swapon -a
     
 
+Command 'ps' options::
+
+    # show resource usage of process
+    ps -p <pid> -o %cpu,%mem,cmd,args   # % - means without column header
+    
 
 Show count of processes of some user::
 

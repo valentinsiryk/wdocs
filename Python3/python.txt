@@ -2,75 +2,102 @@
 Python3
 =======
 
-str(number)	# convert to string 
-test = 10	# init new var
-test = True	# case sensitive
-test = False
-test_one = None	# analog 'null' (functions returns None if not return any)
+Examples
+--------
 
-print(10 == 10)	# True
-== != <= >= < >
-'Test' > 'Tesa'	# True (position in text, registr, position in alphabet)
+Send email via SMTP::
 
-del test	# del var
+    #!/usr/bin/env python3
 
-print("text " + str(test) + " some text")
-print('hello ' * 3)	# hello hello hello (num only int)
-print('hello', 3 + 4)	# hello 7
+    import smtplib
+    from email.message import EmailMessage
 
-str(test)	# to string
-int(test)	# to int
-float(test)	# to float
-list(test)	# to list
+    s = smtplib.SMTP('localhost')
+    msg = EmailMessage()
 
-type(object)	# return class
+    msg.set_content('Test message content')
 
-input("input your name: ")	# return string input by keyboard
+    msg['Subject'] = 'The test message'
+    msg['From'] = 'admin@localhost'
+    msg['To'] = 'example@gmail.com'
 
-len(<string | list>)	# return length
-max()	# return max
-min()
-
-+ - * /
-**	# 2 ** 3 == 8
-//	# 20 // 6 == 3
-%	# 20 % 6 == 2
-
-+= -= *= /= %= **= //=
-
-print('hello \n world')
-print("hello \n world")
-print('''hello 
-world''')
-print("""hello
-world""")
-
-if test == 1 and time >= 12:
-	print(test)	# tab important
-elif test == 2 or (time <= 12 and date == "summer"):
-	print('hah!')
-else:
-	print('hm..')
-
-if not 1 < 2:		# invert
-	print("yeah")	# yeah don't print
-	
-while i <= 5:
-	print('ok')
-	i += 1
-	
-	if i == 3:
-		break
-	
-	if i == 2:
-		continue	# go to next iteration
+    s.send_message(msg)
+    s.quit()
 
 
-for test in range(15):
-    print(test)
+Base syntax
+-----------
+
+::
+
+    str(number)         # convert to string 
+    test = 10           # init new var
+    test = True         # case sensitive
+    test = False
+    test_one = None     # analog 'null' (functions returns None if not return any)
+
+    print(10 == 10)     # True
+    == != <= >= < >
+    'Test' > 'Tesa'     # True (position in text, registr, position in alphabet)
+
+    del test            # del var
+
+    print("text " + str(test) + " some text")
+    print('hello ' * 3)         # hello hello hello (num only int)
+    print('hello', 3 + 4)       # hello 7
+
+    str(test)       # to string
+    int(test)       # to int
+    float(test)     # to float
+    list(test)      # to list
+
+    type(object)    # return class
+
+    input("input your name: ")    # return string input by keyboard
+
+    len(<string | list>)    # return length
+    max()                   # return max
+    min()
+
+    + - * /
+    **      # 2 ** 3 == 8
+    //      # 20 // 6 == 3
+    %       # 20 % 6 == 2
+
+    += -= *= /= %= **= //=
+
+    print('hello \n world')
+    print("hello \n world")
+    print('''hello 
+    world''')
+    print("""hello
+    world""")
+
+    if test == 1 and time >= 12:
+        print(test)    # tab important
+    elif test == 2 or (time <= 12 and date == "summer"):
+        print('hah!')
+    else:
+        print('hm..')
+
+    if not 1 < 2:        # invert
+        print("yeah")    # yeah don't print
+        
+    while i <= 5:
+        print('ok')
+        i += 1
+        
+        if i == 3:
+            break
+        
+        if i == 2:
+            continue    # go to next iteration
+
+    for test in range(15):
+        print(test) 
 
 
-LISTS
+Lists
 -----
 
 ::
@@ -84,106 +111,114 @@ LISTS
     print(test[::2])    # all with step 2
     test[start:to:step]
 
-test = [1, 2, 3]
-print(test * 2)	# [1, 2, 3, 1, 2, 3]
+    test = [1, 2, 3]
+    print(test * 2)     # [1, 2, 3, 1, 2, 3]
 
-test = [1, 2, 3, 4, 5, 6]
-print(test[-2])		# 5
-print(test[::-1])	# [6, 5, 4, 3, 2, 1]
+    test = [1, 2, 3, 4, 5, 6]
+    print(test[-2])             # 5
+    print(test[::-1])           # [6, 5, 4, 3, 2, 1]
 
+    test = 'HELLO'
+    print(test[3])      # L
 
-test = 'HELLO'
-print(test[3])	# L
+    test = [1, 2, 3]
+    if 1 in test:       # find in list
+        print('yeah')
+        
+    if 1 not in test:
+        print('yeah')
 
-test = [1, 2, 3]
-if 1 in test:		# find in list
-    print('yeah')
-	
-if 1 not in test:
-    print('yeah')
+    test.append(object)         # add to list
+    test.remove(object)         # find first input and remove
+    test.insert(pos, object)
+    test.count(object)
+    test.reverse()              # reverse list (return none)
 
-test.append(object)	# add to list
-test.remove(object)	# find first input and remove
-test.insert(pos, object)
-test.count(object)
-test.reverse()		# reverse list (return none)
+    test = range(10)
+    print(list(test))           # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-test = range(10)
-print(list(test))	# [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    test = range(10, 15)
+    print(list(test))           # [10, 11, 12, 13, 14]
 
-test = range(10, 15)
-print(list(test))	# [10, 11, 12, 13, 14]
+    test = range(0, 10, 2)
+    print(list(test))           # [0, 2, 4, 6, 8]
 
-test = range(0, 10, 2)
-print(list(test))	# [0, 2, 4, 6, 8]
+    for element in test:
+        print(element)          # all elements
+        
 
-for element in test:
-    print(element)	# all elements
-
-	
-
-TUPLES (Кортежи - менее ресурсоемкостные чем списки)
+Tuples
 ------
-names = ("Make", "James")	# elements can't be change	
-names = "Make", "James"		# elements can't be change
-print(names[0])
+
+Less resource pressure than LISTS
+
+::
+
+    names = ("Make", "James")   # elements can't be change    
+    names = "Make", "James"     # elements can't be change
+    print(names[0])
 
 
 Dictionary
 ----------
 
-test = {
-	"key" : "value",	# key == only simple types
-	"key2" : "value2"
-}
-print(test["key"])				# exception if not exist
-print(test.get('key'))			# return None if not exist
-print(test.get('key', 'text'))	# return 'text' if not exist
-	
-if 'key' in test:
-	print('OK')
-	
-if 'key' not in test:
-	print('hm..')
-	
+::
 
-	
+    test = {
+        "key" : "value",        # key == only simple types
+        "key2" : "value2"
+    }
+    print(test["key"])                # exception if not exist
+    print(test.get('key'))            # return None if not exist
+    print(test.get('key', 'text'))    # return 'text' if not exist
+        
+    if 'key' in test:
+        print('OK')
+        
+    if 'key' not in test:
+        print('hm..')
+    
+
+    
 Functions
 ---------
-		
-def sum(a, b):		# DEFINE ONLY BEFORE USE
-	"""On line documentation"""
-    return a + b
-	
-print(sum(1, 5))
-print(sum.__doc__)
 
-my_sum = sum
-print(my_sum(1, 5))
+::
+
+ 
+    def sum(a, b):        # DEFINE ONLY BEFORE USE
+        """On line documentation"""
+        return a + b
+        
+    print(sum(1, 5))
+    print(sum.__doc__)
+
+    my_sum = sum
+    print(my_sum(1, 5))
 
 
-def complex(real=0.0, imag=0.0):
-    """Form a complex number.
+    def complex(real=0.0, imag=0.0):
+        """Form a complex number.
 
-    Keyword arguments:
-    real -- the real part (default 0.0)
-    imag -- the imaginary part (default 0.0)
-    """
+        Keyword arguments:
+        real -- the real part (default 0.0)
+        imag -- the imaginary part (default 0.0)
+        """
 
-def incr(a):
-    return a + 1
+    def incr(a):
+        return a + 1
 
-print(sum(incr, 5))  # send fuction in function
+    print(sum(incr, 5))     # send fuction in function
 
-def fun(text):
-    assert text != ''
-    print(text)
-fun('')	# AssertionError
+    def fun(text):
+        assert text != ''
+        print(text)
+    fun('')    # AssertionError
 
-def fun(text):
-    assert text != '', "text could be no blank!"
-    print(text)
-fun('')	# AssertionError: text could be no blank!
+    def fun(text):
+        assert text != '', "text could be no blank!"
+        print(text)
+    fun('')    # AssertionError: text could be no blank!
 
 
 Modules
@@ -209,7 +244,7 @@ Modules
     from random import *
 
     # rename import function
-    from math import sqrt as my_sqrt	
+    from math import sqrt as my_sqrt    
     my_sqrt(25)
 
 
@@ -223,7 +258,7 @@ Catch all exceptions::
         
     except:
         print("oh no =(")
-	    raise	# show exception, exit programm
+        raise    # show exception, exit programm
 
 
 ZeroDivisionError::
@@ -238,40 +273,40 @@ ZeroDivisionError::
 Different exceptions catching::
 
     try:
-	    print(4 / 0)
-	    
+        print(4 / 0)
+        
     except ZeroDivisionError:
-	    print('zero division err')
-	    
+        print('zero division err')
+        
     except NameError:
-	    print('var not defined')
-	    
+        print('var not defined')
+        
     except SyntaxError:
-	    print('syntax err')	# no catch syntax err
-	    
+        print('syntax err')    # no catch syntax err
+        
     except:
-	    print('some err')
-	
+        print('some err')
+    
 
 Syntax error::
 
     try:
-    	eval('<some code>')
+        eval('<some code>')
 
     except SyntaxError:
-    	print('Syntax error')
+        print('Syntax error')
 
 
 Finnaly::
-	
+    
     try:
-	    <code>
+        <code>
 
     except:
-	    <code>
+        <code>
 
     finally:
-	    <code>	# run always (if catch or no catch)
+        <code>    # run always (if catch or no catch)
 
 
 Override error::
@@ -279,17 +314,17 @@ Override error::
     try:
         a = 1
         if a == 1:
-            raise ZeroDivisionError	
+            raise ZeroDivisionError    
 
     except ZeroDivisionError:
-        print("zero division err")	
+        print("zero division err")    
 
 
 ::
 
     a = 1
     if a == 1:
-       raise ZeroDivisionError('some text')		# ZeroDivisionError: some text
+       raise ZeroDivisionError('some text')        # ZeroDivisionError: some text
        
 
 Own exceptions::
@@ -297,12 +332,12 @@ Own exceptions::
     class MyError(Exception):
         print('hm')
 
-    raise MyError('TEST')	
-	
+    raise MyError('TEST')    
+    
 
 Files
 -----
-	
+    
 **r - read**
 **w - write** (create if not exist, rewrite if exist)
 **a - append**
@@ -322,7 +357,7 @@ Files
     file.write('hello')
     file.close()
 
-	# append
+    # append
     file = open('file.txt', 'a')
     file.write('hello')
     file.close()
@@ -330,9 +365,9 @@ Files
     # get list of lines
     file.readlines()
      
-	# close file descriptor automatically
+    # close file descriptor automatically
     with open('file', 'r') as f:
-	    print(f.read())
+        print(f.read())
 
 
 COMMENTS
@@ -341,7 +376,7 @@ COMMENTS
 ::
 
     # this is a comment
-    print('hello')	# this is a comment
+    print('hello')    # this is a comment
 
     '''Multi 
     lines
@@ -350,10 +385,10 @@ COMMENTS
     """Multi 
     lines
     comment"""
-	
+    
 
 
-RESERVED VARS
+Reserved VARS
 -------------
 
 **foo**
@@ -361,7 +396,7 @@ RESERVED VARS
 
 
 
-CLASSES
+Classes
 -------
 
 **All classes is an object of class metaclass - 'type'.**
@@ -372,6 +407,6 @@ CLASSES
         pass        # pass do nothing
 
     # new object of class
-    obj = MyClass()	
+    obj = MyClass()    
 
 
