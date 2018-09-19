@@ -220,6 +220,23 @@ Functions
         print(text)
     fun('')    # AssertionError: text could be no blank!
 
+    # any number of args
+    def func(*args):
+        return args # args - tuple
+    
+    func(1, 2, 3, 'abc')    # (1, 2, 3, 'abc')
+    func()                  # ()
+    func(1)                 # (1,)
+
+    # any number of kv args
+    def func(**kwargs):
+        return kwargs   # kwargs - dictionary
+    
+    func(a=1, b=2, c=3)     # {'a': 1, 'c': 3, 'b': 2}
+    func()                  # {}
+    func(a='python')        # {'a': 'python'}
+
+
 
 Modules
 -------

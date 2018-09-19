@@ -87,6 +87,9 @@ https://pubs.vmware.com/workstation-12/index.jsp#com.vmware.ws.using.doc/GUID-1F
     # if linux without graphic
     apt install xfonts-base libxinerama-dev libxcursor-dev libxtst-dev
     
+    # uninstall command
+    vmware-installer -u vmware-workstation
+    
     
  
 VMWare command line

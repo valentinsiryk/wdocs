@@ -4,6 +4,10 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+Custom SSH key for git command::
+
+    GIT_SSH_COMMAND="ssh -i /path/to/key" git pull
+
 
 Credentials store
 -----------------
