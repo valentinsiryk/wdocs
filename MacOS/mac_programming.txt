@@ -91,6 +91,18 @@ Get all UI elements::
         log "-" & id & "-"
     end showElements
     
+    # my showAllElements(element)
+    on showAllElements(element)
+        tell application "System Events"
+            set elements to get every UI element of element
+            repeat with el in elements
+                 log el
+                 my showAllElements(el)
+            end repeat
+        end tell
+    end showElements
+    
+    
 
 Show all processes of application::
 

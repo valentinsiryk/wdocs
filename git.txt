@@ -9,6 +9,11 @@ Custom SSH key for git command::
     GIT_SSH_COMMAND="ssh -i /path/to/key" git pull
 
 
+Edit global Git config file::
+
+    git config --global --edit
+
+
 Credentials store
 -----------------
 

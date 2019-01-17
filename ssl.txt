@@ -22,7 +22,7 @@ Self-signed
 
 Generate on Linux::
 
-    sudo openssl req -x509 -newkey rsa:4096 -keyout key.key -out cert.crt -days 365 -nodes -batch
+    sudo openssl req -x509 -newkey rsa:4096 -keyout key.key -out cert.crt -days 365 -nodes -batch [-subj "/CN=frontend.local/O=frontend.local"]
     
     
     # alternate

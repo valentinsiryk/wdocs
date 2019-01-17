@@ -169,6 +169,11 @@ Install Mac OS Sierra on VMWare
 
 2. 
 
+Change VM display resolution::
+
+    /Library/Application\ Support/VMware\ Tools/vmware-resolutionSet 1920 1080
+
+
 
 Disable Mac OS csrutil (SIP) on VMware VM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
