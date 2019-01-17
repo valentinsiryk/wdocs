@@ -4,6 +4,23 @@ Git
 
 https://git-scm.com/book/ru/v2
 
+
+Dealing with line endings::
+
+    # https://help.github.com/articles/dealing-with-line-endings/
+    
+    git add . -u
+    git commit -m "Saving files before refreshing line endings"
+    rm .git/index
+    git reset
+    git status
+    git add -u
+    git add .gitattributes
+    git commit -m "Normalize all the line endings"
+    
+    # git push
+
+
 Custom SSH key for git command::
 
     GIT_SSH_COMMAND="ssh -i /path/to/key" git pull
