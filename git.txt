@@ -65,6 +65,8 @@ Branches:
     # Start new feature
     git checkout -b myfeature develop
     
+    # Do changes, commit to myfeature
+    
     # End new feature
     git checkout develop        # change branch
     git merge --no-ff myfeature # merge branches

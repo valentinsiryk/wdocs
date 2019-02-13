@@ -2,6 +2,70 @@
 Elasticsearch
 =============
 
+
+Optimisations
+-------------
+
+Remove old indices' replicas using Curator "action: replicas"
+
+Best practices: 
+1) max heap size for java: 30-32GB
+2) one shard per index per node
+3) two replicas per index for failover
+
+
+Get cluster stats::
+
+    curl localhost:9200/_cluster/stats?human&pretty
+    # /_cluster/stats/nodes/node1,node*,master:false
+
+
+Get health::
+
+    curl localhost:9200/_cat/health?v
+    # Output
+    #epoch      timestamp cluster        status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+    #1548094256 20:10:56  docker-cluster green           1         1    645 645    0    0        0             0                  -                100.0%
+    
+
+Get allocation::
+
+    curl localhost:9200/_cat/allocation?v
+    
+    # Output:
+    #shards disk.indices disk.used disk.avail disk.total disk.percent host      ip        node
+    # 5         260b    47.3gb     43.4gb    100.7gb           46 127.0.0.1 127.0.0.1 CSUXak2
+
+
+Get index settings::
+
+    curl "localhost:9200/<index>/_settings"
+    
+    # multiple
+    /<index1>,<index2>/_settings
+    /_all/_settings
+    /log_2013_*/_settings
+
+    # filtering settings by name
+    /log_2013_-*/_settings/index.number_*
+
+
+Create template with settings for all indices::
+
+    curl -XPUT "localhost:9200/_template/all" -H 'Content-Type: application/json' -d'
+    {
+      "template": "*",
+      "settings": {
+        "number_of_replicas": 0,
+        "number_of_shards": 1
+      }
+    }
+    '
+
+
+Basics
+------
+
 Templates::
 
     # get
@@ -24,23 +88,11 @@ Delete index::
 
 Get all indexes and their sizes::
 
+    # more actual options here - https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-indices.html
     curl localhost:9200/_cat/indices?v
         ?v          - show headers
         ?h=index    - show only indexes
 
-    
-    
-Start/restart Elasticsearch::
-   
-    # Ubuntu 14.04
-    sudo service elasticsearch start
-    sudo service elasticsearch restart 
-    
-    # Ubuntu 16.04 
-    
-    sudo systemctl start elasticsearch.service
-    sudo systemctl stop elasticsearch.service
-    
 
 
 Curator
