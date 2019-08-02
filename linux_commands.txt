@@ -310,8 +310,8 @@ grep::
 
 
 Word replacement::
-
-    grep -iRl -E "(SOURCE)" | xargs sed -i "s/SOURCE/DEST/g"
+   
+    grep -Rl -E "(SOURCE)" ./* | xargs sed -i "s/SOURCE/DEST/g"
 
     sed -i "s@SOURCE@DEST@g" /path/to/file
     

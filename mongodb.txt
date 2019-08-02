@@ -1,0 +1,67 @@
+=======
+MongoDB
+=======
+
+
+Execute JS code::
+
+  mongo [db_name] --quiet --eval "<JS_code>"
+
+
+Print a list of all databases on the server::
+
+    show dbs
+    # or
+    db.getMongo().getDBNames()
+    # or
+    printjson(db.adminCommand('listDatabases'))
+
+
+Switch current database to <db>. The mongo shell variable db is set to the current database::
+
+    use <db>
+
+
+Backup/restore MongoDB data (docker)::
+
+    # dump
+    docker exec <container> sh -c 'mongodump --archive' > mongodb.dump
+
+    # restore
+    docker exec -i <container> sh -c 'mongorestore --archive' < mongodb.dump
+
+
+Print a list of all collections for current database::
+
+    show collections
+    # or
+    db.getCollectionNames()
+
+
+Print documents of collection::
+
+    db.<collection>.find().pretty()
+
+
+Get all documents of all collections of current DB::
+
+    var c = db.getCollectionNames();
+    for (var i = 0; i < c.length; i++) {
+       print('[' + c[i] + ']');
+       db.getCollection(c[i]).find().forEach(printjson);
+    }
+
+
+Get DBs, collections and docs count::
+
+    db.getMongo().getDBNames().forEach((d) => {
+      print('[' + d + ']');
+      db = db.getSiblingDB(d);
+      db.getCollectionNames().forEach((c) => {
+        print('\t' + c + ': ' + db.getCollection(c).count());
+      });
+    });
+
+    # single line
+    db.getMongo().getDBNames().forEach((d)=>{print('['+d+']');db=db.getSiblingDB(d);db.getCollectionNames().forEach((c)=>{print('\t'+c+': '+db.getCollection(c).count())})})
+

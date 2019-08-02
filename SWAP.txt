@@ -6,7 +6,7 @@ Linux SWAP recommended size
 ---------------------------
 
 .. note::
-    
+
     It's not a rule. It's only recommendation for general configurations.
 
 ===== ====
@@ -24,17 +24,19 @@ SWAP in file
 
     sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
     sudo chmod 600 /swapfile
-    sudo mkswap /swapfile	
+    sudo mkswap /swapfile
 
 
-2. Disable all SWAP::
+2. Disable SWAP::
 
-    sudo swapoff -a		
+    sudo swapoff /swapfile
+    # or disable all swap
+    sudo swapoff -a
 
 
 3. Connect new SWAP file::
 
-    sudo swapon /swapfile	
+    sudo swapon /swapfile
 
 
 4. Add new SWAP to fstab (auto mount when system start)::
@@ -46,7 +48,7 @@ SWAP in file
 
     sudo sysctl -w vm.swappiness=30
 
-    
+
 
 Automated swapfile creation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -54,7 +56,7 @@ Automated swapfile creation
 ::
 
     #!/bin/bash
-    
+
     set -e
 
     # SWAP file size in MB
@@ -71,8 +73,8 @@ Automated swapfile creation
     sudo chmod 600 $SWAP_PATH
     sudo mkswap $SWAP_PATH
 
-    # Disable all SWAP
-    sudo swapoff -a
+    # Disable SWAP
+    sudo swapoff /swapfile
 
     # Connect new SWAP file
     sudo swapon $SWAP_PATH
@@ -82,5 +84,4 @@ Automated swapfile creation
 
     # Tweak system swap usage value
     sudo sysctl -w vm.swappiness=$VM_SWAPPINESS
-    
-    
+
