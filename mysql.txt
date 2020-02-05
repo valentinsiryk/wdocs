@@ -24,6 +24,11 @@ MySQL / SQLite
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+Check tables DB engine::
+
+    SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES where TABLE_SCHEMA = '<database_name>';
+
+
 Backup/restore mysql dump::
 
     # create dump
@@ -37,6 +42,10 @@ Backup/restore mysql dump::
 
     # with timestamp
     mysqldump -u USER -pPASSWORD DATABASE | gzip > `date +dump.sql.%Y%m%d.%H%M%S.gz`
+
+
+    # IMPORTANT: Assuming you are using InnoDB tables, you should add '--single-transaction' option
+    mysqldump ---skip-lock-tables -single-transaction some_database > dump.sql
 
     # restore from dump
     mysql -u USER -p DATABASE < dump.sql
