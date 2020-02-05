@@ -29,6 +29,15 @@ Backup/restore mysql dump::
     # create dump
     mysqldump -u USER -pPASSWORD DATABASE > dump.sql
 
+    # create dump of several tables (not all database)
+    mysqldump -u USER -pPASSWORD DATABASE TABLE1 TABLE2 TABLE3 > dump_tables.sql
+
+    # create dump and archive it on fly
+    mysqldump -u USER -pPASSWORD DATABASE | gzip > dump.sql.gz
+
+    # with timestamp
+    mysqldump -u USER -pPASSWORD DATABASE | gzip > `date +dump.sql.%Y%m%d.%H%M%S.gz`
+
     # restore from dump
     mysql -u USER -p DATABASE < dump.sql
 
@@ -37,21 +46,21 @@ New ROOT password (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x8
 
     mysqladmin -p -u root password
     mysqladmin -u root password NEWPASSWORD
-    
-    
+
+
 ::
 
     # show slow queries
     select * from mysql.slow_log\G
-    
+
     # show databases
-    mysqlshow -p	
+    mysqlshow -p
 
     # connect to remote DB
     mysql -u <user>
 	      -p		# connect with pass
 	      -h <ip>
- 
+
     # create DB
     CREATE DATABASE users;
 
@@ -94,7 +103,7 @@ Update table cell::
 
 
 Clear mysql command history::
-    
+
     > ~/.mysql_history
 
 
@@ -107,8 +116,8 @@ Repair crashed table::
 
     # ERROR 144 - Table 'table_name' is marked as crashed and last (automatic?) repair failed
     repair table <table_name>;
-    
-    
+
+
 Rename table::
 
     RENAME TABLE tbl_name TO new_tbl_name
@@ -121,15 +130,9 @@ SQLite
 Show all tables::
 
     SELECT name FROM sqlite_master WHERE type='table'
-    
-    
+
+
 Show column list of the table::
 
     PRAGMA table_info(table_name);
-    
-
-
-
-
-
 
