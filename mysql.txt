@@ -45,7 +45,7 @@ Backup/restore mysql dump::
 
 
     # IMPORTANT: Assuming you are using InnoDB tables, you should add '--single-transaction' option
-    mysqldump ---skip-lock-tables -single-transaction some_database > dump.sql
+    mysqldump --skip-lock-tables --single-transaction some_database > dump.sql
 
     # restore from dump
     mysql -u USER -p DATABASE < dump.sql
