@@ -2,6 +2,27 @@
 MySQL / SQLite
 ==============
 
+
+::
+
+    use DBNAME;
+
+    # select rows older than 6 months, show only 5 entries ('created' is timestamp)
+    SELECT * FROM `logs` WHERE `created` < DATE_SUB(NOW(), INTERVAL 6 MONTH) LIMIT 5;
+
+    # delete rows older than 6 months ('created' is timestamp)
+    DELETE FROM `logs` WHERE `created` < DATE_SUB(NOW(), INTERVAL 6 MONTH);
+
+    # get DATE: now - 6 months
+    SELECT DATE_SUB(NOW(), INTERVAL 6 MONTH);
+
+    # check
+    SHOW VARIABLES LIKE '%innodb_file_per_table%';
+
+    # if ON you can reclaim free space
+    OPTIMIZE TABLE logs;
+
+
 ::
 
     CREATE TABLE MyGuests (
@@ -49,6 +70,9 @@ Backup/restore mysql dump::
 
     # restore from dump
     mysql -u USER -p DATABASE < dump.sql
+
+    # restore from gz dump
+    zcat dump.sql.gz | mysql -h HOST -u USER -p DATABASE 
 
 
 New ROOT password (tested on - mysql  Ver 14.14 Distrib 5.5.52, for linux2.6 (x86_64) using readline 5.1)::
