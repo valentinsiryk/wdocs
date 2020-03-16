@@ -122,7 +122,19 @@ Create user and add privileges::
     GRANT ALL PRIVILEGES ON db_name.* TO 'newuser'@'localhost';			# db.table
     FLUSH PRIVILEGES;
 
-    SHOW GRANTS FOR 'root'@'localhost';
+
+    # Allow only select requests. % - means from everywhere
+    GRANT SELECT ON *.* TO 'username'@'%' IDENTIFIED BY 'password';
+    FLUSH PRIVILEGES;
+
+    # Allow see everything but not change (inluding system info)
+    GRANT SELECT, SHOW VIEW, PROCESS, REPLICATION CLIENT ON *.* TO 'username'@'%' IDENTIFIED BY 'password';
+    FLUSH PRIVILEGES;
+    # "Reading" the definition of views is the SHOW VIEW privilege.
+    # "Reading" the list of currently-executing queries by other users is the PROCESS privilege.
+    # "Reading" the current replication state is the REPLICATION CLIENT privilege.
+
+    SHOW GRANTS FOR 'username'@'%';
 
 
 Delete mysql user::
