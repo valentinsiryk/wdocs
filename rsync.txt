@@ -14,8 +14,10 @@ rsync
     # Get big file/dir from server
     rsync -vr --progress --inplace <user>@<ip>:</path/to/dest> <local/destination>
     
-        -r          # recursive
-        -v          # verbosity
-        -z          # compress
-        --progress  # show progress during transfer
+        -r                        # recursive
+        -v                        # verbosity
+        -z                        # compress
+        --progress                # show progress during transfer
+        -n                        # dry mode (list files but not sync)
+        --exclude <relative/path> # exclude file or dir
 
