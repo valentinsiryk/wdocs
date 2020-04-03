@@ -2,6 +2,14 @@
 MySQL / SQLite
 ==============
 
+Get all indicies size::
+
+    SELECT database_name, table_name, index_name, 
+    round(stat_value*@@innodb_page_size/1024/1024, 2) size_in_mb
+    FROM mysql.innodb_index_stats
+    WHERE stat_name = 'size' AND index_name != 'PRIMARY'
+    ORDER BY 4 DESC; 
+
 
 ::
 
@@ -155,6 +163,10 @@ Clear mysql command history::
 Show size of databases::
 
     SELECT table_schema "database_name", sum( data_length + index_length )/1024/1024 "Data Base Size in MB" FROM information_schema.TABLES GROUP BY table_schema;
+
+Show size of all tables::
+
+    SELECT  table_schema, table_name, (data_length + index_length + data_free)/1024/1024 AS total_mb, (data_length)/1024/1024 AS data_mb, (index_length)/1024/1024 AS index_mb, (data_free)/1024/1024 AS free_mb, CURDATE() AS today FROM information_schema.tables ORDER BY 3 ASC;
 
 
 Repair crashed table::
