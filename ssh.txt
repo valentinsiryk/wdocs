@@ -54,6 +54,12 @@ Run remote GUI application on local desktop::
 Multiple SSH private keys on one client
 ---------------------------------------
 
+Add into your ``~/.profile`` to add all id_rsa* keys from your home .ssh dir. Applied after system relogin.::
+
+    find $HOME/.ssh/ -type f -name "id_rsa*" ! -name "*.*" -exec ssh-add "{}" \;
+    # Also you can manually run this command
+
+
 ``.ssh/config``::
 
     Host myshortname realname.example.com
