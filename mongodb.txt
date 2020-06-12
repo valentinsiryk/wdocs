@@ -2,6 +2,29 @@
 MongoDB
 =======
 
+Replication::
+
+    # run minimum 3 mongo nodes
+    # execute next command on the one node
+    rs.initiate({_id: "rs1", members: [{_id: 0, host: "mongo1:27017" }, {_id: 1, host: "mongo2:27017"}, {_id: 2, host: "mongo3:27017"}]});
+    
+    # check conf
+    rs.conf()
+
+    # check status
+    rs.status()
+
+    # allow queries from secondary (applied for current session)
+    rs.slaveOk()
+
+
+Insert values::
+
+    db.<collection>.insertMany([
+       { item: "journal", qty: 25, status: "A", size: { h: 14, w: 21, uom: "cm" }, tags: [ "blank", "red" ] },
+       { item: "notebook", qty: 50, status: "A", size: { h: 8.5, w: 11, uom: "in" }, tags: [ "red", "blank" ] }
+    ]);
+
 
 Execute JS code::
 
@@ -36,6 +59,8 @@ Print a list of all collections for current database::
     show collections
     # or
     db.getCollectionNames()
+    # or
+    show tables
 
 
 Print documents of collection::
