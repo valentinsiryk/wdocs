@@ -44,7 +44,7 @@ Print a list of all databases on the server::
 
 Switch current database to <db>. The mongo shell variable db is set to the current database::
 
-    use <db>
+    use <db>    # The command will create a new database if it doesn't exist
 
 
 Backup/restore MongoDB data (docker)::
@@ -72,11 +72,7 @@ Print documents of collection::
 
 Get all documents of all collections of current DB::
 
-    var c = db.getCollectionNames();
-    for (var i = 0; i < c.length; i++) {
-       print('[' + c[i] + ']');
-       db.getCollection(c[i]).find().forEach(printjson);
-    }
+    var c = db.getCollectionNames(); for (var i = 0; i < c.length; i++) { print('[' + c[i] + ']'); db.getCollection(c[i]).find().forEach(printjson); }
 
 
 Get DBs, collections and docs count::

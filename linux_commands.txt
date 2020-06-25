@@ -2,6 +2,12 @@
 Linux commands
 ==============
 
+
+Find latest authenticated IP addresses using authorized_keys::
+
+    while read l; do if [[ -n $l && ${l###} = $l ]]; then echo $l; grep `ssh-keygen -l -f /dev/stdin <<<$l | awk '{print $2}'` /var/log/auth.log; echo '---'; fi; done < /home/ubuntu/.ssh/authorized_keys
+
+
 Append line in file if not exist::
 
     LINE='test'
