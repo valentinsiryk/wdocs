@@ -47,7 +47,11 @@ Switch current database to <db>. The mongo shell variable db is set to the curre
     use <db>    # The command will create a new database if it doesn't exist
 
 
-Backup/restore MongoDB data (docker)::
+Backup/restore MongoDB data::
+
+    mongodump --host=mongodb:27017 --db <dbname> --archive | mongorestore --host=rs1/mongo1:27017,mongo2:27017,mongo3:27017 --archive
+
+    # docker
 
     # dump
     docker exec <container> sh -c 'mongodump --archive' > mongodb.dump
