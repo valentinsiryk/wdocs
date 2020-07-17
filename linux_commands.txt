@@ -124,9 +124,10 @@ Show size::
         -s # size of dir
         
         
-Show size and sort with hidden files::
+Show size and sort with hidden files/directories and total size::
 
-    du -hs /[!.]* |sort -h      
+    du -sch /.[!.]* /* |sort -h
+  
 
 
 Show last lines of file in realtime::
