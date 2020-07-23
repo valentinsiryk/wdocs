@@ -30,7 +30,7 @@ This will clone the entire drive, including the MBR (and therefore bootloader), 
 
 
 
-Maybe faster (not testing)::
+Maybe faster (not tested)::
 
     dd if=/dev/sda | dd of=/dev/sdb
 
@@ -38,7 +38,7 @@ Maybe faster (not testing)::
 Tested
 ^^^^^^
 
-::
+Clone all disk::
 
     sudo dd if=/dev/sda of=/dev/sdb bs=32M conv=sync,noerror status=progress
 
@@ -46,7 +46,15 @@ Tested
     3577+1 records in
     3578+0 records out
     120057757696 bytes (120 GB, 112 GiB) copied, 2951.48 s, 40.7 MB/s
-       
+
+
+Clone just one partition (Windows 7 system disk)::
+
+    # check end of partition size
+    sudo fdisk -l /dev/sda  # source disk
+    # /dev/sda1   End: 41945714
+    # (41945652 + 1) / 8 = 5243215  # use this count in the next step
+    sudo dd if=/dev/sda of=/dev/sdb bs=4096 count=5243215 conv=sync,noerror status=progress
 
 
 
