@@ -26,9 +26,19 @@ Custom SSH key for git command::
     GIT_SSH_COMMAND="ssh -i /path/to/key" git pull
 
 
-Edit global Git config file::
+Edit global/local Git config file::
 
     git config --global --edit
+    git config -e
+
+    # list params
+    git config [--global] -l
+
+    # set params
+    git config [--global] user.name "User Name"
+    git config [--global] user.email "email"
+    # get param
+    git config [--global] user.name
 
 
 Credentials store
@@ -117,8 +127,6 @@ Branches:
 
 
 
-    
-
 Git tips and tricks
 -------------------
 
@@ -160,18 +168,7 @@ Force “git pull” to overwrite local files::
     git branch new-branch-to-save-current-commits
     git fetch --all
     git reset --hard origin/master
-
-
-
-::
-
-    git push origin serverfix               # remote server/branch
-    git push origin serverfix:awesomebranch	# local branch serverfix will transfer to branch awesomebranch of remote project
-
-    git remote      # Show configured remote servers 
-	            -v  # Show match URL/name
-	add <name> 
-
+    
 
 Clone only single branch::
 
@@ -184,38 +181,88 @@ Change url::
     git remote set-url origin git@bitbucket.org:johnsmith/test.git
 
 
-::
+Add remote repository::
 
     git remote add origin https://github.com/johnsmith/test.git
 
 
 ::
 
+    git push origin serverfix               # remote server/branch
+    git push origin serverfix:awesomebranch	# local branch serverfix will transfer to branch awesomebranch of remote project
+
+    git remote      # Show configured remote servers 
+	            -v  # Show match URL/name
+
+	git add <file_name> # add file to git index (stage changes)
+            .           # stage all changes (all files)
+
     git push origin --delete serverfix  # delete branch on server
 
     git fetch [имя удал. сервера]       # pull from server, but not merge with local changes
 
-    git branch                          # show all branches
+    git branch                          # show all local branches
 	            -v                      # also show last commits on branches
 	            --merged/--no-merged    # show merged/unmerged branches with current
+                -a                      # show also remote branches
 
     git branch testing      # new branch, without switching
 		       -d hotfix    # delete unused branch
 		       -D testing   # delete unused branch also if not merged
 
     git checkout testing        # switching to branch testing (HEAD transfer to branch testing)
-			     -b iss53       # create and switching branch
+			     -b newbranch   # create and switching branch
+                 COMMIT_HASH    # switch to specific commit
+
     git checkout path/to/file   # switching file version from server
 
-    git merge hotfix        # merge current branch with hotfix
+    git merge hotfix        # merge hotfix into current branch
 
 
-Shows commit history and branch indexes and branch history::
+Git log::
 
+    # Shows commit history and branch indexes and branch history
     git log --oneline --decorate --graph --all
     
-    
-**HEAD** indicates on current branch
+    # get commit history
+    git log
+    git log --pretty=oneline
+    git log --pretty=oneline --author="Valentin Siryk"
+    # formatting
+    git log --pretty=format:"%h - %s : %ad %an"
+
+
+Git stash::
+
+    # Stash unstaged local changes (changes which were not added to index by 'git add')
+    git stash
+    git stash list  # show all stashed changes
+    git stash pop   # unstash last changes and drop these from stash
+    git stash apply # unstash last changes (without dropping from stash)
+    git stash show  # show last changes from stash
+    git stash drop  # drop last stashed changes from stash
+    git stash clear # drop all stashed changes
+
+
+Git reset:
+
+    git reset [--mixed] COMMIT_HASH     # reset to specific commit. Changes will be removed from index.
+    git reset --soft    COMMIT_HASH     # reset to specific commit. Changes will be ready to commit - staged state.
+    git reset --hard    COMMIT_HASH     # reset to specific commit. You will lose all changes!
+
+
+Delete commits from remote server::
+
+    # Make sure that nobody could not pull commits before deleting!
+    git reset COMMIT_HASH   # remove all commits after COMMIT_HASH locally    
+    git push -f             # force push commit history to remote server
+
+
+Git revert::
+
+    # Creates commit to revert commit
+    git revert HEAD         # create commit to revert last commit
+
 
 
 Command aliases::
