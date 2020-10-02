@@ -1,0 +1,15 @@
+======
+GitLab
+======
+
+GitLab CI Server
+----------------
+
+Obtain the Active User count::
+
+    sudo gitlab-rails runner 'p User.active.count'
+
+
+Obtain the Maximum billable user count::
+
+    sudo gitlab-rails runner 'p ::HistoricalData.max_historical_user_count'
