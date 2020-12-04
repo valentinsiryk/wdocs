@@ -2,6 +2,14 @@
 SSH
 ===
 
+Generate SSH public key from SSH private key::
+
+    # to file
+    ssh-keygen -f ~/.ssh/id_rsa -y > ~/.ssh/id_rsa.pub
+
+    # to stdout
+    ssh-keygen -f ~/.ssh/id_rsa -y
+
 
 Disable SSH host key checking
 -----------------------------
