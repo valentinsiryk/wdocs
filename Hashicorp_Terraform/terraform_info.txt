@@ -4,6 +4,8 @@ Terraform
 
 Examples - https://github.com/hashicorp/terraform/tree/master/examples
 
+Secrets management - https://blog.gruntwork.io/a-comprehensive-guide-to-managing-secrets-in-your-terraform-code-1d586955ace1
+
 ::
 
     *.tf    # configuration
