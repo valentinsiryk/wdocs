@@ -1,0 +1,15 @@
+======
+ffmpeg
+======
+
+Encoding video for the web - https://gist.github.com/Vestride/278e13915894821e1d6f
+
+Reduce video size (change CRF value to change size/quality of result video)::
+
+    # H.264 codec
+    ffmpeg -i input.mp4 -vcodec libx264 -crf [18..24] output.mp4
+
+    # H.265 codec
+    ffmpeg -i input.mp4 -vcodec libx265 -crf [24..30] output.mp4
+
+

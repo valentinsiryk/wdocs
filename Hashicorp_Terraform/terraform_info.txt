@@ -2,9 +2,24 @@
 Terraform
 =========
 
+
 Examples - https://github.com/hashicorp/terraform/tree/master/examples
 
+Tests - https://blog.gruntwork.io/open-sourcing-terratest-a-swiss-army-knife-for-testing-infrastructure-code-5d883336fcd5
+
 Secrets management - https://blog.gruntwork.io/a-comprehensive-guide-to-managing-secrets-in-your-terraform-code-1d586955ace1
+
+
+Terragrunt - move remote state after moving folders::
+
+    # Dump out the state
+    terragrunt state pull > state.bkp.json
+    
+    # Move the module to the new location
+    
+    # In the new folder, import the state
+    terragrunt state push state.bkp.json
+
 
 ::
 

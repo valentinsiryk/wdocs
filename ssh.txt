@@ -2,6 +2,12 @@
 SSH
 ===
 
+DIY SSH Bastion Host - https://smallstep.com/blog/diy-ssh-bastion-host
+
+AWS Bastion host quick start - https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html
+
+Security recomendations for OpenSSH - https://infosec.mozilla.org/guidelines/openssh
+
 Generate SSH public key from SSH private key::
 
     # to file
