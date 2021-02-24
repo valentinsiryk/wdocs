@@ -25,3 +25,69 @@ aws iam create-group --group-name <value>   # create group
         list-attached-group-policies --group-name <value>                   # show attached policies
         remove-user-from-group --user-name <value> --group-name <value>     # delete user from group	
         delete-group --group-name <value>                                   # delete group (first remove the users in the group, delete inline policies and detach any managed policies)
+
+
+
+Control permissions across accounts
+-----------------------------------
+
+
+Service control policies (SCPs): Developers in all accounts cannot turn off CloudTrail, create IAM users, or set up AWS Directory Service::
+
+    "Statement": [
+        {
+            "Sid": "DenyUnapprovedAction",
+            "Effect": "Deny",
+            "Action": [
+                "ds:*",
+                "iam:CreateUser",
+                "cloudtrail:StopLogging"
+            ],
+            "Resorce": [
+                "*"
+            ]
+    }
+    ]
+
+IAM permissions policy: Allow creating resources only in allowed regions::
+
+    "Effect": "Allow",
+    "Action": [
+        "lambda:*"
+    ],
+    "Resource": "*",
+    "Condition": {
+        "StringEquals": [
+            "us-west-1"
+        ]
+    }
+
+
+Permissions boundaries: Enable your developers to create IAM roles but ensure they cannot exceed their own permissions::
+
+    # region-restriction policy
+    "Effect" "Allow",
+    "Action": [
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicyVersion"
+    ],
+    "Resource": "arn:aws:iam::<account-id>:policy/unicorns-*"
+
+    # 
+
+    "Effect" "Allow",
+    "Action": [
+        "iam:DetachRolePolicy",
+        "iam:CreateRole",
+        "iam:AttachRolePolicy"
+    ],
+    "Resource": "arn:aws:iam::<account-id>:role/unicorns-*",
+    "Condition": {
+        "StringEquals": {
+            "iam:PermissionsBoundary": "arn:aws:iam::<account-id>:policy/region-restriction"
+        }
+    }
+
+
+
