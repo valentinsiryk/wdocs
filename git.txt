@@ -21,10 +21,19 @@ Dealing with line endings::
     # git push
 
 
-Custom SSH key for git command::
+Set up custom SSH key for specific git project::
 
-    GIT_SSH_COMMAND="ssh -i /path/to/key" git pull
-
+    # clone new project
+    GIT_SSH_COMMAND="ssh -i /path/to/ssh_key" git clone git@*****/project.git
+    
+    # go to project dir
+    cd project
+    
+    # set project-specific option
+    git config core.sshCommand "ssh -i /path/to/ssh_key -F /dev/null"
+    
+    # you can see project config here .git/config
+    
 
 Edit global/local Git config file::
 
