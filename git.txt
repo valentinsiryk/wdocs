@@ -33,6 +33,9 @@ Set up custom SSH key for specific git project::
     git config core.sshCommand "ssh -i /path/to/ssh_key -F /dev/null"
     
     # you can see project config here .git/config
+    # nice to set right name and email for specific project
+    git config user.name "User Name"
+    git config user.email "email"
     
 
 Edit global/local Git config file::
