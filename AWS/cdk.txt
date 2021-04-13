@@ -1,0 +1,147 @@
+=======
+AWS CDK
+=======
+
+Installation
+------------
+
+Install Node.js and TypeScript::
+
+    # Using Ubuntu
+    curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+
+    # Install TypeScrypt
+    sudo npm -g install typescript
+
+
+Install/update CDK::
+
+    # If you regularly work with multiple versions of the AWS CDK, you may want to install a matching version of the AWS CDK Toolkit in individual CDK projects.
+    # To do this, omit -g from the npm install command.
+    # Then use npx cdk to invoke it; this will run the local version if one exists, falling back to a global version if not.
+
+    sudo npm install -g aws-cdk
+
+    ## Update
+    # sudo npm update -g aws-cdk
+
+    cdk --version
+
+
+Instructions
+------------
+
+CLI base commands - https://docs.aws.amazon.com/cdk/latest/guide/cli.html
+
+Create first app::
+
+    mkdir my-app-name
+    cd my-app-name
+
+    # will be used dir name as prefix for stack name
+    cdk init app --language typescript
+
+      # app (default) - Creates an empty AWS CDK app.
+      # sample-app    - Creates an AWS CDK app with a stack containing an Amazon SQS queue and an Amazon SNS topic.
+
+
+Add env props into your bin/my-app-name.ts code to make it possible to deploy stack into different account/regions changing ENV VARS::
+
+    const stack = new MyAppNameStack(app, 'MyAppNameStack', {
+        env: {
+            account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
+            region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION
+        }
+    });
+
+
+Set versionReporting to false in ./cdk.json or ~/.cdk.json. This opts out unless you opt in by specifying --version-reporting on an individual command.
+
+    {
+      "app": "...",
+      "versionReporting": false
+    }
+
+
+Commands::
+
+    # Build JS from TS
+    npm run build
+
+    # List stacks
+    cdk ls/list
+      # --long - Shows additional inforamtion (account, region, id, etc.) 
+
+    # Get diff between code and infrastructure
+    cdk diff
+    
+    # Compare cdk app with CF stack template
+    cdk diff --template ~/stacks/MyStack.old MyStack
+    
+    # Synthesize CF template and print to stdout
+    cdk synth
+
+    # Specify multiple context values (any number)
+    cdk synth --context key1=value1 --context key2=value2 MyStack
+
+    # Different context values for each stack
+    cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
+
+    # Checks your CDK project for potential problems
+    cdk doctor
+    
+    # Bootstrap toolkit CF stack
+    cdk bootstrap
+    
+    # To use modern boostrap template
+    export CDK_NEW_BOOTSTRAP=1
+
+
+Deploy CF stacks::
+
+    # Deploy changes to AWS
+    cdk deploy [stack_name]
+        --profile profile_name                                          # Set AWS profile
+        --parameters param=value --parameters param=value               # Pass parameters to template
+        --parameters Stack1:param=value --parameters Stack2:param=value # Pass parameters to templates
+   
+    # Save output to a specific file
+    cdk deploy --outputs-file outputs.json [stack_name]
+
+    # Destroy CF stack
+    cdk destroy
+
+
+Install/update modules::
+
+    # Install modules and add them to package.json
+    npm install @aws-cdk/aws-s3 @aws-cdk/aws-lambda
+        -D  # option to add module to DevDependencies
+    
+    # Update all modules to the latest permitted version according to the rules you specified in package.json
+    npm update
+
+
+SAM
+---
+
+Run lambda locally in docker using SAM::
+
+    # SAM must be installed
+ 
+    cdk synth --no-staging > template.yaml
+    sam local invoke WidgetsWidgetHandler1BC9DB34 --no-event
+    # Where 'WidgetsWidgetHandler1BC9DB34' is a logical ID from CF template
+
+    # Invoke function with vars
+    # Create file tmp.json
+    {
+        "WidgetsWidgetHandler1BC9DB34": {
+          "BUCKET": "applambdastack-widgetswidgetstore0ed7fdb7-1oek5wz08wpnv"
+        }
+    }
+
+    echo '{"path": "/", "httpMethod": "GET" }' | sam local invoke WidgetsWidgetHandler1BC9DB34 --event - --env-vars tmp.json
+
+
