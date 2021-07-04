@@ -256,7 +256,7 @@ Git stash::
     git stash clear # drop all stashed changes
 
 
-Git reset:
+Git reset::
 
     git reset [--mixed] COMMIT_HASH     # reset to specific commit. Changes will be removed from index.
     git reset --soft    COMMIT_HASH     # reset to specific commit. Changes will be ready to commit - staged state.
