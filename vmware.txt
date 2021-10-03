@@ -2,6 +2,33 @@
 VMWare
 ======
 
+Fix Segmentation fault on 5.8+ Kernel
+-------------------------------------
+
+VMWare v15.5.7 does not work with Linux Kernel 5.8+. To resolve issue, do following::
+
+    git clone https://github.com/mkubecek/vmware-host-modules.git
+    cd vmware-host-modules/
+    git checkout workstation-15.5.7 
+    git pull
+    make
+    sudo make install
+    sudo /etc/init.d/vmware restart
+    
+    sudo nano /usr/bin/vmware
+
+    # Replace this:
+    if "$BINDIR"/vmware-modconfig --appname="VMware Workstation" --icon="vmware-workstation" &&
+       vmware_module_exists $vmmon; then
+       exec "$libdir"/bin/"vmware" "$@"
+    fi
+
+    # With this:
+    if vmware_module_exists $vmmon; then
+       exec "$libdir"/bin/"vmware" "$@"
+    fi
+
+
 Networking
 ----------
 
